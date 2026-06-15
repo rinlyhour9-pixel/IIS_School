@@ -85,9 +85,7 @@ class _TeacherHomeworkDashboard extends StatelessWidget {
     required Widget child,
   }) {
     Navigator.of(context).push(
-      _homeworkRoute(
-        _TeacherActionDetailScreen(title: title, child: child),
-      ),
+      _homeworkRoute(_TeacherActionDetailScreen(title: title, child: child)),
     );
   }
 }
@@ -97,35 +95,33 @@ class _TeacherMetricGrid extends GetView<HomeworkController> {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(
-      () {
-        final dashboard = controller.teacherDashboard.value;
-        final isLoading = controller.isTeacherDashboardLoading.value;
+    return Obx(() {
+      final dashboard = controller.teacherDashboard.value;
+      final isLoading = controller.isTeacherDashboardLoading.value;
 
-        return GridView.count(
-          crossAxisCount: 2,
-          crossAxisSpacing: 12,
-          mainAxisSpacing: 12,
-          childAspectRatio: 1.9,
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          children: [
-            _MetricBox(
-              icon: Icons.bookmark_rounded,
-              value: isLoading ? '...' : '${dashboard?.totalClasses ?? 0}',
-              label: LocaleKeys.onlineClassTotalClass.tr,
-              accentColor: const Color(0xFFF3B51B),
-            ),
-            _MetricBox(
-              icon: Icons.groups_rounded,
-              value: isLoading ? '...' : '${dashboard?.totalStudents ?? 0}',
-              label: LocaleKeys.onlineClassStudents.tr,
-              accentColor: const Color(0xFF10A850),
-            ),
-          ],
-        );
-      },
-    );
+      return GridView.count(
+        crossAxisCount: 2,
+        crossAxisSpacing: 12,
+        mainAxisSpacing: 12,
+        childAspectRatio: 1.9,
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        children: [
+          _MetricBox(
+            icon: Icons.bookmark_rounded,
+            value: isLoading ? '...' : '${dashboard?.totalClasses ?? 0}',
+            label: LocaleKeys.onlineClassTotalClass.tr,
+            accentColor: const Color(0xFFF3B51B),
+          ),
+          _MetricBox(
+            icon: Icons.groups_rounded,
+            value: isLoading ? '...' : '${dashboard?.totalStudents ?? 0}',
+            label: LocaleKeys.onlineClassStudents.tr,
+            accentColor: const Color(0xFF10A850),
+          ),
+        ],
+      );
+    });
   }
 }
 

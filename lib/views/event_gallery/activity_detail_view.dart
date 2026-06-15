@@ -6,11 +6,7 @@ import 'package:schoolapp/views/event_gallery/activity_create_view.dart';
 import 'package:schoolapp/views/event_gallery/controller.dart';
 
 class ActivityDetailView extends StatefulWidget {
-  const ActivityDetailView({
-    super.key,
-    required this.detail,
-    this.summary,
-  });
+  const ActivityDetailView({super.key, required this.detail, this.summary});
 
   final ClassActivityDetailItem detail;
   final ClassActivityItem? summary;
@@ -305,12 +301,31 @@ class _ActivityDetailViewState extends State<ActivityDetailView> {
       await controller.deleteActivity(_summary!.id);
       if (!context.mounted) return;
       Get.back();
+      const snackbarTitle = 'Success';
+      const snackbarMessage = 'Activity deleted successfully';
       Get.snackbar(
-        LocaleKeys.successfully.tr,
-        'Activity deleted successfully',
+        snackbarTitle,
+        snackbarMessage,
         snackPosition: SnackPosition.BOTTOM,
         backgroundColor: const Color(0xFF14925A),
-        colorText: Colors.white,
+        titleText: Text(
+          snackbarTitle,
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 15,
+            fontWeight: FontWeight.w700,
+            fontFamily: AppFontFamily.forText(snackbarTitle),
+          ),
+        ),
+        messageText: Text(
+          snackbarMessage,
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 13,
+            fontWeight: FontWeight.w500,
+            fontFamily: AppFontFamily.forText(snackbarMessage),
+          ),
+        ),
       );
     } catch (e) {
       ExceptionHandler.handleException(e);
@@ -330,7 +345,9 @@ class _ActivityDetailViewState extends State<ActivityDetailView> {
       return;
     }
 
-    final refreshedDetail = await controller.fetchClassActivityDetail(summary.id);
+    final refreshedDetail = await controller.fetchClassActivityDetail(
+      summary.id,
+    );
     if (!mounted || refreshedDetail == null) {
       return;
     }

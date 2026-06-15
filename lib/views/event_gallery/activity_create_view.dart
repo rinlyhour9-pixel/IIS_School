@@ -567,14 +567,34 @@ class _TeacherCreateActivityViewState extends State<TeacherCreateActivityView> {
       }
       if (!mounted) return;
       Get.back(result: true);
+      const snackbarTitle = 'Success';
+      final snackbarMessage =
+          _isEditMode
+              ? 'Activity updated successfully'
+              : 'Activity created successfully';
       Get.snackbar(
-        LocaleKeys.successfully.tr,
-        _isEditMode
-            ? 'Activity updated successfully'
-            : 'Activity created successfully',
+        snackbarTitle,
+        snackbarMessage,
         snackPosition: SnackPosition.BOTTOM,
         backgroundColor: const Color(0xFF14925A),
-        colorText: Colors.white,
+        titleText: Text(
+          snackbarTitle,
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 15,
+            fontWeight: FontWeight.w700,
+            fontFamily: AppFontFamily.forText(snackbarTitle),
+          ),
+        ),
+        messageText: Text(
+          snackbarMessage,
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 13,
+            fontWeight: FontWeight.w500,
+            fontFamily: AppFontFamily.forText(snackbarMessage),
+          ),
+        ),
       );
     } catch (e) {
       ExceptionHandler.handleException(e);

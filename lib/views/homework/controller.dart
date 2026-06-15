@@ -26,6 +26,7 @@ class HomeworkController extends GetxController {
   final RxSet<String> submittedAssignmentIds = <String>{}.obs;
   final RxSet<String> submittingAssignmentIds = <String>{}.obs;
   final RxSet<String> teacherSubmittingStudentIds = <String>{}.obs;
+  final RxString teacherHomeworkError = ''.obs;
   final RxInt teacherHomeworkCurrentPage = 1.obs;
   final RxInt teacherHomeworkLastPage = 1.obs;
   final RxInt teacherHomeworkPerPage = 10.obs;
@@ -260,40 +261,33 @@ class HomeworkController extends GetxController {
       } else {
         isTeacherAssignmentsLoadingMore.value = true;
       }
+      teacherHomeworkError.value = '';
 
-      final res = await Get.find<ApiService>().get(
-        EndPoints.teacherHomeworks,
-        queryParameters: <String, dynamic>{
-          'page': teacherHomeworkCurrentPage.value,
-        },
-        isShowLoading: false,
+      final res = await _getTeacherHomeworksPage(
+        teacherHomeworkCurrentPage.value,
       );
-      final rawData = getPropertyFromJson(res.data, 'data');
-      if (rawData is! Map) {
+      print('Teacher homework list debug -> raw response: ${res.data}');
+      final rows = _extractHomeworkRows(res.data);
+      print('Teacher homework list debug -> row count: ${rows.length}');
+      if (rows.isEmpty) {
         if (reset) {
           assignedHomeworkItems.clear();
         }
         return;
       }
 
-      final rows = rawData['data'];
-      if (rows is! List) {
-        if (reset) {
-          assignedHomeworkItems.clear();
-        }
-        return;
-      }
-
+      final pagination = _extractPaginationMap(res.data);
       teacherHomeworkCurrentPage.value =
-          (rawData['current_page'] as num?)?.toInt() ?? 1;
+          _readPaginationInt(pagination, 'current_page') ??
+          teacherHomeworkCurrentPage.value;
       teacherHomeworkLastPage.value =
-          (rawData['last_page'] as num?)?.toInt() ??
+          _readPaginationInt(pagination, 'last_page') ??
           teacherHomeworkCurrentPage.value;
       teacherHomeworkPerPage.value =
-          (rawData['per_page'] as num?)?.toInt() ??
+          _readPaginationInt(pagination, 'per_page') ??
           teacherHomeworkPerPage.value;
       teacherHomeworkTotal.value =
-          (rawData['total'] as num?)?.toInt() ?? rows.length;
+          _readPaginationInt(pagination, 'total') ?? rows.length;
 
       final parsed = rows
           .whereType<Map>()
@@ -310,6 +304,9 @@ class HomeworkController extends GetxController {
             return assignment.copyWith(attachmentUrls: existing.attachmentUrls);
           })
           .toList(growable: false);
+      print(
+        'Teacher homework list debug -> parsed item ids: ${parsed.map((item) => item.id).toList()}',
+      );
 
       if (reset) {
         assignedHomeworkItems.assignAll(parsed);
@@ -329,6 +326,8 @@ class HomeworkController extends GetxController {
       if (reset) {
         assignedHomeworkItems.clear();
       }
+      teacherHomeworkError.value = e.toString();
+      print('Teacher homework list debug -> fetch error: $e');
       ExceptionHandler.handleException(e, alert: false);
     } finally {
       if (reset) {
@@ -343,6 +342,52 @@ class HomeworkController extends GetxController {
     if (!hasMoreTeacherHomeworkPages) return;
     teacherHomeworkCurrentPage.value += 1;
     await fetchTeacherHomeworks(reset: false);
+  }
+
+  Future<d.Response> _getTeacherHomeworksPage(int page) async {
+    final api = Get.find<ApiService>();
+    final teacherId = await _resolveTeacherId();
+    final queryParameters = <String, dynamic>{
+      if (teacherId.isNotEmpty)
+        'teacher_id': int.tryParse(teacherId) ?? teacherId,
+      if (page > 1) 'page': page,
+    };
+
+    if (page <= 1 && queryParameters.isEmpty) {
+      print('Teacher homework list debug -> GET ${EndPoints.teacherHomeworks}');
+      return api.get(EndPoints.teacherHomeworks, isShowLoading: false);
+    }
+
+    try {
+      print(
+        'Teacher homework list debug -> GET ${EndPoints.teacherHomeworks} params=$queryParameters',
+      );
+      return await api.get(
+        EndPoints.teacherHomeworks,
+        queryParameters: queryParameters,
+        isShowLoading: false,
+      );
+    } on d.DioException catch (e) {
+      print(
+        'Teacher homework list debug -> status: ${e.response?.statusCode}, '
+        'body: ${e.response?.data}',
+      );
+      if (page == 1 && e.response?.statusCode == 422) {
+        return api.get(EndPoints.teacherHomeworks, isShowLoading: false);
+      }
+      rethrow;
+    }
+  }
+
+  Future<void> fetchAllTeacherHomeworks() async {
+    while (isAssignmentsLoading.value) {
+      await Future<void>.delayed(const Duration(milliseconds: 50));
+    }
+
+    await fetchTeacherHomeworks();
+    while (hasMoreTeacherHomeworkPages) {
+      await loadMoreTeacherHomeworks();
+    }
   }
 
   Future<void> fetchTeacherClassOptions() async {
@@ -1033,6 +1078,13 @@ class HomeworkController extends GetxController {
   }
 
   List<dynamic> _extractHomeworkRows(dynamic raw) {
+    if (raw is String) {
+      try {
+        return _extractHomeworkRows(jsonDecode(raw));
+      } catch (_) {
+        return const <dynamic>[];
+      }
+    }
     if (raw is List) {
       return raw;
     }
@@ -1052,6 +1104,41 @@ class HomeworkController extends GetxController {
     }
 
     return const <dynamic>[];
+  }
+
+  Map<String, dynamic> _extractPaginationMap(dynamic raw) {
+    if (raw is String) {
+      try {
+        return _extractPaginationMap(jsonDecode(raw));
+      } catch (_) {
+        return const <String, dynamic>{};
+      }
+    }
+    if (raw is! Map) {
+      return const <String, dynamic>{};
+    }
+
+    final map = Map<String, dynamic>.from(raw);
+    if (map['data'] is List) {
+      return map;
+    }
+
+    final data = map['data'];
+    if (data is Map) {
+      final nested = Map<String, dynamic>.from(data);
+      if (nested['data'] is List) {
+        return nested;
+      }
+    }
+
+    return const <String, dynamic>{};
+  }
+
+  int? _readPaginationInt(Map<String, dynamic> map, String key) {
+    final value = map[key];
+    if (value is int) return value;
+    if (value is num) return value.toInt();
+    return int.tryParse((value ?? '').toString().trim());
   }
 
   Future<int?> _resolveStudentClassId() async {
@@ -1105,6 +1192,7 @@ class HomeworkController extends GetxController {
     } catch (_) {
       return null;
     }
+    return null;
   }
 
   Future<String> _resolveSelectedStudentId() async {

@@ -577,18 +577,29 @@ class _DashboardClassDropdown extends StatelessWidget {
   }
 }
 
-class _AllAssignedHomeworkPanel extends GetView<HomeworkController> {
+class _AllAssignedHomeworkPanel extends StatefulWidget {
   const _AllAssignedHomeworkPanel();
 
   @override
-  Widget build(BuildContext context) {
-    if (controller.shouldShowAssignmentsLoading) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        controller.shouldShowAssignmentsLoading = false;
-        controller.fetchTeacherHomeworks();
-      });
-    }
+  State<_AllAssignedHomeworkPanel> createState() =>
+      _AllAssignedHomeworkPanelState();
+}
 
+class _AllAssignedHomeworkPanelState extends State<_AllAssignedHomeworkPanel> {
+  final HomeworkController controller = Get.find<HomeworkController>();
+  int _selectedFilterIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      controller.shouldShowAssignmentsLoading = false;
+      controller.fetchAllTeacherHomeworks();
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Obx(() {
       final items = controller.assignedHomeworkItems;
       if (controller.isAssignmentsLoading.value) {
@@ -607,11 +618,74 @@ class _AllAssignedHomeworkPanel extends GetView<HomeworkController> {
           ),
         );
       }
+      if (items.isEmpty) {
+        return const SizedBox.shrink();
+      }
+
+      final allItems = items.toList(growable: false);
+      final pendingItems =
+          allItems.where((item) => item.total > item.submitted).toList();
+      final submittedItems =
+          allItems.where((item) => item.submitted > 0).toList();
+      final visibleItems =
+          _selectedFilterIndex == 1
+              ? pendingItems
+              : _selectedFilterIndex == 2
+              ? submittedItems
+              : allItems;
+      final totalSubmissions = allItems.fold<int>(
+        0,
+        (sum, item) => sum + item.total,
+      );
+      final submittedSubmissions = allItems.fold<int>(
+        0,
+        (sum, item) => sum + item.submitted,
+      );
+      final progress =
+          totalSubmissions == 0 ? 0.0 : submittedSubmissions / totalSubmissions;
 
       return Column(
         mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          ...items.map(
+          Row(
+            children: [
+              Expanded(
+                child: Text(
+                  '$submittedSubmissions/$totalSubmissions ${LocaleKeys.onlineClassSubmitted.tr}',
+                  style: AppTextStyle.smallGreyRegular.copyWith(
+                    color: Colors.black87,
+                  ),
+                ),
+              ),
+              Text(
+                '${(progress * 100).round()}%',
+                style: AppTextStyle.smallPrimaryBold.copyWith(
+                  color: _onlineClassAccent,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 8),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(999),
+            child: LinearProgressIndicator(
+              value: progress,
+              minHeight: 8,
+              backgroundColor: const Color(0xFFE9E9E9),
+              valueColor: const AlwaysStoppedAnimation(_onlineClassAccent),
+            ),
+          ),
+          const SizedBox(height: 16),
+          _TeacherHomeworkFilterTabs(
+            selectedIndex: _selectedFilterIndex,
+            allCount: allItems.length,
+            pendingCount: pendingItems.length,
+            submittedCount: submittedItems.length,
+            onChanged: (index) => setState(() => _selectedFilterIndex = index),
+          ),
+          const SizedBox(height: 16),
+          ...visibleItems.map(
             (item) => _AssignedHomeworkAttendanceCard(
               item: item,
               onTap:
@@ -671,6 +745,78 @@ class _AllAssignedHomeworkPanel extends GetView<HomeworkController> {
         ],
       );
     });
+  }
+}
+
+class _TeacherHomeworkFilterTabs extends StatelessWidget {
+  const _TeacherHomeworkFilterTabs({
+    required this.selectedIndex,
+    required this.allCount,
+    required this.pendingCount,
+    required this.submittedCount,
+    required this.onChanged,
+  });
+
+  final int selectedIndex;
+  final int allCount;
+  final int pendingCount;
+  final int submittedCount;
+  final ValueChanged<int> onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    final labels = [
+      '${LocaleKeys.all.tr} ($allCount)',
+      '${LocaleKeys.onlineClassPending.tr} ($pendingCount)',
+      '${LocaleKeys.onlineClassSubmitted.tr} ($submittedCount)',
+    ];
+
+    return Container(
+      height: 50,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: _onlineClassBorder),
+      ),
+      child: Row(
+        children: [
+          for (var index = 0; index < labels.length; index++)
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(2),
+                child: InkWell(
+                  borderRadius: BorderRadius.circular(10),
+                  onTap: () => onChanged(index),
+                  child: AnimatedContainer(
+                    duration: const Duration(milliseconds: 160),
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      color:
+                          selectedIndex == index
+                              ? _onlineClassAccent
+                              : Colors.transparent,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: FittedBox(
+                      fit: BoxFit.scaleDown,
+                      child: Text(
+                        labels[index],
+                        maxLines: 1,
+                        style: AppTextStyle.smallPrimaryBold.copyWith(
+                          color:
+                              selectedIndex == index
+                                  ? Colors.white
+                                  : Colors.black87,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+        ],
+      ),
+    );
   }
 }
 
@@ -853,7 +999,7 @@ class _AssignedHomeworkDetailPanelState
             title: widget.item.title,
             children: [
               Text(
-                'Unable to load homework detail',
+                'Homework detail is not available.',
                 style: AppTextStyle.smallGreyRegular.copyWith(
                   color: _homeworkMutedText,
                 ),

@@ -82,13 +82,14 @@ class NotificationView extends StatelessWidget {
                                 title: item.title,
                                 imageUrl: item.image,
                                 dateText: 'Announcement',
-                                timeText: item.id > 0 ? '#${item.id}' : '',
+                                timeText: item.dateText,
                                 onTap: () async {
                                   final detail = await controller
                                       .fetchAnnouncementDetail(item.id);
                                   if (detail == null) return;
                                   Get.to(
-                                    () => AnnouncementDetailView(detail: detail),
+                                    () =>
+                                        AnnouncementDetailView(detail: detail),
                                   );
                                 },
                               ),

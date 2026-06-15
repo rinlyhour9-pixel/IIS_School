@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:schoolapp/core/core.dart';
 
 class NotificationController extends GetxController {
@@ -145,18 +146,54 @@ class AnnouncementItem {
     required this.id,
     required this.title,
     required this.image,
+    required this.dateText,
   });
 
   final int id;
   final String title;
   final String image;
+  final String dateText;
 
   factory AnnouncementItem.fromJson(Map<String, dynamic> json) {
     return AnnouncementItem(
       id: (json['id'] as num?)?.toInt() ?? 0,
       title: (json['title'] ?? '').toString().trim(),
       image: (json['image'] ?? '').toString().trim(),
+      dateText: _formatDate(
+        json['date'] ??
+            json['created_at'] ??
+            json['createdAt'] ??
+            json['published_at'] ??
+            json['publishedAt'] ??
+            json['updated_at'] ??
+            json['updatedAt'],
+      ),
     );
+  }
+
+  static String _formatDate(dynamic value) {
+    final raw = (value ?? '').toString().trim();
+    if (raw.isEmpty) return '';
+
+    final parsed = DateTime.tryParse(raw);
+    if (parsed != null) {
+      return DateFormat('dd MMM yyyy').format(parsed);
+    }
+
+    final formatters = <DateFormat>[
+      DateFormat('yyyy-MM-dd HH:mm:ss'),
+      DateFormat('yyyy-MM-dd'),
+      DateFormat('dd/MM/yyyy'),
+      DateFormat('MM/dd/yyyy'),
+    ];
+
+    for (final formatter in formatters) {
+      try {
+        return DateFormat('dd MMM yyyy').format(formatter.parseStrict(raw));
+      } catch (_) {}
+    }
+
+    return raw;
   }
 }
 

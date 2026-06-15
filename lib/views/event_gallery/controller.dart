@@ -17,7 +17,7 @@ class ActivityController extends GetxController {
   final RxInt perPage = 10.obs;
   final RxInt total = 0.obs;
   String _lastStudentScopeKey = '';
- 
+
   bool get isTeacherRole => !UserRepository.shared.isParent;
   bool get hasMorePages => currentPage.value < lastPage.value;
 
@@ -55,7 +55,7 @@ class ActivityController extends GetxController {
           isTeacherRole
               ? null
               : await _resolveStudentClassId() ??
-                  _classIdFromClassName(studentClassName);
+                  await _resolveClassIdFromClassName(studentClassName);
       if (!isTeacherRole && studentClassId == null) {
         if (reset) {
           activities.clear();
@@ -418,10 +418,7 @@ class ActivityController extends GetxController {
   }
 
   Map<String, dynamic>? _extractActivitySection(Map<String, dynamic> root) {
-    final candidates = <dynamic>[
-      root['class'],
-      root['data'],
-    ];
+    final candidates = <dynamic>[root['class'], root['data']];
     for (final candidate in candidates) {
       if (candidate is Map<String, dynamic>) {
         return candidate;
@@ -434,10 +431,7 @@ class ActivityController extends GetxController {
   }
 
   List<dynamic> _extractActivityRows(Map<String, dynamic> root) {
-    final directCandidates = <dynamic>[
-      root['class'],
-      root['data'],
-    ];
+    final directCandidates = <dynamic>[root['class'], root['data']];
     for (final candidate in directCandidates) {
       if (candidate is List) {
         return candidate;
@@ -464,7 +458,8 @@ class ActivityController extends GetxController {
   }
 
   String _readClassName(Map<String, dynamic> map) {
-    final raw = map['class_name'] ?? map['class'] ?? map['grade'] ?? '';
+    final raw =
+        map['class_name'] ?? map['class'] ?? map['grade'] ?? map['name'] ?? '';
     if (raw is Map<String, dynamic>) {
       return (raw['name'] ?? raw['class_name'] ?? '').toString().trim();
     }
@@ -545,8 +540,10 @@ class ActivityController extends GetxController {
                 : <String, dynamic>{'student_id': selectedStudentId},
         isShowLoading: false,
       );
-      final classId =
-          await _findClassIdForSelectedStudent(res.data, selectedStudentId);
+      final classId = await _findClassIdForSelectedStudent(
+        res.data,
+        selectedStudentId,
+      );
       final className = _findClassNameForSelectedStudent(
         res.data,
         selectedStudentId,
@@ -635,7 +632,10 @@ class ActivityController extends GetxController {
     return _findClassId(root);
   }
 
-  String _findClassNameForSelectedStudent(dynamic raw, String selectedStudentId) {
+  String _findClassNameForSelectedStudent(
+    dynamic raw,
+    String selectedStudentId,
+  ) {
     if (raw is! Map) {
       return '';
     }
@@ -668,27 +668,14 @@ class ActivityController extends GetxController {
       return null;
     }
 
-    final local = _classIdFromClassName(className);
-    if (local != null) {
-      return local;
-    }
-
     try {
       final res = await Get.find<ApiService>().get(
-        EndPoints.teacherClassActivity,
+        EndPoints.classes,
         isShowLoading: false,
       );
-      if (res.data is! Map) {
-        return null;
-      }
-      final root = Map<String, dynamic>.from(res.data as Map);
-      final section = root['class'] ?? root['data'];
-      if (section is! Map) {
-        return null;
-      }
-      final rows = section['data'];
+      final rows = _extractClassRows(res.data);
       if (rows is! List) {
-        return null;
+        return _classIdFromClassName(className);
       }
       for (final row in rows) {
         if (row is! Map) continue;
@@ -703,7 +690,7 @@ class ActivityController extends GetxController {
       }
     } catch (_) {}
 
-    return null;
+    return _classIdFromClassName(className);
   }
 
   int? _findClassId(dynamic raw) {
@@ -764,9 +751,10 @@ class ActivityController extends GetxController {
       return direct;
     }
 
-    final kinder = RegExp(r'^K\s*(\d+)$', caseSensitive: false).firstMatch(
-      trimmed,
-    );
+    final kinder = RegExp(
+      r'^K\s*(\d+)$',
+      caseSensitive: false,
+    ).firstMatch(trimmed);
     if (kinder != null) {
       return int.tryParse(kinder.group(1)!);
     }
@@ -848,9 +836,7 @@ class ClassActivityItem {
       id: (json['id'] as num?)?.toInt() ?? 0,
       classId: classId,
       className:
-          className.isNotEmpty
-              ? className
-              : _fallbackClassLabelFromId(classId),
+          className.isNotEmpty ? className : _fallbackClassLabelFromId(classId),
       title: (json['title'] ?? '').toString().trim(),
       image: (json['image'] ?? '').toString().trim(),
       description: (json['description'] ?? '').toString().trim(),
