@@ -50,6 +50,13 @@ class LocaleKeys {
   static const dashboard = 'dashboard';
   static const attendanceRecordTitle = 'attendanceRecordTitle';
   static const attendanceRecordSubTitle = 'attendanceRecordSubTitle';
+  static const leavesTitle = 'leavesTitle';
+  static const leavesSubTitle = 'leavesSubTitle';
+  static const leavesTeacherSubTitle = 'leavesTeacherSubTitle';
+  static const studentAttendanceTitle = 'studentAttendanceTitle';
+  static const studentAttendanceSubTitle = 'studentAttendanceSubTitle';
+  static const studentAttendanceTeacherSubTitle =
+      'studentAttendanceTeacherSubTitle';
   static const noAttendanceLogsFound = 'noAttendanceLogsFound';
   static const noStaffAttendanceLogsFound = 'noStaffAttendanceLogsFound';
   static const morningIn = 'morningIn';
@@ -120,6 +127,9 @@ class LocaleKeys {
   static const dashboardMenuStudentReport = 'dashboardMenuStudentReport';
   static const dashboardMenuClassActivity = 'dashboardMenuClassActivity';
   static const dashboardMenuOnlineCourse = 'dashboardMenuOnlineCourse';
+  static const dashboardMenuLeaves = 'dashboardMenuLeaves';
+  static const dashboardMenuStudentAttendance =
+      'dashboardMenuStudentAttendance';
   static const welcomeParentPrefix = 'welcomeParentPrefix';
   static const welcomeTeacherPrefix = 'welcomeTeacherPrefix';
   static const welcomeParentSubtitle = 'welcomeParentSubtitle';
@@ -145,6 +155,8 @@ class LocaleKeys {
   static const reEnterPassword = 'reEnterPassword';
   static const fromDate = 'fromDate';
   static const toDate = 'toDate';
+  static const applyDate = 'applyDate';
+  static const approvedBy = 'approvedBy';
   static const filterDate = 'filterDate';
   static const termAndCondition = 'termAndCondition';
   static const contactUs = 'contactUs';
@@ -537,6 +549,12 @@ class LocaleKeys {
   static const welcomeTo = 'welcomeTo';
   static const createAccountAndAccessCoolStuffs =
       'createAccountAndAccessCoolStuffs';
+  static const leaveDuration = 'leaveDuration';
+  static const view = 'view';
+  static const noDataFound = 'noDataFound';
+  static const detailedReason = 'detailedReason';
+  static const attachments = 'attachments';
+  static const document = 'document';
 }
 
 class Locales {
@@ -587,6 +605,13 @@ class Locales {
     'attendanceRecordTitle': 'Attendance Record',
     'attendanceRecordSubTitle':
         'You can view your children\'s attendance while they are studying.',
+    'leavesTitle': 'Leaves',
+    'leavesSubTitle': 'You can view your student leaves here.',
+    'leavesTeacherSubTitle': 'You can view your student leaves here.',
+    'studentAttendanceTitle': 'Student Attendance',
+    'studentAttendanceSubTitle': 'You can view your students attendance logs.',
+    'studentAttendanceTeacherSubTitle':
+        'You can view your students attendance logs.',
     'noAttendanceLogsFound': 'No attendance logs found.',
     'noStaffAttendanceLogsFound': 'No staff attendance logs found.',
     'morningIn': 'Morning In',
@@ -658,6 +683,8 @@ class Locales {
     'dashboardMenuStudentReport': 'Student Report',
     'dashboardMenuClassActivity': 'Class Activity',
     'dashboardMenuOnlineCourse': 'Homework',
+    'dashboardMenuLeaves': 'Leaves',
+    'dashboardMenuStudentAttendance': 'Student Attendance',
     'welcomeParentPrefix': 'Welcome Parent, ',
     'welcomeTeacherPrefix': 'Welcome Teacher, ',
     'welcomeParentSubtitle': 'here is your parent dashboard.',
@@ -681,6 +708,8 @@ class Locales {
     'reEnterPassword': 'Re-enter password',
     'fromDate': 'From date',
     'toDate': 'To date',
+    'applyDate': 'Apply date',
+    'approvedBy': 'Approved by',
     'filterDate': 'Filter date',
     'termAndCondition': 'Term and Conditions',
     'contactUs': 'Contact Us',
@@ -1062,6 +1091,12 @@ class Locales {
     'welcomeTo': 'Welcome To',
     'createAccountAndAccessCoolStuffs':
         'Create an account and access\n thousand of cool stuffs.',
+    'leaveDuration': 'Leave Duration',
+    'view': 'View',
+    'noDataFound': 'No data found',
+    'detailedReason': 'Detailed Reason',
+    'attachments': 'Attachments',
+    'document': 'Document',
   };
   static const KM_KH = {
     'unableToConnectToTheInternet': 'មិនអាចភ្ជាប់ទៅអ៊ីនធឺណិតបាន',
@@ -1112,6 +1147,13 @@ class Locales {
     'attendanceRecordTitle': 'កំណត់ត្រាវត្តមាន',
     'attendanceRecordSubTitle':
         'លោកអ្នកអាចដឹងពីវត្តមាន កូនៗរបស់លោកអ្នកពេលកំពុងសិក្សា',
+    'leavesTitle': 'ច្បាប់ឈប់សម្រាក',
+    'leavesSubTitle': 'អ្នកអាចមើលការច្បាប់របស់សិស្សដែលនៅក្នុងអ្នកប្រើប្រាស់',
+    'leavesTeacherSubTitle':
+        'អ្នកអាចមើលការច្បាប់របស់សិស្សដែលនៅក្នុងអ្នកប្រើប្រាស់',
+    'studentAttendanceTitle': 'វត្តមានសិស្សដែលនឹងទទួល',
+    'studentAttendanceSubTitle': 'លោកអ្នកអាចដឹងពីវត្តមានការវត្តមានសិស្ស',
+    'studentAttendanceTeacherSubTitle': 'លោកអ្នកអាចដឹងពីវត្តមានការវត្តមានសិស្ស',
     'noAttendanceLogsFound': 'មិនមានកំណត់ត្រាវត្តមាន',
     'noStaffAttendanceLogsFound': 'មិនមានកំណត់ត្រាវត្តមានបុគ្គលិក',
     'morningIn': 'ព្រឹក ចូល',
@@ -1182,6 +1224,8 @@ class Locales {
     'dashboardMenuStudentReport': 'របាយការណ៍សិស្ស',
     'dashboardMenuClassActivity': 'សកម្មភាពថ្នាក់',
     'dashboardMenuOnlineCourse': 'កិច្ចការផ្ទះ',
+    'dashboardMenuLeaves': 'ច្បាប់ឈប់សម្រាក',
+    'dashboardMenuStudentAttendance': 'វត្តមានសិស្ស',
     'welcomeParentPrefix': 'សូមស្វាគមន៍ អាណាព្យាបាល, ',
     'welcomeTeacherPrefix': 'សូមស្វាគមន៍ លោកគ្រូ/អ្នកគ្រូ, ',
     'welcomeParentSubtitle': 'នេះគឺជាផ្ទាំងគ្រប់គ្រងសម្រាប់អាណាព្យាបាល',
@@ -1203,6 +1247,8 @@ class Locales {
     'reEnterPassword': 'បញ្ចូលពាក្យសម្ងាត់ម្ដងទៀត',
     'fromDate': 'ចាប់ពីកាលបរិច្ឆេទ',
     'toDate': 'ដល់កាលបរិច្ឆេទ',
+    'applyDate': 'កាលបរិច្ឆេទបានអនុវត្ត',
+    'approvedBy': 'ដោយអនុវត្តបានទទួល',
     'filterDate': 'ច្រោះតាមកាលបរិច្ឆេទ',
     'termAndCondition': 'លក្ខខណ្ឌប្រើប្រាស់',
     'contact': 'ទំនាក់ទំនង',
@@ -1529,5 +1575,11 @@ class Locales {
     'prending': 'កំពុងរង់ចាំ',
     'approved': 'បានអនុម័ត',
     'reject': 'បដិសេធ',
+    'leaveDuration': 'រយៈពេលប្រវត្តិ',
+    'view': 'មើល',
+    'noDataFound': 'គ្មានទិន្នន័យទេ',
+    'detailedReason': 'លម្អិតពណ៌នាទេ',
+    'attachments': 'ឯកសារភ្ជាប់',
+    'document': 'ឯកសារ',
   };
 }

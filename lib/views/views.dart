@@ -21,3 +21,5 @@ export 'student_information/studentInformation.dart';
 export 'homework/homework.dart';
 export 'online_courses/onlinecourses.dart';
 export 'event_gallery/EventGallery.dart';
+export 'leaves/leaves.dart';
+export 'student_attendance/student_attendance.dart';

@@ -19,4 +19,7 @@ export 'student_profile_history/student_profile_history.dart';
 export 'payment_history/payment_history.dart';
 export 'schedule/schedule.dart';
 export 'teacher_dashboard/teacher_dashboard.dart';
-
+export 'class/class.dart';
+export 'student_attendance.dart/student_attendance.dart';
+export 'leaves/leaves.dart';
+export 'detail_attendance/detail_attendance.dart';

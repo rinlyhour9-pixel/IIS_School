@@ -6,3 +6,4 @@ export 'fcm_token_sync_service.dart';
 export 'homework_notification_service.dart';
 export 'selected_student_service.dart';
 export 'interceptors/interceptors.dart';
+export 'setting_repository.dart';

@@ -29,6 +29,20 @@ class EndPoints {
   static String get announcements => '/api/v1/setting/announcement';
   static String get classes => '/api/v1/setting/classes';
   static String get classActivities => '/api/v1/setting/class/activities';
+
+  static String get sections => '/api/v1/setting/sections';
+  static String get studentAttendanceHistory =>
+      '/api/v1/teacher/student/attendance';
+  static String get subjects => '/api/v1/setting/subjects';
+  static String get studentAttendanceList =>
+      '/api/v1/teacher/student/attendance/list';
+  static String get studentAttendanceRecord =>
+      '/api/v1/teacher/student/attendance/record';
+  static const String studentAttendanceDetails =
+      '/api/v1/teacher/student/attendance/details';
+  static const String leaveList = '/api/v1/teacher/view/student-req-leave';
+  static String leaveDetail(int id) =>
+      '/api/v1/teacher/view/student-req-leave/$id';
   static String classActivitiesByClass(dynamic classId) =>
       '/api/v1/setting/class/activities/$classId';
   static String get registerFcmToken => '/api/v1/notifications/fcm-token';

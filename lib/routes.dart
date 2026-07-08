@@ -40,6 +40,14 @@ import 'package:schoolapp/views/student_document/view.dart';
 import 'package:schoolapp/views/student_information/binding.dart';
 import 'package:schoolapp/views/student_information/view.dart';
 import 'package:schoolapp/views/term_condition/view.dart';
+import 'package:schoolapp/views/leaves/binding.dart';
+import 'package:schoolapp/views/leaves/view.dart';
+import 'package:schoolapp/views/student_attendance/binding.dart';
+import 'package:schoolapp/views/student_attendance/view.dart';
+import 'package:schoolapp/views/record_attendance/binding.dart';
+import 'package:schoolapp/views/record_attendance/view.dart';
+import 'package:schoolapp/views/detailed_attendance/binding.dart';
+import 'package:schoolapp/views/detailed_attendance/view.dart';
 import 'package:get/get.dart';
 
 class Routes {
@@ -72,6 +80,10 @@ class Routes {
   static const String homework = '/homework';
   static const String activity = '/activity';
   static const String dashbord = '/dashbord';
+  static const String leaves = '/leaves';
+  static const String studentAttendance = '/s';
+  static const String recordAttendance = '/record';
+  static const String detailedAttendance = '/detailed';
 
   static List<GetPage> pages = [
     GetPage(
@@ -181,6 +193,26 @@ class Routes {
       name: dashbord,
       page: () => const DashboardView(),
       binding: DashbordBinding(),
+    ),
+    GetPage(
+      name: leaves,
+      page: () => const LeavesView(),
+      binding: LeavesBinding(),
+    ),
+    GetPage(
+      name: studentAttendance,
+      page: () => const StudentAttendanceView(),
+      binding: StudentAttendanceBinding(),
+    ),
+    GetPage(
+      name: recordAttendance,
+      page: () => const RecordAttendanceView(),
+      binding: RecordAttendanceBinding(),
+    ),
+    GetPage(
+      name: detailedAttendance,
+      page: () => const DetailedAttendanceView(),
+      binding: DetailedAttendanceBinding(),
     ),
   ];
 }

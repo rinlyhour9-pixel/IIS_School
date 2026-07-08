@@ -24,6 +24,8 @@ class _DashboardWidgetState extends State<DashboardWidget> {
     LocaleKeys.dashboardMenuStudentReport.tr,
     LocaleKeys.dashboardMenuClassActivity.tr,
     LocaleKeys.dashboardMenuOnlineCourse.tr,
+    LocaleKeys.dashboardMenuLeaves.tr,
+    LocaleKeys.dashboardMenuStudentAttendance.tr,
   ];
 
   final List<String> catIconPaths = [
@@ -36,6 +38,8 @@ class _DashboardWidgetState extends State<DashboardWidget> {
     'assets/images/icon/student_report.png',
     'assets/images/icon/class_activity.png',
     'assets/images/icon/online_course.png',
+    'assets/images/icon/leaves.png',
+    'assets/images/icon/student_attendance.png',
   ];
 
   final Color _panelColor = const Color(0xFFFFFFFF);
@@ -58,7 +62,7 @@ class _DashboardWidgetState extends State<DashboardWidget> {
     if (isParent) {
       return const [0, 1, 2, 3, 4, 5, 6, 7, 8];
     }
-    return const [5, 2, 3, 4, 7, 8];
+    return const [3, 4, 7, 8, 9, 10];
   }
 
   void click(int index) {
@@ -98,6 +102,12 @@ class _DashboardWidgetState extends State<DashboardWidget> {
         break;
       case 8:
         Get.toNamed(Routes.homework);
+        break;
+      case 9:
+        Get.toNamed(Routes.leaves);
+        break;
+      case 10:
+        Get.toNamed(Routes.studentAttendance);
         break;
     }
   }
@@ -225,11 +235,7 @@ class _DashboardWidgetState extends State<DashboardWidget> {
           final gridContentHeight =
               (rows * tileHeight) + spacingTotal + gridPaddingVertical;
           final availableGridHeight =
-              usableHeight -
-              sliderHeight -
-              topGap -
-              middleGap -
-              bottomPadding;
+              usableHeight - sliderHeight - topGap - middleGap - bottomPadding;
           final shouldScrollGrid = gridContentHeight > availableGridHeight;
           final iconSize = (tileHeight * 0.42).clamp(48.0, 62.0);
           final labelFontSize = (tileHeight * 0.108).clamp(12.0, 15.0);
