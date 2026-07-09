@@ -189,7 +189,9 @@ class _DrawerWidgetState extends State<DrawerWidget> {
     Get.back();
     try {
       await _selectedStudentService.selectChild(child);
-      unawaited(ClassTopicSubscriptionService.instance.syncSelectedClassTopic());
+      unawaited(
+        ClassTopicSubscriptionService.instance.syncSelectedClassTopic(),
+      );
       unawaited(_refreshSelectedChildData());
       Get.snackbar(
         LocaleKeys.student.tr,
@@ -320,7 +322,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
             ),
             const SizedBox(height: 10),
             Text(
-              profileName.isEmpty ? 'CIAC School' : profileName,
+              profileName.isEmpty ? 'IIS School' : profileName,
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.w600,
@@ -434,7 +436,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
             ),
             const SizedBox(height: 10),
             Text(
-              'CIAC School',
+              'IIS School',
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.w600,

@@ -56,7 +56,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      title: 'CIAC School',
+      title: 'IIS School',
       translationsKeys: AppTranslation.translations,
       locale: AppConfig.shared.languageLocale,
       fallbackLocale: const Locale('KM', 'KH'),
