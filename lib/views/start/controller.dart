@@ -121,7 +121,8 @@ class StartController extends GetxController {
     if (index != 0) return;
     if (!Get.isRegistered<DashboardController>()) return;
     final controller = Get.find<DashboardController>();
-    if (controller.sliderImages.isNotEmpty || controller.isSliderLoading.value) {
+    if (controller.sliderImages.isNotEmpty ||
+        controller.isSliderLoading.value) {
       return;
     }
     controller.fetchSliders();
@@ -223,8 +224,10 @@ class StartController extends GetxController {
       }
 
       final profile = ProfileModel.fromJson(data);
+
       UserRepository.shared.setProfile(profile);
       isParentUser.value = UserRepository.shared.isParent;
+
       await SharedPreferencesManager.setValue(
         'user_role',
         profile.type.toLowerCase(),
@@ -279,7 +282,9 @@ class StartController extends GetxController {
     final selectedChild = _selectedStudentService.current;
     if (selectedChild != null) {
       profileUrl.value = _normalizeProfileUrl(selectedChild.avatar);
-      unawaited(ClassTopicSubscriptionService.instance.syncSelectedClassTopic());
+      unawaited(
+        ClassTopicSubscriptionService.instance.syncSelectedClassTopic(),
+      );
       return;
     }
 

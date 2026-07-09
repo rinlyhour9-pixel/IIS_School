@@ -31,7 +31,10 @@ class UserRepository {
   }
 
   void setProfile(ProfileModel profile) {
-    setUserType(profile.type);
+    final userType = UserType.fromKey(profile.type);
+    if (userType != null) {
+      setUserType(profile.type);
+    }
     _profile = profile;
   }
 

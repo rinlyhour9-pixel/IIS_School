@@ -51,10 +51,11 @@ class _DashboardWidgetState extends State<DashboardWidget> {
 
   bool _isParentRole() {
     final startCtl = _startController;
-    if (startCtl != null) {
-      return startCtl.isParentUser.value;
-    }
-    return UserRepository.shared.isParent;
+    final result =
+        startCtl != null
+            ? startCtl.isParentUser.value
+            : UserRepository.shared.isParent;
+    return result;
   }
 
   List<int> _visibleMenuIndices() {

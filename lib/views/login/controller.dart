@@ -12,9 +12,9 @@ import 'package:schoolapp/core/utils/form_validator.dart';
 import 'package:schoolapp/core/constants/constants.dart';
 import 'package:schoolapp/flavor/app_config.dart';
 import 'package:schoolapp/routes.dart';
-import 'package:schoolapp/views/dashboard/controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
+import 'package:schoolapp/views/views.dart';
 import 'package:get/get.dart';
 
 import '../../../core/services/api_service.dart';
@@ -164,10 +164,10 @@ class LoginController extends GetxController {
 
       Get.updateLocale(AppConfig.shared.languageLocale);
 
-      if (Get.isRegistered<DashboardController>()) {
-        final dashboardController = Get.find<DashboardController>();
-        dashboardController.userName.value = name;
-      }
+      Get.delete<StartController>(force: true);
+      Get.delete<DashboardController>(force: true);
+      Get.delete<ProfileController>(force: true);
+      Get.delete<PaymentHistoryController>(force: true);
 
       Get.offAllNamed(Routes.start);
 
@@ -191,6 +191,12 @@ class LoginController extends GetxController {
     }
     await SharedPreferencesManager.clear();
     AppConfig.shared.token = '';
+
+    Get.delete<StartController>(force: true);
+    Get.delete<DashboardController>(force: true);
+    Get.delete<ProfileController>(force: true);
+    Get.delete<PaymentHistoryController>(force: true);
+
     Get.offAllNamed(Routes.login);
   }
 
@@ -262,8 +268,7 @@ class LoginController extends GetxController {
 
   Future<String> _getFcmToken() async {
     try {
-      return await FcmTokenSyncService.instance.getCurrentToken() ??
-          '';
+      return await FcmTokenSyncService.instance.getCurrentToken() ?? '';
     } catch (_) {
       return '';
     }
@@ -375,7 +380,8 @@ class LoginController extends GetxController {
     for (final payload in attempts) {
       final filteredPayload = Map<String, dynamic>.fromEntries(
         payload.entries.where(
-          (entry) => entry.value != null && entry.value.toString().trim().isNotEmpty,
+          (entry) =>
+              entry.value != null && entry.value.toString().trim().isNotEmpty,
         ),
       );
       final payloadKey = filteredPayload.entries
@@ -452,10 +458,7 @@ class LoginController extends GetxController {
   String _extractErrorMessage(dynamic response) {
     if (response is Map) {
       final message =
-          response['message'] ??
-          response['error'] ??
-          response['detail'] ??
-          '';
+          response['message'] ?? response['error'] ?? response['detail'] ?? '';
       return message.toString().trim();
     }
     return (response ?? '').toString().trim();
