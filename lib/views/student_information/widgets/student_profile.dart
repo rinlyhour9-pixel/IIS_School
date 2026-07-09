@@ -103,29 +103,31 @@ class StudentProfileWidget extends GetView<StudentInformationController> {
 
   Widget _buildStudentImage(parent_model.Student student) {
     final url = _resolveProfileUrl((student.profile ?? '').trim());
-    if (url.isNotEmpty) {
-      return CachedNetworkImage(
-        imageUrl: url,
-        fit: BoxFit.cover,
-        httpHeaders: _networkHeaders(),
-        placeholder:
-            (_, __) => Container(
-              color: Colors.grey.shade100,
-              alignment: Alignment.center,
-              child: const SizedBox(
-                width: 20,
-                height: 20,
-                child: CircularProgressIndicator(strokeWidth: 2),
-              ),
+    if (url.isEmpty) return _noProfileIcon();
+    return CachedNetworkImage(
+      imageUrl: url,
+      fit: BoxFit.cover,
+      httpHeaders: _networkHeaders(),
+      placeholder:
+          (_, __) => Container(
+            color: Colors.grey.shade100,
+            alignment: Alignment.center,
+            child: const SizedBox(
+              width: 20,
+              height: 20,
+              child: CircularProgressIndicator(strokeWidth: 2),
             ),
-        errorWidget:
-            (_, __, ___) => Image.asset(
-              'assets/images/studentprofile.jpg',
-              fit: BoxFit.cover,
-            ),
-      );
-    }
-    return Image.asset('assets/images/studentprofile.jpg', fit: BoxFit.cover);
+          ),
+      errorWidget: (_, __, ___) => _noProfileIcon(),
+    );
+  }
+
+  Widget _noProfileIcon() {
+    return Container(
+      color: const Color(0xFFEFEFEF),
+      alignment: Alignment.center,
+      child: Icon(Icons.person, size: 90, color: Colors.grey.shade400),
+    );
   }
 
   Widget _infoRow(String label, String value) {
@@ -236,16 +238,9 @@ class StudentProfileWidget extends GetView<StudentInformationController> {
                         (_, __) => const Center(
                           child: CircularProgressIndicator(strokeWidth: 2),
                         ),
-                    errorWidget:
-                        (_, __, ___) => Image.asset(
-                          'assets/images/studentprofile.jpg',
-                          fit: BoxFit.cover,
-                        ),
+                    errorWidget: (_, __, ___) => _noProfileIcon(),
                   )
-                  : Image.asset(
-                    'assets/images/studentprofile.jpg',
-                    fit: BoxFit.cover,
-                  ),
+                  : _noProfileIcon(),
         ),
       ),
     );

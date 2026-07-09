@@ -100,10 +100,7 @@ class StartView extends GetView<StartController> {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20),
               boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.1),
-                  blurRadius: 15,
-                ),
+                BoxShadow(color: Colors.black.withOpacity(0.1), blurRadius: 15),
               ],
             ),
             child: StyleProvider(
@@ -111,8 +108,8 @@ class StartView extends GetView<StartController> {
               child: ConvexAppBar(
                 key: const ValueKey<String>('nav-4'),
                 backgroundColor: AppColor.white,
-                color: const Color(0xFFE56B76),
-                activeColor: const Color(0xFFD50B1E),
+                color: AppColor.lightGreen,
+                activeColor: AppColor.primary,
                 height: 66,
                 style: TabStyle.reactCircle,
                 initialActiveIndex: selectedIndex,

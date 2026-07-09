@@ -131,35 +131,35 @@ class RegisterView extends GetView<RegisterController> {
                                                 ),
                                               ),
                                             ),
-                                            Row(
-                                              children: [
-                                                Expanded(
-                                                  child: RoleSwitchLabel(
-                                                    label:
-                                                        LocaleKeys.teacher.tr,
-                                                    icon: Icons.school,
-                                                    isSelected: isTeacher,
-                                                    onTap:
-                                                        () => controller
-                                                            .setRegisterRole(
-                                                              UserType.teacher,
-                                                            ),
-                                                  ),
-                                                ),
-                                                Expanded(
-                                                  child: RoleSwitchLabel(
-                                                    label: LocaleKeys.parent.tr,
-                                                    icon: Icons.groups,
-                                                    isSelected: !isTeacher,
-                                                    onTap:
-                                                        () => controller
-                                                            .setRegisterRole(
-                                                              UserType.parent,
-                                                            ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
+                                            // Row(
+                                            //   children: [
+                                            //     Expanded(
+                                            //       child: RoleSwitchLabel(
+                                            //         label:
+                                            //             LocaleKeys.teacher.tr,
+                                            //         icon: Icons.school,
+                                            //         isSelected: isTeacher,
+                                            //         onTap:
+                                            //             () => controller
+                                            //                 .setRegisterRole(
+                                            //                   UserType.teacher,
+                                            //                 ),
+                                            //       ),
+                                            //     ),
+                                            //     Expanded(
+                                            //       child: RoleSwitchLabel(
+                                            //         label: LocaleKeys.parent.tr,
+                                            //         icon: Icons.groups,
+                                            //         isSelected: !isTeacher,
+                                            //         onTap:
+                                            //             () => controller
+                                            //                 .setRegisterRole(
+                                            //                   UserType.parent,
+                                            //                 ),
+                                            //       ),
+                                            //     ),
+                                            //   ],
+                                            // ),
                                           ],
                                         ),
                                       ),

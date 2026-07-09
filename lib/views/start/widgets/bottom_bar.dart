@@ -34,7 +34,7 @@ class BottomBarWidget extends StatelessWidget {
               label,
               style:
                   isSelected
-                      ? AppTextStyle.smallRedRegular
+                      ? AppTextStyle.smallPrimaryRegular
                       : AppTextStyle.smallPrimaryRegular,
             ),
           ],

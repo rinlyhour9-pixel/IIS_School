@@ -192,7 +192,6 @@ class StartController extends GetxController {
       profileUrl.value = _normalizeProfileUrl(
         UserRepository.shared.profile.profile,
       );
-      userName.value = UserRepository.shared.profile.name;
     } catch (_) {
       // Keep values empty until storage/API fallback fills them.
     }

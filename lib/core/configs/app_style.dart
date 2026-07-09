@@ -15,6 +15,7 @@ class AppColor {
   static const greyTextColor = Colors.grey;
   static const white = Color(0xFFFFFFFF);
   static const green = Color(0xFF4CAF50);
+  static const lightGreen = Color(0xFF38833B);
   static const lightPink = Color(0xFFfffbff);
   static const transparent = Color(0x00000000);
   static const grey = Color(0xFF9DB2CE);
@@ -402,7 +403,7 @@ class AppStyle {
         titleTextStyle: AppTextStyle.mediumWhiteMedium.copyWith(
           fontFamily: fontFamily,
         ),
-        backgroundColor: AppColor.red,
+        backgroundColor: AppColor.primary,
         foregroundColor: AppColor.white,
         iconTheme: const IconThemeData(color: AppColor.white),
       ),

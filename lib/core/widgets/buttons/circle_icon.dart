@@ -12,7 +12,7 @@ class CircleIcon extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       child: CircleAvatar(
-        backgroundColor: AppColor.red,
+        backgroundColor: AppColor.primary,
         child: Icon(icon, color: AppColor.white),
       ),
     );

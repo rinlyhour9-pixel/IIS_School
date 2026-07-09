@@ -34,7 +34,7 @@ class LoginController extends GetxController {
   var passwordError = RxnString();
   final hasEmailText = false.obs;
   final hasPasswordText = false.obs;
-  final selectedLoginRole = UserType.parent.obs;
+  // final selectedLoginRole = UserType.parent.obs;
 
   @override
   void onInit() {
@@ -137,14 +137,14 @@ class LoginController extends GetxController {
         return;
       }
 
-      if (role != selectedLoginRole.value.key) {
-        DialogManager.showDialog(
-          title: LocaleKeys.loginFailed.tr,
-          subTitle:
-              '${LocaleKeys.selectedRoleIs.tr} ${selectedLoginRole.value.key}. ${LocaleKeys.pleaseSwitchRoleAndTryAgain.tr}',
-        );
-        return;
-      }
+      // if (role != selectedLoginRole.value.key) {
+      //   DialogManager.showDialog(
+      //     title: LocaleKeys.loginFailed.tr,
+      //     subTitle:
+      //         '${LocaleKeys.selectedRoleIs.tr} ${selectedLoginRole.value.key}. ${LocaleKeys.pleaseSwitchRoleAndTryAgain.tr}',
+      //   );
+      //   return;
+      // }
 
       UserRepository.shared.setUserType(role);
       AppConfig.shared.token = token;
@@ -228,15 +228,15 @@ class LoginController extends GetxController {
     return fallbackUsername;
   }
 
-  void setLoginRole(UserType role) {
-    if (selectedLoginRole.value == role) return;
-    selectedLoginRole.value = role;
-    formKey.currentState?.reset();
-    emailCtl.clear();
-    passCtl.clear();
-    emailError.value = null;
-    passwordError.value = null;
-  }
+  // void setLoginRole(UserType role) {
+  //   if (selectedLoginRole.value == role) return;
+  //   selectedLoginRole.value = role;
+  //   formKey.currentState?.reset();
+  //   emailCtl.clear();
+  //   passCtl.clear();
+  //   emailError.value = null;
+  //   passwordError.value = null;
+  // }
 
   void refreshValidationMessages() {
     emailError.value = null;
@@ -244,26 +244,49 @@ class LoginController extends GetxController {
     formKey.currentState?.validate();
   }
 
+  // Future<dynamic> _loginByRole({
+  //   required String loginIdentity,
+  //   required String password,
+  //   required String fcmToken,
+  //   required String deviceName,
+  // }) async {
+  //   if (selectedLoginRole.value == UserType.parent) {
+  //     return _loginWithPhone(
+  //       loginIdentity: loginIdentity,
+  //       password: password,
+  //       fcmToken: fcmToken,
+  //       deviceName: deviceName,
+  //     );
+  //   }
+  //   return _loginTeacher(
+  //     loginIdentity: loginIdentity,
+  //     password: password,
+  //     fcmToken: fcmToken,
+  //     deviceName: deviceName,
+  //   );
+  // }
+
   Future<dynamic> _loginByRole({
     required String loginIdentity,
     required String password,
     required String fcmToken,
     required String deviceName,
   }) async {
-    if (selectedLoginRole.value == UserType.parent) {
-      return _loginWithPhone(
+    final attempts = <Map<String, dynamic>>[
+      ..._teacherAttempts(
         loginIdentity: loginIdentity,
         password: password,
         fcmToken: fcmToken,
         deviceName: deviceName,
-      );
-    }
-    return _loginTeacher(
-      loginIdentity: loginIdentity,
-      password: password,
-      fcmToken: fcmToken,
-      deviceName: deviceName,
-    );
+      ),
+      ..._parentAttempts(
+        loginIdentity: loginIdentity,
+        password: password,
+        fcmToken: fcmToken,
+        deviceName: deviceName,
+      ),
+    ];
+    return _performLoginAttempts(attempts);
   }
 
   Future<String> _getFcmToken() async {
@@ -293,23 +316,92 @@ class LoginController extends GetxController {
     }
   }
 
-  Future<dynamic> _loginWithPhone({
+  // Future<dynamic> _loginWithPhone({
+  //   required String loginIdentity,
+  //   required String password,
+  //   required String fcmToken,
+  //   required String deviceName,
+  // }) async {
+  //   final rawPhone = loginIdentity.trim();
+  //   final normalizedPhone = _normalizePhone(loginIdentity);
+
+  //   if (!_isLikelyPhone(loginIdentity)) {
+  //     return {
+  //       "success": false,
+  //       "message": LocaleKeys.pleaseEnterValidPhoneNumber.tr,
+  //     };
+  //   }
+
+  //   final attempts = <Map<String, dynamic>>[
+  //     {
+  //       "phone": rawPhone,
+  //       "phone_number": rawPhone,
+  //       "username": rawPhone,
+  //       "password": password,
+  //       "fcm_token": fcmToken,
+  //       "device_name": deviceName,
+  //     },
+  //     if (normalizedPhone != rawPhone)
+  //       {
+  //         "phone": normalizedPhone,
+  //         "phone_number": normalizedPhone,
+  //         "username": normalizedPhone,
+  //         "password": password,
+  //         "fcm_token": fcmToken,
+  //         "device_name": deviceName,
+  //       },
+  //   ];
+
+  //   return _performLoginAttempts(attempts);
+  // }
+
+  // Future<dynamic> _loginTeacher({
+  //   required String loginIdentity,
+  //   required String password,
+  //   required String fcmToken,
+  //   required String deviceName,
+  // }) async {
+  //   final attempts = <Map<String, dynamic>>[];
+  //   final rawIdentity = loginIdentity.trim();
+  //   final normalizedPhone = _normalizePhone(loginIdentity);
+  //   final normalizedEmail = loginIdentity.trim().toLowerCase();
+
+  //   attempts.add({
+  //     "username": rawIdentity,
+  //     if (_isLikelyEmail(loginIdentity)) "email": normalizedEmail,
+  //     "phone": rawIdentity,
+  //     "phone_number": rawIdentity,
+  //     "password": password,
+  //     "fcm_token": fcmToken,
+  //     "device_name": deviceName,
+  //   });
+
+  //   if (_isLikelyPhone(loginIdentity) && normalizedPhone != rawIdentity) {
+  //     attempts.add({
+  //       "username": normalizedPhone,
+  //       "phone": normalizedPhone,
+  //       "phone_number": normalizedPhone,
+  //       "password": password,
+  //       "fcm_token": fcmToken,
+  //       "device_name": deviceName,
+  //     });
+  //   }
+
+  //   return _performLoginAttempts(attempts);
+  // }
+
+  List<Map<String, dynamic>> _parentAttempts({
     required String loginIdentity,
     required String password,
     required String fcmToken,
     required String deviceName,
-  }) async {
+  }) {
+    if (!_isLikelyPhone(loginIdentity)) return [];
+
     final rawPhone = loginIdentity.trim();
     final normalizedPhone = _normalizePhone(loginIdentity);
 
-    if (!_isLikelyPhone(loginIdentity)) {
-      return {
-        "success": false,
-        "message": LocaleKeys.pleaseEnterValidPhoneNumber.tr,
-      };
-    }
-
-    final attempts = <Map<String, dynamic>>[
+    return [
       {
         "phone": rawPhone,
         "phone_number": rawPhone,
@@ -328,16 +420,14 @@ class LoginController extends GetxController {
           "device_name": deviceName,
         },
     ];
-
-    return _performLoginAttempts(attempts);
   }
 
-  Future<dynamic> _loginTeacher({
+  List<Map<String, dynamic>> _teacherAttempts({
     required String loginIdentity,
     required String password,
     required String fcmToken,
     required String deviceName,
-  }) async {
+  }) {
     final attempts = <Map<String, dynamic>>[];
     final rawIdentity = loginIdentity.trim();
     final normalizedPhone = _normalizePhone(loginIdentity);
@@ -364,7 +454,7 @@ class LoginController extends GetxController {
       });
     }
 
-    return _performLoginAttempts(attempts);
+    return attempts;
   }
 
   Future<dynamic> _performLoginAttempts(
@@ -485,18 +575,21 @@ class LoginController extends GetxController {
     ).hasMatch(text.trim());
   }
 
-  String? validateIdentity(String? text) {
-    final identity = (text ?? '').trim();
-    if (selectedLoginRole.value == UserType.parent) {
-      return FormValidator.phoneNumber(identity);
-    }
+  // String? validateIdentity(String? text) {
+  //   final identity = (text ?? '').trim();
+  //   if (selectedLoginRole.value == UserType.parent) {
+  //     return FormValidator.phoneNumber(identity);
+  //   }
 
-    final emptyCheck = FormValidator.empty(identity);
-    if (emptyCheck != null) return emptyCheck;
+  //   final emptyCheck = FormValidator.empty(identity);
+  //   if (emptyCheck != null) return emptyCheck;
 
-    return null;
+  //   return null;
+  // }
+
+String? validateIdentity(String? text) {
+    return FormValidator.empty((text ?? '').trim());
   }
-
   String _normalizePhone(String text) {
     return text.replaceAll(RegExp(r'[\s\-\(\)]'), '');
   }

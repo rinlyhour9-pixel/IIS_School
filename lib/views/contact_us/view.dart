@@ -7,8 +7,8 @@ import 'package:schoolapp/views/views.dart';
 class ContactUsView extends GetView<ContactUsController> {
   const ContactUsView({super.key});
 
-  static const Color _accentRed = AppColor.red;
-  static const Color _softRed = Color(0xFFFFF3F3);
+  static const Color _accentGreen = AppColor.green;
+  static const Color _softGreen = Color(0xFFF4FFF3);
 
   @override
   Widget build(BuildContext context) {
@@ -120,7 +120,7 @@ class ContactUsView extends GetView<ContactUsController> {
             children: [
               const Icon(
                 Icons.location_on_outlined,
-                color: _accentRed,
+                color: _accentGreen,
                 size: 30,
               ),
               const SizedBox(width: 8),
@@ -141,7 +141,7 @@ class ContactUsView extends GetView<ContactUsController> {
           ),
           const SizedBox(height: 12),
           Material(
-            color: _softRed,
+            color: _softGreen,
             borderRadius: BorderRadius.circular(UIConstants.radius.toDouble()),
             child: InkWell(
               borderRadius: BorderRadius.circular(
@@ -158,11 +158,15 @@ class ContactUsView extends GetView<ContactUsController> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Icon(Icons.map_outlined, color: _accentRed, size: 18),
+                    const Icon(
+                      Icons.map_outlined,
+                      color: _accentGreen,
+                      size: 18,
+                    ),
                     const SizedBox(width: 8),
                     Text(
                       LocaleKeys.openMap.tr,
-                      style: AppTextStyle.normalRedBold,
+                      style: AppTextStyle.normalPrimarySemiBold,
                     ),
                   ],
                 ),
@@ -199,12 +203,12 @@ class ContactUsView extends GetView<ContactUsController> {
                 width: 50,
                 height: 50,
                 decoration: BoxDecoration(
-                  color: _softRed,
+                  color: _softGreen,
                   borderRadius: BorderRadius.circular(
                     UIConstants.radius.toDouble(),
                   ),
                 ),
-                child: Icon(icon, color: _accentRed, size: 28),
+                child: Icon(icon, color: _accentGreen, size: 28),
               ),
               const SizedBox(width: 12),
               Expanded(
@@ -214,7 +218,7 @@ class ContactUsView extends GetView<ContactUsController> {
                     Text(
                       title,
                       style: AppTextStyle.regularPrimarytextPrimary.copyWith(
-                        color: _accentRed,
+                        color: _accentGreen,
                       ),
                     ),
                     const SizedBox(height: 2),
@@ -243,21 +247,21 @@ class ContactUsView extends GetView<ContactUsController> {
   }) {
     return OutlinedButton.icon(
       onPressed: onTap,
-      icon: Icon(icon, color: _accentRed, size: 18),
+      icon: Icon(icon, color: _accentGreen, size: 18),
       label: Text(
         label,
         style: AppTextStyle.regularPrimarytextPrimary.copyWith(
-          color: _accentRed,
+          color: _accentGreen,
           fontSize: 12,
         ),
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
       ),
       style: OutlinedButton.styleFrom(
-        backgroundColor: _softRed,
-        foregroundColor: _accentRed,
+        backgroundColor: _softGreen,
+        foregroundColor: _accentGreen,
         disabledForegroundColor: AppColor.greyTextColor,
-        side: BorderSide(color: _accentRed.withOpacity(0.45)),
+        side: BorderSide(color: _accentGreen.withOpacity(0.45)),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(UIConstants.radius.toDouble()),
         ),

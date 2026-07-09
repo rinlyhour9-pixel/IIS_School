@@ -54,11 +54,23 @@ class TeacherProfileWidget extends GetView<StudentInformationController> {
               clipBehavior: Clip.antiAlias,
               child: Column(
                 children: [
-                  _infoRow(LocaleKeys.studentId.tr, controller.displayId(teacher)),
-                  _infoRow(LocaleKeys.teacherName.tr, controller.displayName(teacher)),
+                  _infoRow(
+                    LocaleKeys.studentId.tr,
+                    controller.displayId(teacher),
+                  ),
+                  _infoRow(
+                    LocaleKeys.teacherName.tr,
+                    controller.displayName(teacher),
+                  ),
                   _infoRow(LocaleKeys.role.tr, controller.teacherRole.value),
-                  _infoRow(LocaleKeys.profession.tr, controller.displayProfession(teacher)),
-                  _infoRow(LocaleKeys.phoneNumber.tr, controller.displayPhone(teacher)),
+                  _infoRow(
+                    LocaleKeys.profession.tr,
+                    controller.displayProfession(teacher),
+                  ),
+                  _infoRow(
+                    LocaleKeys.phoneNumber.tr,
+                    controller.displayPhone(teacher),
+                  ),
                 ],
               ),
             ),
@@ -70,25 +82,29 @@ class TeacherProfileWidget extends GetView<StudentInformationController> {
 
   Widget _buildImage(parent_model.Student teacher) {
     final url = (teacher.profile ?? '').trim();
-    if (url.isNotEmpty) {
-      return CachedNetworkImage(
-        imageUrl: _resolve(url),
-        fit: BoxFit.cover,
-        httpHeaders: _headers(),
-        placeholder:
-            (_, __) => const Center(
-              child: SizedBox(
-                width: 20,
-                height: 20,
-                child: CircularProgressIndicator(strokeWidth: 2),
-              ),
+    if (url.isEmpty) return _noProfileIcon();
+    return CachedNetworkImage(
+      imageUrl: _resolve(url),
+      fit: BoxFit.cover,
+      httpHeaders: _headers(),
+      placeholder:
+          (_, __) => const Center(
+            child: SizedBox(
+              width: 20,
+              height: 20,
+              child: CircularProgressIndicator(strokeWidth: 2),
             ),
-        errorWidget:
-            (_, __, ___) =>
-                Image.asset('assets/images/teacher.jpg', fit: BoxFit.cover),
-      );
-    }
-    return Image.asset('assets/images/teacher.jpg', fit: BoxFit.cover);
+          ),
+      errorWidget: (_, __, ___) => _noProfileIcon(),
+    );
+  }
+
+  Widget _noProfileIcon() {
+    return Container(
+      color: const Color(0xFFEFEFEF),
+      alignment: Alignment.center,
+      child: Icon(Icons.person, size: 90, color: Colors.grey.shade400),
+    );
   }
 
   Widget _infoRow(String label, String value) {
@@ -102,7 +118,10 @@ class TeacherProfileWidget extends GetView<StudentInformationController> {
             Expanded(
               flex: 5,
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 12,
+                ),
                 child: Text(
                   '$label:',
                   style: const TextStyle(
@@ -121,7 +140,10 @@ class TeacherProfileWidget extends GetView<StudentInformationController> {
             Expanded(
               flex: 4,
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 12,
+                ),
                 child: Text(
                   value,
                   style: const TextStyle(

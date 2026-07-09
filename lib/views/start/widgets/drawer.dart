@@ -351,7 +351,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
               trailing: Switch(
                 value: _notificationsEnabled,
                 onChanged: _toggleNotifications,
-                activeColor: AppColor.red,
+                activeColor: AppColor.primary,
               ),
             ),
             _divider(),
@@ -505,7 +505,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
               trailing: Switch(
                 value: _notificationsEnabled,
                 onChanged: _toggleNotifications,
-                activeColor: AppColor.red,
+                activeColor: AppColor.primary,
               ),
             ),
             _divider(),
@@ -567,7 +567,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
       dense: true,
       contentPadding: const EdgeInsets.symmetric(horizontal: 20),
       onTap: onTap,
-      leading: Icon(icon, color: Colors.pink),
+      leading: Icon(icon, color: AppColor.primary),
       title: Text(
         label,
         style: TextStyle(
