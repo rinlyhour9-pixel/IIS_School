@@ -108,6 +108,7 @@ class _ReadOnlyField extends StatelessWidget {
     return Container(
       constraints: const BoxConstraints(minHeight: 48),
       padding: EdgeInsets.only(right: 12, left: icon == null ? 12 : 0),
+      clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(
         color: AppColor.white,
         borderRadius: BorderRadius.circular(12),
@@ -150,6 +151,7 @@ class _DateField extends StatelessWidget {
     return Container(
       constraints: const BoxConstraints(minHeight: 48),
       padding: const EdgeInsets.only(right: 8),
+      clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(
         color: AppColor.white,
         borderRadius: BorderRadius.circular(12),
@@ -158,16 +160,16 @@ class _DateField extends StatelessWidget {
       child: Row(
         children: [
           Container(
-            width: 52,
-            height: 48,
-            decoration: BoxDecoration(
+            width: 20,
+            height: 20,
+            decoration: const BoxDecoration(
               color: AppColor.white,
               border: Border(right: BorderSide(color: AppColor.divider)),
             ),
-            child: Icon(
+            child: const Icon(
               Icons.calendar_today_outlined,
               color: AppColor.darkGrey,
-              size: 20,
+              size: 12,
             ),
           ),
           const SizedBox(width: 12),
@@ -204,7 +206,15 @@ class _SearchRow extends StatelessWidget {
         contentPadding: const EdgeInsets.symmetric(horizontal: 16),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
-          borderSide: BorderSide.none,
+          borderSide: const BorderSide(color: AppColor.divider),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: const BorderSide(color: AppColor.divider),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: const BorderSide(color: AppColor.primary),
         ),
       ),
     );

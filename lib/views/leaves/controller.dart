@@ -3,9 +3,10 @@ import 'package:get/get.dart';
 import 'package:schoolapp/core/core.dart';
 import 'package:schoolapp/models/models.dart';
 
-class LeavesController extends GetxController {
-  final RxString selectedStatus = ''.obs; // '' = All
-  final RxString selectedDate = ''.obs; // '' = All dates
+class LeavesController extends GetxController with WidgetsBindingObserver {
+  final RxString selectedStatus = ''.obs;
+  final RxString fromDate = ''.obs;
+  final RxString toDate = ''.obs;
   final RxList<LeaveItem> leaveList = <LeaveItem>[].obs;
   final RxBool isLoading = false.obs;
 
@@ -21,15 +22,38 @@ class LeavesController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    WidgetsBinding.instance.addObserver(this);
     loadLeaves();
+  }
+
+  @override
+  void onReady() {
+    super.onReady();
+    loadLeaves();
+  }
+
+  @override
+  void onClose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.onClose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      loadLeaves();
+    }
   }
 
   Future<void> loadLeaves() async {
     try {
       isLoading.value = true;
       final params = <String, dynamic>{};
-      if (selectedDate.value.trim().isNotEmpty) {
-        params['attendance_date'] = selectedDate.value;
+      if (fromDate.value.trim().isNotEmpty) {
+        params['from_date'] = fromDate.value;
+      }
+      if (toDate.value.trim().isNotEmpty) {
+        params['to_date'] = toDate.value;
       }
 
       final res = await Get.find<ApiService>().get(
@@ -69,30 +93,61 @@ class LeavesController extends GetxController {
     _applyFilters();
   }
 
-  Future<void> pickDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      builder: (context, child) {
-        return MediaQuery(
-          data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
-          child: child!,
-        );
-      },
-      initialDate: DateTime.tryParse(selectedDate.value) ?? DateTime.now(),
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2100),
+  Future<void> pickFromDate(BuildContext context) async {
+    final picked = await _showDatePicker(
+      context,
+      initialDate: DateTime.tryParse(fromDate.value) ?? DateTime.now(),
     );
-
     if (picked != null) {
-      selectedDate.value =
-          '${picked.year}-${picked.month.toString().padLeft(2, '0')}-${picked.day.toString().padLeft(2, '0')}';
-      loadLeaves();
+      fromDate.value = _formatDate(picked);
     }
   }
 
-  void clearDate() {
-    if (selectedDate.value.isEmpty) return;
-    selectedDate.value = '';
+  Future<void> pickToDate(BuildContext context) async {
+    final picked = await _showDatePicker(
+      context,
+      initialDate:
+          DateTime.tryParse(toDate.value) ??
+          DateTime.tryParse(fromDate.value) ??
+          DateTime.now(),
+    );
+    if (picked != null) {
+      toDate.value = _formatDate(picked);
+    }
+  }
+
+  Future<DateTime?> _showDatePicker(
+    BuildContext context, {
+    required DateTime initialDate,
+  }) {
+    return showDatePicker(
+      context: context,
+      builder: (context, child) {
+        return MediaQuery(
+          data: MediaQuery.of(
+            context,
+          ).copyWith(textScaler: const TextScaler.linear(1.0)),
+          child: child!,
+        );
+      },
+      initialDate: initialDate,
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2100),
+    );
+  }
+
+  String _formatDate(DateTime date) {
+    return '${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}';
+  }
+
+  void applyDateFilter() {
+    loadLeaves();
+  }
+
+  void clearDateFilter() {
+    if (fromDate.value.isEmpty && toDate.value.isEmpty) return;
+    fromDate.value = '';
+    toDate.value = '';
     loadLeaves();
   }
 

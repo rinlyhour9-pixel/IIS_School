@@ -15,8 +15,7 @@
   "unableToPickImagePleaseTryAgain": "មិនអាចជ្រើសរើសរូបភាពបានទេ សូម​ព្យាយាម​ម្តង​ទៀត",
   "successfully": "ជោកជ័យ",
   "youHavesuccessfullyCreatedTheBooking": "អ្នកបានបង្កើតការកក់ដោយជោគជ័យ",
-
-  "forgotPassword" : "ភ្លេច​លេខសំងាត់​",
+  "forgotPassword": "ភ្លេច​លេខសំងាត់​",
   "password": "ពាក្យសម្ងាត់",
   "cannotBeEmpty": "មិនអាចទទេបានទេ",
   "invalidPhoneNumber": "លេខទូរស័ព្ទមិនត្រឹមត្រូវ",
@@ -176,7 +175,6 @@
   "image": "រូបភាព",
   "chooseDestinationZone": "សូមជ្រើសរើសតំបន់",
   "anyExtraServiceCharge": "គិតថ្លៃសេវាកម្មបន្ថៃម?",
- 
   "yes": "បាទ/ចាស៎",
   "no": "មិនមាន",
   "taxi": "តាក់ស៊ី",
@@ -411,7 +409,10 @@
   "paymentDes": "រាល់បញ្ញើទំនិញខុសច្បាប់ គឺត្រូវបានហាមឃាត់ និងជាទំនួលខុសត្រូវ\nរបស់អ្នកផ្ញើ",
   "completeDate": "ថ្ងៃ​បញ្ចប់",
   "featureTemporarilyUnavailable": "មុខងារនេះមិនអាចប្រើបានបណ្តោះអាសន្នទេ។ សូមព្យាយាមម្តងទៀតនៅពេលក្រោយ។",
-
+  "section": "ផ្នែក",
+  "leaveDay": "ថ្ងៃស្នើសុំច្បាប់",
+  "leaveDaysUnit": "ចំនួនថ្ងៃស្នើសុំច្បាប់",
+  "selectDate": "ជ្រើសរើសកាលបរិច្ឆេទ",
   "next": "បន្ទាប់",
   "change": "ផ្លាស់ប្តូរ",
   "transfer": "ផ្ទេរ",

@@ -28,7 +28,7 @@ class AppStatusStyles {
     }
     if (value == 'rejected') {
       return AppStatusStyle(
-        label: LocaleKeys.reject.tr,
+        label: LocaleKeys.rejected.tr,
         color: const Color(0xFFC62828),
         background: const Color(0xFFFFEBEE),
       );

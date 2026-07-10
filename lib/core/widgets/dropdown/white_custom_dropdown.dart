@@ -24,6 +24,26 @@ class AppIconDropdown<T> extends StatelessWidget {
   final String hintText;
   final String loadingText;
   final String emptyText;
+  double? _menuWidth(BuildContext context) {
+    if (items.isEmpty) return null;
+
+    var maxTextWidth = 0.0;
+    for (final item in items) {
+      final painter = TextPainter(
+        text: TextSpan(
+          text: itemLabel(item),
+          style: AppTextStyle.normalPrimaryRegular,
+        ),
+        textDirection: Directionality.of(context),
+        textScaler: MediaQuery.textScalerOf(context),
+      )..layout();
+      if (painter.width > maxTextWidth) maxTextWidth = painter.width;
+    }
+
+    const horizontalChrome = 16.0 * 2 + 24.0;
+    final screenWidth = MediaQuery.sizeOf(context).width;
+    return (maxTextWidth + horizontalChrome).clamp(0.0, screenWidth - 32.0);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,6 +76,7 @@ class AppIconDropdown<T> extends StatelessWidget {
               child: DropdownButton<T>(
                 value: selectedValue,
                 isExpanded: true,
+                menuWidth: _menuWidth(context),
                 hint: Text(
                   isLoading
                       ? loadingText

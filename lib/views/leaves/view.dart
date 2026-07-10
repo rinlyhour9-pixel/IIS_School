@@ -73,13 +73,15 @@ class _AppBarDateFilter extends GetView<LeavesController> {
   @override
   Widget build(BuildContext context) {
     return Obx(() {
-      final hasDate = controller.selectedDate.value.isNotEmpty;
+      final hasDate =
+          controller.fromDate.value.isNotEmpty ||
+          controller.toDate.value.isNotEmpty;
       return Row(
         mainAxisSize: MainAxisSize.min,
         children: [
           if (hasDate)
             IconButton(
-              onPressed: controller.clearDate,
+              onPressed: controller.clearDateFilter,
               icon: const Icon(Icons.close, size: 20),
               tooltip: 'Clear date',
             ),
@@ -87,7 +89,7 @@ class _AppBarDateFilter extends GetView<LeavesController> {
             clipBehavior: Clip.none,
             children: [
               IconButton(
-                onPressed: () => controller.pickDate(context),
+                onPressed: () => showLeaveDateFilterSheet(context, controller),
                 icon: const Icon(Icons.calendar_today_outlined, size: 20),
                 tooltip: 'Filter by date',
               ),
@@ -99,7 +101,7 @@ class _AppBarDateFilter extends GetView<LeavesController> {
                     width: 8,
                     height: 8,
                     decoration: const BoxDecoration(
-                      color: AppColor.primary,
+                      color: AppColor.red,
                       shape: BoxShape.circle,
                     ),
                   ),
@@ -116,10 +118,10 @@ class _StatusTabs extends GetView<LeavesController> {
   const _StatusTabs();
 
   static const _tabs = [
-    {'label': 'All', 'value': ''},
-    {'label': 'Pending', 'value': 'Pending'},
-    {'label': 'Approved', 'value': 'Approved'},
-    {'label': 'Rejected', 'value': 'Rejected'},
+    {'labelKey': LocaleKeys.all, 'value': ''},
+    {'labelKey': LocaleKeys.pending, 'value': 'pending'},
+    {'labelKey': LocaleKeys.approved, 'value': 'approved'},
+    {'labelKey': LocaleKeys.rejected, 'value': 'rejected'},
   ];
 
   @override
@@ -127,32 +129,37 @@ class _StatusTabs extends GetView<LeavesController> {
     return Obx(() {
       return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: Row(
-          children:
-              _tabs.map((tab) {
-                final isSelected =
-                    controller.selectedStatus.value == tab['value'];
-                return Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 4),
+        child: Container(
+          padding: const EdgeInsets.all(6),
+          decoration: BoxDecoration(
+            color: AppColor.white,
+            borderRadius: BorderRadius.circular(20),
+            boxShadow: const [
+              BoxShadow(
+                color: Color(0x0F000000),
+                blurRadius: 12,
+                offset: Offset(0, 4),
+              ),
+            ],
+          ),
+          child: Row(
+            children:
+                _tabs.map((tab) {
+                  final isSelected =
+                      controller.selectedStatus.value == tab['value'];
+                  return Expanded(
                     child: GestureDetector(
                       onTap: () => controller.setStatusFilter(tab['value']!),
                       child: AnimatedContainer(
-                        duration: const Duration(milliseconds: 200),
+                        duration: const Duration(milliseconds: 300),
                         padding: const EdgeInsets.symmetric(vertical: 10),
                         decoration: BoxDecoration(
-                          color: isSelected ? AppColor.primary : AppColor.white,
-                          borderRadius: BorderRadius.circular(20),
-                          border: Border.all(
-                            color:
-                                isSelected
-                                    ? AppColor.primary
-                                    : AppColor.divider,
-                          ),
+                          color: isSelected ? AppColor.red : Colors.transparent,
+                          borderRadius: BorderRadius.circular(16),
                         ),
                         alignment: Alignment.center,
                         child: Text(
-                          tab['label']!,
+                          tab['labelKey']!.tr,
                           textAlign: TextAlign.center,
                           style:
                               isSelected
@@ -161,9 +168,9 @@ class _StatusTabs extends GetView<LeavesController> {
                         ),
                       ),
                     ),
-                  ),
-                );
-              }).toList(),
+                  );
+                }).toList(),
+          ),
         ),
       );
     });

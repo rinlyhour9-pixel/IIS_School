@@ -65,6 +65,10 @@ class EndPoints {
   static String get studentHomeworkSubmit => '/api/v1/student/homework/submit';
   static String parentLeaveRequest(dynamic studentId) =>
       '/api/v1/parent/$studentId/leave-request';
+  static String parentStudentClass(dynamic studentId) =>
+      '/api/v1/parent/student-class/$studentId';
+  static String parentStudentSection(dynamic studentId) =>
+      '/api/v1/parent/student-section/$studentId';
   static String paymentHistory(int studentId) =>
       '/api/v1/parent/payment-history/$studentId';
   static String parentInvoiceDetails(int id) =>

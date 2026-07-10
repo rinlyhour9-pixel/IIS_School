@@ -160,29 +160,37 @@ class _HistoryCard extends StatelessWidget {
         ],
       ),
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          const Icon(
-            Icons.edit_calendar_outlined,
-            color: AppColor.primary,
-            size: 24,
-          ),
+          const _DateIconBox(),
           const SizedBox(width: 10),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(_formattedDate, style: AppTextStyle.mediumPrimaryBold),
-                const SizedBox(height: 2),
-                Text(item.className, style: AppTextStyle.smallGreyRegular),
-                Text(item.subjectName, style: AppTextStyle.smallGreyRegular),
+                Text(_formattedDate, style: AppTextStyle.midPrimaryBold),
+                const SizedBox(height: 3),
+                Text(
+                  item.className,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: AppTextStyle.smallGreyRegular,
+                ),
+                Text(
+                  item.subjectName,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: AppTextStyle.smallGreyRegular,
+                ),
               ],
             ),
           ),
+          const SizedBox(width: 8),
           Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Wrap(
+                alignment: WrapAlignment.end,
                 spacing: 5,
                 runSpacing: 5,
                 children: [
@@ -220,6 +228,28 @@ class _HistoryCard extends StatelessWidget {
             ],
           ),
         ],
+      ),
+    );
+  }
+}
+
+class _DateIconBox extends StatelessWidget {
+  const _DateIconBox();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 32,
+      height: 32,
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+        color: AppColor.primary.withValues(alpha: 0.08),
+        borderRadius: BorderRadius.circular(9),
+      ),
+      child: const Icon(
+        Icons.edit_calendar_outlined,
+        color: AppColor.primary,
+        size: 16,
       ),
     );
   }

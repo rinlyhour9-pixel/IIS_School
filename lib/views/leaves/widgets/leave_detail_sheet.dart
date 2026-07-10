@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:schoolapp/core/core.dart';
 import 'package:schoolapp/views/views.dart';
 import 'package:url_launcher/url_launcher_string.dart';
+import 'leaves_card.dart';
 
 void showLeaveDetailSheet(BuildContext context, LeavesController controller) {
   showModalBottomSheet(
@@ -34,6 +35,7 @@ void showLeaveDetailSheet(BuildContext context, LeavesController controller) {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   CircleAvatar(
                     radius: 28,
@@ -56,6 +58,8 @@ void showLeaveDetailSheet(BuildContext context, LeavesController controller) {
                       ],
                     ),
                   ),
+                  const SizedBox(width: 8),
+                  LeaveStatusBadge(config: leaveStatusConfig(leave.status)),
                 ],
               ),
               UIConstants.spacingMedium.height,

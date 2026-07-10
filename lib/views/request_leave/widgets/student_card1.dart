@@ -8,351 +8,465 @@ import 'package:schoolapp/views/request_leave/controller.dart';
 class StudentCard1Widget extends StatelessWidget {
   const StudentCard1Widget({super.key});
 
+  static const _fieldRadius = 12.0;
+  static const _cardRadius = 20.0;
+  static const _sectionCardColor = Color(0xFFF3F3F4);
+  static const _leaveDaysColor = Color(0xFFFCEAE8);
+  static final Color _outlineRed = AppColor.red.withValues(alpha: 0.4);
+
   @override
   Widget build(BuildContext context) {
     final controller = Get.find<RequestLeaveController>();
 
-    return Scaffold(
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Container(
-            padding: 5.padAll,
-            margin: 5.padAll,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
+    return SingleChildScrollView(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          /// SECTION 1: STUDENT INFO
+          Padding(
+            padding: const EdgeInsets.only(bottom: 10),
+            child: Text(
+              LocaleKeys.requestLeaveSelectStudent.tr,
+              style: AppTextStyle.mediumPrimaryBoldText.copyWith(
+                color: AppColor.black,
+              ),
+              softWrap: true,
+            ),
+          ),
+
+          Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: _sectionCardColor,
+              borderRadius: BorderRadius.circular(_cardRadius),
+            ),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                /// SECTION 1: STUDENT INFO
-                Padding(
-                  padding: const EdgeInsets.only(left: 10),
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      LocaleKeys.requestLeaveSelectStudent.tr,
-                      style: AppTextStyle.mediumPrimaryBoldText,
-                      softWrap: true,
-                    ),
-                  ),
-                ),
-
-                Card.outlined(
-                  color: AppColor.white,
-                  child: Container(
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: Colors.grey.shade200,
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    child: Row(
-                      children: [
-                        Column(
-                          children: [
-                            Container(
-                              width: 90,
-                              height: 100,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(16),
-                                color: Colors.white,
-                              ),
-                              clipBehavior: Clip.antiAlias,
-                              child: Obx(
-                                () => _studentImage(
-                                  controller.studentImageUrl.value,
-                                ),
-                              ),
-                            ),
-                            const SizedBox(height: 8),
-                            Obx(
-                              () => Text(
-                                controller.studentNameText.value.isEmpty
-                                    ? LocaleKeys.student.tr
-                                    : controller.studentNameText.value,
-                              ),
-                            ),
-                            Text(LocaleKeys.student.tr, style: const TextStyle(
-                                color: Colors.grey,
-                                fontSize: 12,
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(width: 16),
-                        Flexible(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(LocaleKeys.studentId.tr, style: AppTextStyle.regularPrimaryBoldblack), const SizedBox(height: 6), Obx(() => _buildInput(controller.studentIdText.value.isEmpty
-                                      ? '-'
-                                      : controller.studentIdText.value,
-                                ),
-                              ),
-                              const SizedBox(height: 12),
-                              Text(LocaleKeys.classLabel.tr, style: AppTextStyle.regularPrimaryBoldblack), const SizedBox(height: 6), Obx(() => _buildInput(controller.studentGradeText.value.isEmpty
-                                      ? '-'
-                                      : controller.studentGradeText.value,
-                                ),
-                              ),
-                              const SizedBox(height: 12),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(LocaleKeys.shift.tr, style: AppTextStyle.regularPrimaryBoldblack), _buildRadio(controller, LocaleKeys.morning.tr), _buildRadio(controller, LocaleKeys.afternoon.tr), _buildRadio(controller, LocaleKeys.evening.tr),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-
-                /// SECTION 2: LEAVE DETAILS
-                Padding(
-                  padding: const EdgeInsets.only(top: 20, left: 10),
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      LocaleKeys.requestLeaveFillInfo.tr,
-                      style: AppTextStyle.mediumPrimaryBoldText,
-                      softWrap: true,
-                    ),
-                  ),
-                ),
-
-                Card.outlined(
-                  color: AppColor.white,
-                  child: Padding(
-                    padding: const EdgeInsets.all(15.0),
-                    child: Column(
-                      children: [
-                        Obx(
-                          () => Row(
-                            children: [
-                              Text('${LocaleKeys.totalLeaveDays.tr}:', style: AppTextStyle.smallPrimaryBoldBlack), 5.width, Container(width: 70,
-                                height: 20,
-                                alignment: Alignment.center,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(3),
-                                  border: Border.all(color: Colors.black45),
-                                ),
-                                child: Text(
-                                  controller.totalDays == 0
-                                      ? ""
-                                      : controller.totalDays.toString(),
-                                  style: const TextStyle(fontSize: 10),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        10.height,
-                        Row(
-                          children: [
-                            Text('${LocaleKeys.leaveFromDate.tr}:', style: AppTextStyle.smallPrimaryBoldBlack), 5.width, Expanded(child: Obx(() => Row(children: [Expanded(child: _dateBox(controller.startDate.value,
-                                      ),
-                                    ),
-                                    GestureDetector(
-                                      onTap: controller.pickStartDate,
-                                      child: const Padding(
-                                        padding: EdgeInsets.only(left: 4),
-                                        child: Icon(Icons.date_range, size: 20),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            Text('${LocaleKeys.leaveToDate.tr}:', style: AppTextStyle.smallPrimaryBoldBlack), 5.width, Expanded(child: Obx(() => Row(children: [Expanded(child: _dateBox(controller.endDate.value),
-                                    ),
-                                    GestureDetector(
-                                      onTap: controller.pickEndDate,
-                                      child: const Padding(
-                                        padding: EdgeInsets.only(left: 4),
-                                        child: Icon(Icons.date_range, size: 20),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        10.height,
-                        Row(
-                          children: [
-                            Text('${LocaleKeys.leaveReason.tr}: ', style: AppTextStyle.smallPrimaryBoldBlack), 10.width,
-                            _buildLeaveType(
-                              controller,
-                              label: LocaleKeys.sick.tr,
-                              value: 'sick',
-                            ),
-                            20.width,
-                            _buildLeaveType(
-                              controller,
-                              label: LocaleKeys.busy.tr,
-                              value: 'busy',
-                            ),
-                            20.width,
-                            _buildLeaveType(
-                              controller,
-                              label: LocaleKeys.other.tr,
-                              value: 'other',
-                            ),
-                          ],
-                        ),
-                        10.height,
-                        Obx(
-                          () => TextFormField(
-                            controller: controller.reasonController,
-                            style: AppTextStyle.smallPrimaryBoldBlack,
-                            maxLines: 5,
-                            onChanged: (value) {
-                              if (value.trim().isNotEmpty) {
-                                controller.reasonError.value = '';
-                              }
-                            },
-                            decoration: InputDecoration(
-                              hintText: LocaleKeys.otherReasonHint.tr,
-                              errorText:
-                                  controller.reasonError.value.isEmpty
-                                      ? null
-                                      : controller.reasonError.value,
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-
-                UIConstants.spacing.height,
-
-                /// SUBMIT BUTTON
-                Obx(
-                  () => ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF0F6B5B),
-                      foregroundColor: Colors.white,
-                      minimumSize: const Size(200, 50),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
+                Column(
+                  children: [
+                    Container(
+                      width: 90,
+                      height: 100,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(16),
+                        color: Colors.white,
+                      ),
+                      clipBehavior: Clip.antiAlias,
+                      child: Obx(
+                        () => _studentImage(controller.studentImageUrl.value),
                       ),
                     ),
-                    onPressed:
-                        controller.isloading.value
-                            ? null
-                            : () async {
-                              final created = await controller.submitRequest();
-                              if (created != null) {
-                                Get.back(result: created);
-                              }
-                              // Get.back();
-                              // Get.snackbar(
-                              //   "ជោគជ័យ",
-                              //   "សំណើរបស់លោកអ្នកត្រូវបានបញ្ជូន",
-                              //   backgroundColor: Colors.green,
-                              //   colorText: Colors.white,
-                              // );
-                            },
-                    child:
-                        controller.isloading.value
-                            ? const SizedBox(
-                              height: 20,
-                              width: 20,
-                              child: CircularProgressIndicator(
-                                strokeWidth: 2,
-                                color: Colors.white,
+                    const SizedBox(height: 8),
+                    Obx(
+                      () => Text(
+                        controller.studentNameText.value.isEmpty
+                            ? LocaleKeys.student.tr
+                            : controller.studentNameText.value,
+                        textAlign: TextAlign.center,
+                        style: AppTextStyle.regularPrimaryBoldblack,
+                      ),
+                    ),
+                    Text(
+                      LocaleKeys.student.tr,
+                      style: const TextStyle(color: Colors.grey, fontSize: 12),
+                    ),
+                  ],
+                ),
+                const SizedBox(width: 16),
+                Flexible(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        LocaleKeys.studentId.tr,
+                        style: AppTextStyle.regularPrimaryBoldblack,
+                      ),
+                      const SizedBox(height: 6),
+                      Obx(
+                        () => _buildInput(
+                          controller.studentIdText.value.isEmpty
+                              ? '-'
+                              : controller.studentIdText.value,
+                          trailingIcon: Icons.person_outline,
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+                      Text(
+                        LocaleKeys.classLabel.tr,
+                        style: AppTextStyle.regularPrimaryBoldblack,
+                      ),
+                      const SizedBox(height: 6),
+                      Obx(() => _buildClassField(controller)),
+                      const SizedBox(height: 12),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            LocaleKeys.section.tr,
+                            style: AppTextStyle.regularPrimaryBoldblack,
+                          ),
+                          12.width,
+                          Expanded(
+                            child: Obx(
+                              () => Wrap(
+                                spacing: 16,
+                                runSpacing: 8,
+                                alignment: WrapAlignment.spaceBetween,
+                                children:
+                                    controller.sectionOptions
+                                        .map(
+                                          (section) =>
+                                              _buildRadio(controller, section),
+                                        )
+                                        .toList(),
                               ),
-                            )
-                            : Text(LocaleKeys.send.tr),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
                 ),
               ],
             ),
           ),
-        ),
+
+          /// SECTION 2: LEAVE DETAILS
+          Padding(
+            padding: const EdgeInsets.only(top: 20, bottom: 10),
+            child: Text(
+              LocaleKeys.requestLeaveFillInfo.tr,
+              style: AppTextStyle.mediumPrimaryBoldText.copyWith(
+                color: AppColor.black,
+              ),
+              softWrap: true,
+            ),
+          ),
+
+          Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(_cardRadius),
+              border: Border.all(color: _outlineRed, width: 1),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Text(
+                      '${LocaleKeys.leaveFromDate.tr}:',
+                      style: AppTextStyle.smallPrimaryBoldBlack,
+                    ),
+                    6.width,
+                    Expanded(
+                      child: Obx(
+                        () => _dateBox(
+                          controller.startDate.value,
+                          onTap: controller.pickStartDate,
+                        ),
+                      ),
+                    ),
+                    10.width,
+                    Text(
+                      '${LocaleKeys.leaveToDate.tr}:',
+                      style: AppTextStyle.smallPrimaryBoldBlack,
+                    ),
+                    6.width,
+                    Expanded(
+                      child: Obx(
+                        () => _dateBox(
+                          controller.endDate.value,
+                          onTap: controller.pickEndDate,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                12.height,
+                Obx(
+                  () => Row(
+                    children: [
+                      Text(
+                        '${LocaleKeys.totalLeaveDays.tr}:',
+                        style: AppTextStyle.smallPrimaryBoldBlack,
+                      ),
+                      8.width,
+                      Container(
+                        width: 56,
+                        height: 32,
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          color: _leaveDaysColor,
+                          borderRadius: BorderRadius.circular(8),
+                          border: Border.all(color: _outlineRed),
+                        ),
+                        child: Text(
+                          controller.totalDays == 0
+                              ? '-'
+                              : controller.totalDays.toString(),
+                          style: const TextStyle(
+                            fontSize: 13,
+                            fontWeight: FontWeight.w600,
+                            color: AppColor.red,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                14.height,
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      '${LocaleKeys.leaveReason.tr}: ',
+                      style: AppTextStyle.smallPrimaryBoldBlack,
+                    ),
+                    Expanded(
+                      child: Wrap(
+                        spacing: 10,
+                        runSpacing: 8,
+                        children: [
+                          _buildLeaveType(
+                            controller,
+                            label: LocaleKeys.sick.tr,
+                            value: 'sick',
+                            icon: Icons.sick_outlined,
+                          ),
+                          _buildLeaveType(
+                            controller,
+                            label: LocaleKeys.busy.tr,
+                            value: 'busy',
+                            icon: Icons.work_outline,
+                          ),
+                          _buildLeaveType(
+                            controller,
+                            label: LocaleKeys.other.tr,
+                            value: 'other',
+                            icon: Icons.more_horiz,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                14.height,
+                Obx(
+                  () => TextFormField(
+                    controller: controller.reasonController,
+                    style: AppTextStyle.smallPrimaryBoldBlack,
+                    maxLines: 5,
+                    maxLength: 300,
+                    onChanged: (value) {
+                      if (value.trim().isNotEmpty) {
+                        controller.reasonError.value = '';
+                      }
+                    },
+                    decoration: InputDecoration(
+                      hintText: LocaleKeys.otherReasonHint.tr,
+                      prefixIcon: const Icon(
+                        Icons.edit_outlined,
+                        color: AppColor.red,
+                        size: 18,
+                      ),
+                      errorText:
+                          controller.reasonError.value.isEmpty
+                              ? null
+                              : controller.reasonError.value,
+                      counterStyle: const TextStyle(
+                        color: Colors.grey,
+                        fontSize: 11,
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(_fieldRadius),
+                        borderSide: BorderSide(color: _outlineRed),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(_fieldRadius),
+                        borderSide: BorderSide(color: _outlineRed, width: 1.6),
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(_fieldRadius),
+                        borderSide: BorderSide(color: _outlineRed),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+
+          UIConstants.spacing.height,
+
+          /// SUBMIT BUTTON
+          SizedBox(
+            width: double.infinity,
+            child: Obx(
+              () => ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColor.red,
+                  foregroundColor: Colors.white,
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(14),
+                  ),
+                ),
+                onPressed:
+                    controller.isloading.value
+                        ? null
+                        : () async {
+                          final created = await controller.submitRequest();
+                          if (created != null) {
+                            Get.back(result: created);
+                          }
+                        },
+                child:
+                    controller.isloading.value
+                        ? const SizedBox(
+                          height: 20,
+                          width: 20,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            color: Colors.white,
+                          ),
+                        )
+                        : Text(
+                          LocaleKeys.send.tr,
+                          style: AppTextStyle.mediumWhiteSemiBold,
+                        ),
+              ),
+            ),
+          ),
+          UIConstants.spacing.height,
+        ],
       ),
     );
   }
 
-  Widget _dateBox(String text) => Container(
-    width: double.infinity,
-    height: 20,
-    alignment: Alignment.center,
-    decoration: BoxDecoration(
-      borderRadius: BorderRadius.circular(3),
-      border: Border.all(color: Colors.black45),
-    ),
-    child: Text(text, style: const TextStyle(fontSize: 10)),
-  );
+  Widget _dateBox(String text, {required VoidCallback onTap}) =>
+      GestureDetector(
+        onTap: onTap,
+        child: Container(
+          height: 42,
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(_fieldRadius),
+            border: Border.all(color: _outlineRed),
+            color: Colors.white,
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Icon(
+                Icons.calendar_today_outlined,
+                color: AppColor.red,
+                size: 15,
+              ),
+              6.width,
+              Flexible(
+                child: Text(
+                  text.isEmpty ? LocaleKeys.selectDate.tr : text,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: text.isEmpty ? Colors.grey : AppColor.black,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
 
-  Widget _buildInput(String text) => Container(
+  Widget _buildInput(String text, {IconData? trailingIcon}) => Container(
     width: double.infinity,
-    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
+    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
     decoration: BoxDecoration(
-      border: Border.all(color: Colors.teal),
-      borderRadius: BorderRadius.circular(12),
+      border: Border.all(color: _outlineRed),
+      borderRadius: BorderRadius.circular(_fieldRadius),
       color: Colors.white,
     ),
-    child: Text(text),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Flexible(child: Text(text)),
+        if (trailingIcon != null) ...[
+          8.width,
+          Icon(trailingIcon, color: AppColor.red, size: 18),
+        ],
+      ],
+    ),
   );
 
-  Widget _buildDropdown(RequestLeaveController controller) => Obx(
+  Widget _buildClassField(RequestLeaveController controller) {
+    final classText = _selectedClassText(controller);
+    if (controller.classOptions.length <= 1) {
+      return _buildInput(classText, trailingIcon: Icons.keyboard_arrow_down);
+    }
+    return _buildClassDropdown(controller);
+  }
+
+  Widget _buildClassDropdown(RequestLeaveController controller) => Obx(
     () => GestureDetector(
       onTap: () async {
-        final value = await Get.bottomSheet(
-          Container(
-            color: Colors.white,
-            child: ListView(
-              shrinkWrap: true,
-              children:
-                  controller.classes
-                      .map(
-                        (e) => ListTile(
-                          title: Text(e),
-                          onTap: () => Get.back(result: e),
-                        ),
-                      )
-                      .toList(),
-            ),
+        final selected = await Get.bottomSheet<List<String>>(
+          _ClassMultiSelectSheet(
+            options: controller.classOptions.toList(growable: false),
+            selected:
+                controller.selectedClasses.isEmpty
+                    ? <String>[_selectedClassText(controller)]
+                    : controller.selectedClasses.toList(growable: false),
           ),
         );
-        if (value != null) controller.selectedClass.value = value;
+        if (selected != null) {
+          controller.setSelectedClasses(selected);
+        }
       },
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
         decoration: BoxDecoration(
-          border: Border.all(color: Colors.teal),
-          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: _outlineRed),
+          borderRadius: BorderRadius.circular(_fieldRadius),
           color: Colors.white,
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(controller.selectedClass.value),
-            const Icon(Icons.keyboard_arrow_down),
+            Flexible(child: Text(_selectedClassText(controller))),
+            const Icon(Icons.keyboard_arrow_down, color: AppColor.red),
           ],
         ),
       ),
     ),
   );
 
+  String _selectedClassText(RequestLeaveController controller) {
+    if (controller.selectedClasses.isNotEmpty) {
+      return controller.selectedClasses.join(', ');
+    }
+    final classText =
+        controller.selectedClass.value.trim().isEmpty
+            ? controller.studentGradeText.value.trim()
+            : controller.selectedClass.value.trim();
+    return classText.isEmpty ? '-' : classText;
+  }
+
   Widget _buildRadio(RequestLeaveController controller, String title) =>
       Obx(() {
-        final isSelected = controller.selectedShift.value == title;
+        final isSelected = controller.selectedSection.value == title;
         return GestureDetector(
-          onTap: () => controller.selectedShift.value = title,
+          onTap: () => controller.selectedSection.value = title,
           child: Column(
             children: [
               Icon(
                 isSelected
                     ? Icons.radio_button_checked
                     : Icons.radio_button_unchecked,
-                color: isSelected ? Colors.teal : Colors.grey,
+                color: isSelected ? AppColor.red : Colors.grey,
               ),
               const SizedBox(height: 4),
               Text(title, style: AppTextStyle.smallPrimaryBoldBlack),
@@ -365,24 +479,35 @@ class StudentCard1Widget extends StatelessWidget {
     RequestLeaveController controller, {
     required String label,
     required String value,
+    required IconData icon,
   }) => Obx(() {
     final isSelected = controller.leaveType.value == value;
     return GestureDetector(
       onTap: () => controller.leaveType.value = value,
-      child: Row(
-        children: [
-          Container(
-            width: 15,
-            height: 15,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              border: Border.all(color: Colors.black45),
-              color: isSelected ? Colors.teal : Colors.transparent,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        decoration: BoxDecoration(
+          color: isSelected ? AppColor.red : Colors.white,
+          borderRadius: BorderRadius.circular(999),
+          border: Border.all(color: isSelected ? AppColor.red : _outlineRed),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              icon,
+              size: 15,
+              color: isSelected ? Colors.white : AppColor.red,
             ),
-          ),
-          5.width,
-          Text(label, style: AppTextStyle.smallPrimaryBoldBlack),
-        ],
+            5.width,
+            Text(
+              label,
+              style: AppTextStyle.smallPrimaryBoldBlack.copyWith(
+                color: isSelected ? Colors.white : AppColor.black,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   });
@@ -503,3 +628,68 @@ class StudentCard1Widget extends StatelessWidget {
   }
 }
 
+class _ClassMultiSelectSheet extends StatefulWidget {
+  const _ClassMultiSelectSheet({required this.options, required this.selected});
+
+  final List<String> options;
+  final List<String> selected;
+
+  @override
+  State<_ClassMultiSelectSheet> createState() => _ClassMultiSelectSheetState();
+}
+
+class _ClassMultiSelectSheetState extends State<_ClassMultiSelectSheet> {
+  late final Set<String> _selected;
+
+  @override
+  void initState() {
+    super.initState();
+    final options = widget.options.toSet();
+    _selected = widget.selected.where(options.contains).toSet();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: Container(
+        color: Colors.white,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Flexible(
+              child: ListView(
+                shrinkWrap: true,
+                children:
+                    widget.options.map((option) {
+                      final isSelected = _selected.contains(option);
+                      return CheckboxListTile(
+                        controlAffinity: ListTileControlAffinity.leading,
+                        value: isSelected,
+                        title: Text(option),
+                        activeColor: AppColor.red,
+                        onChanged: (_) {
+                          setState(() {
+                            if (isSelected) {
+                              _selected.remove(option);
+                            } else {
+                              _selected.add(option);
+                            }
+                          });
+                        },
+                      );
+                    }).toList(),
+              ),
+            ),
+            Align(
+              alignment: Alignment.centerRight,
+              child: TextButton(
+                onPressed: () => Get.back(result: _selected.toList()),
+                child: Text(LocaleKeys.done.tr),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

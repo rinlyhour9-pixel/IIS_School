@@ -30,7 +30,12 @@ class RequestLeaveController extends GetxController {
 
   bool isDone = false;
   var selectedClass = 'Grade 5'.obs;
-  var selectedShift = ''.obs;
+  final RxList<String> classOptions = <String>[].obs;
+  final RxList<String> selectedClasses = <String>[].obs;
+  final RxList<String> sectionOptions = <String>[].obs;
+  final RxString selectedSection = ''.obs;
+  final Map<String, dynamic> _classIdsByName = <String, dynamic>{};
+  final Map<String, dynamic> _sectionIdsByName = <String, dynamic>{};
   var leaveType = ''.obs;
   var startDate = ''.obs;
   var endDate = ''.obs;
@@ -40,12 +45,7 @@ class RequestLeaveController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    unawaited(fetchSelectedStudentInfo());
-    if (isParentMode) {
-      unawaited(fetchRequests());
-    } else {
-      isLoadingRequests.value = false;
-    }
+    unawaited(_loadInitialData());
   }
 
   @override
@@ -55,28 +55,26 @@ class RequestLeaveController extends GetxController {
     super.onClose();
   }
 
-  final List<String> classes = <String>[
-    'Grade 1',
-    'Grade 2',
-    'Grade 3',
-    'Grade 4',
-    'Grade 5',
-    'Grade 6',
-  ];
+  Future<void> _loadInitialData() async {
+    await fetchSelectedStudentInfo();
+    if (!isParentMode) {
+      isLoadingRequests.value = false;
+      return;
+    }
+
+    await Future.wait(<Future<void>>[
+      fetchStudentClasses(),
+      fetchStudentSection(),
+      fetchRequests(),
+    ]);
+  }
 
   Future<void> pickStartDate() async {
     final context = Get.overlayContext!;
 
     final DateTime? picked = await showDatePicker(
       context: context,
-      builder: (context, child) {
-        return MediaQuery(
-          data: MediaQuery.of(
-            context,
-          ).copyWith(textScaler: TextScaler.linear(1.0)),
-          child: child!,
-        );
-      },
+      builder: (context, child) => _themedDatePicker(context, child),
       initialDate: DateTime.now(),
       firstDate: DateTime(2020),
       lastDate: DateTime(2100),
@@ -95,14 +93,7 @@ class RequestLeaveController extends GetxController {
 
     final DateTime? picked = await showDatePicker(
       context: context,
-      builder: (context, child) {
-        return MediaQuery(
-          data: MediaQuery.of(
-            context,
-          ).copyWith(textScaler: TextScaler.linear(1.0)),
-          child: child!,
-        );
-      },
+      builder: (context, child) => _themedDatePicker(context, child),
       initialDate: DateTime.now(),
       firstDate: DateTime(2020),
       lastDate: DateTime(2100),
@@ -114,6 +105,25 @@ class RequestLeaveController extends GetxController {
           '${picked.month.toString().padLeft(2, '0')}/'
           '${picked.year}';
     }
+  }
+
+  Widget _themedDatePicker(BuildContext context, Widget? child) {
+    final theme = Theme.of(context);
+    return MediaQuery(
+      data: MediaQuery.of(context).copyWith(textScaler: TextScaler.linear(1.0)),
+      child: Theme(
+        data: theme.copyWith(
+          colorScheme: theme.colorScheme.copyWith(
+            primary: AppColor.red,
+            onPrimary: Colors.white,
+          ),
+          textButtonTheme: TextButtonThemeData(
+            style: TextButton.styleFrom(foregroundColor: AppColor.red),
+          ),
+        ),
+        child: child!,
+      ),
+    );
   }
 
   int get totalDays {
@@ -232,9 +242,10 @@ class RequestLeaveController extends GetxController {
         _updateStudentLookupFromProfiles(
           _selectedStudentService.children.toList(growable: false),
         );
-        return;
       }
 
+      // Refine with the full profile so the displayed Student ID matches the
+      // admission code shown on the Student Profile screen, not the raw id.
       final selectedId = await _selectedStudentId();
       final res = await Get.find<ApiService>().get(
         EndPoints.parentStudentInfo,
@@ -275,6 +286,103 @@ class RequestLeaveController extends GetxController {
     } catch (_) {
       // Keep UI stable with existing placeholders.
     }
+  }
+
+  Future<void> fetchStudentSection() async {
+    if (!isParentMode) {
+      return;
+    }
+
+    final selectedStudent = await _selectedStudentId();
+    if (selectedStudent.isEmpty) {
+      return;
+    }
+
+    final studentId = await _resolveStudentIdForRequest(selectedStudent);
+    if (studentId.isEmpty) {
+      return;
+    }
+
+    try {
+      final res = await Get.find<ApiService>().get(
+        EndPoints.parentStudentSection(studentId),
+        isShowLoading: false,
+      );
+      final sectionItems = _extractStudentSectionOptions(res.data);
+      _sectionIdsByName
+        ..clear()
+        ..addEntries(
+          sectionItems
+              .where((item) => item.id != null)
+              .map((item) => MapEntry(item.name, item.id)),
+        );
+      final sections = sectionItems.map((item) => item.name).toList();
+      sectionOptions.assignAll(sections);
+      if (sections.isNotEmpty) {
+        selectedSection.value = sections.first;
+      }
+    } catch (e) {
+      ExceptionHandler.handleException(e, alert: false);
+    }
+  }
+
+  Future<void> fetchStudentClasses() async {
+    if (!isParentMode) {
+      return;
+    }
+
+    final selectedStudent = await _selectedStudentId();
+    if (selectedStudent.isEmpty) {
+      return;
+    }
+
+    final studentId = await _resolveStudentIdForRequest(selectedStudent);
+    if (studentId.isEmpty) {
+      return;
+    }
+
+    try {
+      final res = await Get.find<ApiService>().get(
+        EndPoints.parentStudentClass(studentId),
+        isShowLoading: false,
+      );
+      final classItems = _extractStudentClassOptions(res.data);
+      _classIdsByName
+        ..clear()
+        ..addEntries(
+          classItems
+              .where((item) => item.id != null)
+              .map((item) => MapEntry(item.name, item.id)),
+        );
+      final classes = classItems.map((item) => item.name).toList();
+      classOptions.assignAll(classes);
+      if (classes.isEmpty) {
+        return;
+      }
+
+      final current = studentGradeText.value.trim();
+      final selected =
+          classes.firstWhereOrNull((item) => item.trim() == current) ??
+          classes.first;
+      setSelectedClasses(<String>[selected]);
+    } catch (e) {
+      ExceptionHandler.handleException(e, alert: false);
+    }
+  }
+
+  void setSelectedClasses(List<String> classes) {
+    final seen = <String>{};
+    final cleaned =
+        classes.map((item) => item.trim()).where((item) {
+          if (item.isEmpty || item.toLowerCase() == 'null') {
+            return false;
+          }
+          return seen.add(item.toLowerCase());
+        }).toList();
+    selectedClasses.assignAll(cleaned);
+    final text = cleaned.join(', ');
+    selectedClass.value = text;
+    studentGradeText.value = text;
   }
 
   Future<RequestLeaveModel?> submitRequest() async {
@@ -335,12 +443,26 @@ class RequestLeaveController extends GetxController {
     }
     await SharedPreferencesManager.setValue(_lastLeaveStudentKey, studentId);
 
+    final selectedClassIds = _selectedClassIds();
+    if (selectedClassIds.isEmpty) {
+      Get.snackbar(
+        'Error',
+        'No selected class.',
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+      );
+      return null;
+    }
+    final selectedSectionId = _selectedSectionId();
+
     isloading.value = true;
     final basePayload = <String, dynamic>{
       'date_start': _formatToApiDate(startDate.value),
       'date_end': _formatToApiDate(endDate.value),
       'leave_type': _mappedLeaveType,
       'reason': reason,
+      'class_id': selectedClassIds,
+      if (selectedSectionId != null) 'section_id': <dynamic>[selectedSectionId],
     };
 
     try {
@@ -485,7 +607,11 @@ class RequestLeaveController extends GetxController {
 
   bool _isValidText(String value) {
     final text = value.trim().toLowerCase();
-    return text.isNotEmpty && text != 'n/a' && text != 'na' && text != 'null' && text != '-';
+    return text.isNotEmpty &&
+        text != 'n/a' &&
+        text != 'na' &&
+        text != 'null' &&
+        text != '-';
   }
 
   bool _isPlaceholderName(String value) {
@@ -496,6 +622,306 @@ class RequestLeaveController extends GetxController {
         text == 'na' ||
         text == 'null' ||
         text == '-';
+  }
+
+  List<dynamic> _selectedClassIds() {
+    return selectedClasses
+        .map((name) => _classIdsByName[name.trim()])
+        .where((id) => id != null && id.toString().trim().isNotEmpty)
+        .toList();
+  }
+
+  dynamic _selectedSectionId() {
+    final id = _sectionIdsByName[selectedSection.value.trim()];
+    if (id == null || id.toString().trim().isEmpty) {
+      return null;
+    }
+    return id;
+  }
+
+  List<_RequestLeaveOption> _extractStudentClassOptions(dynamic raw) {
+    final options =
+        _extractOptionRows(raw)
+            .map(
+              (row) => _readOption(
+                row,
+                nameKeys: const <String>[
+                  'class',
+                  'class_name',
+                  'className',
+                  'student_class',
+                  'studentClass',
+                  'grade',
+                  'name',
+                  'title',
+                  'label',
+                ],
+              ),
+            )
+            .where((item) => item.name.isNotEmpty)
+            .toList();
+    if (options.isNotEmpty) {
+      return _dedupeOptions(options);
+    }
+
+    return _extractStudentClasses(
+      raw,
+    ).map((name) => _RequestLeaveOption(name: name)).toList();
+  }
+
+  List<_RequestLeaveOption> _extractStudentSectionOptions(dynamic raw) {
+    final options =
+        _extractOptionRows(raw)
+            .map(
+              (row) => _readOption(
+                row,
+                nameKeys: const <String>[
+                  'section',
+                  'section_name',
+                  'sectionName',
+                  'student_section',
+                  'studentSection',
+                  'shift',
+                  'shift_name',
+                  'shiftName',
+                  'name',
+                  'title',
+                  'value',
+                  'label',
+                ],
+              ),
+            )
+            .where((item) => item.name.isNotEmpty)
+            .toList();
+    if (options.isNotEmpty) {
+      return _dedupeOptions(options);
+    }
+
+    return _extractStudentSections(
+      raw,
+    ).map((name) => _RequestLeaveOption(name: name)).toList();
+  }
+
+  List<_RequestLeaveOption> _dedupeOptions(List<_RequestLeaveOption> options) {
+    final seen = <String>{};
+    return options.where((item) => seen.add(item.name.toLowerCase())).toList();
+  }
+
+  _RequestLeaveOption _readOption(
+    Map<String, dynamic> row, {
+    required List<String> nameKeys,
+  }) {
+    final id = _readFirstValue(row, const <String>[
+      'id',
+      'class_id',
+      'classId',
+      'section_id',
+      'sectionId',
+    ]);
+    final name = _readFirstValue(row, nameKeys).toString().trim();
+    final hasId = id != null && id.toString().trim().isNotEmpty;
+    return _RequestLeaveOption(
+      id: hasId ? id : null,
+      name: name.toLowerCase() == 'null' ? '' : name,
+    );
+  }
+
+  dynamic _readFirstValue(Map<String, dynamic> row, List<String> keys) {
+    for (final key in keys) {
+      final value = row[key];
+      if (value == null || value.toString().trim().isEmpty) {
+        continue;
+      }
+      return value;
+    }
+    return null;
+  }
+
+  List<Map<String, dynamic>> _extractOptionRows(dynamic raw, [int depth = 0]) {
+    if (raw == null || depth > 4) {
+      return const <Map<String, dynamic>>[];
+    }
+    if (raw is List) {
+      return raw.expand((item) => _extractOptionRows(item, depth + 1)).toList();
+    }
+    if (raw is! Map) {
+      return const <Map<String, dynamic>>[];
+    }
+
+    final map = Map<String, dynamic>.from(raw);
+    if (map.containsKey('data')) {
+      final rows = _extractOptionRows(map['data'], depth + 1);
+      if (rows.isNotEmpty) {
+        return rows;
+      }
+    }
+
+    for (final key in const <String>[
+      'classes',
+      'sections',
+      'student_classes',
+      'student_sections',
+      'studentClasses',
+      'studentSections',
+      'items',
+      'rows',
+      'list',
+    ]) {
+      final rows = _extractOptionRows(map[key], depth + 1);
+      if (rows.isNotEmpty) {
+        return rows;
+      }
+    }
+
+    return <Map<String, dynamic>>[map];
+  }
+
+  List<String> _extractStudentClasses(dynamic raw) {
+    final classes = _readStudentClassValues(raw);
+    final seen = <String>{};
+    return classes.map((item) => item.trim()).where((item) {
+      if (item.isEmpty || item.toLowerCase() == 'null') {
+        return false;
+      }
+      return seen.add(item.toLowerCase());
+    }).toList();
+  }
+
+  List<String> _readStudentClassValues(dynamic raw, [int depth = 0]) {
+    if (raw == null || depth > 4) {
+      return const <String>[];
+    }
+    if (raw is String || raw is num || raw is bool) {
+      final value = raw.toString().trim();
+      return value.toLowerCase() == 'null' ? const <String>[] : <String>[value];
+    }
+    if (raw is List) {
+      final values = <String>[];
+      for (final item in raw) {
+        values.addAll(_readStudentClassValues(item, depth + 1));
+      }
+      return values;
+    }
+    if (raw is! Map) {
+      return const <String>[];
+    }
+
+    final map = Map<String, dynamic>.from(raw);
+    if (map.containsKey('data')) {
+      final values = _readStudentClassValues(map['data'], depth + 1);
+      if (values.isNotEmpty) {
+        return values;
+      }
+    }
+
+    for (final key in const <String>[
+      'classes',
+      'student_classes',
+      'studentClasses',
+      'items',
+      'rows',
+      'list',
+    ]) {
+      final values = _readStudentClassValues(map[key], depth + 1);
+      if (values.isNotEmpty) {
+        return values;
+      }
+    }
+
+    for (final key in const <String>[
+      'class',
+      'class_name',
+      'className',
+      'student_class',
+      'studentClass',
+      'grade',
+      'name',
+      'title',
+      'label',
+    ]) {
+      final values = _readStudentClassValues(map[key], depth + 1);
+      if (values.isNotEmpty) {
+        return values;
+      }
+    }
+
+    return const <String>[];
+  }
+
+  List<String> _extractStudentSections(dynamic raw) {
+    final sections = _readStudentSectionValues(raw);
+    final seen = <String>{};
+    return sections.map((section) => section.trim()).where((section) {
+      final value = section.trim();
+      if (value.isEmpty || value.toLowerCase() == 'null') {
+        return false;
+      }
+      return seen.add(value.toLowerCase());
+    }).toList();
+  }
+
+  List<String> _readStudentSectionValues(dynamic raw, [int depth = 0]) {
+    if (raw == null || depth > 4) {
+      return const <String>[];
+    }
+    if (raw is String || raw is num || raw is bool) {
+      final value = raw.toString().trim();
+      return value.toLowerCase() == 'null' ? const <String>[] : <String>[value];
+    }
+    if (raw is List) {
+      final values = <String>[];
+      for (final item in raw) {
+        values.addAll(_readStudentSectionValues(item, depth + 1));
+      }
+      return values;
+    }
+    if (raw is! Map) {
+      return const <String>[];
+    }
+
+    final map = Map<String, dynamic>.from(raw);
+    if (map.containsKey('data')) {
+      final values = _readStudentSectionValues(map['data'], depth + 1);
+      if (values.isNotEmpty) {
+        return values;
+      }
+    }
+
+    for (final key in const <String>[
+      'sections',
+      'student_sections',
+      'studentSections',
+      'items',
+      'rows',
+      'list',
+    ]) {
+      final values = _readStudentSectionValues(map[key], depth + 1);
+      if (values.isNotEmpty) {
+        return values;
+      }
+    }
+
+    for (final key in const <String>[
+      'section',
+      'section_name',
+      'sectionName',
+      'student_section',
+      'studentSection',
+      'shift',
+      'shift_name',
+      'shiftName',
+      'name',
+      'title',
+      'value',
+      'label',
+    ]) {
+      final values = _readStudentSectionValues(map[key], depth + 1);
+      if (values.isNotEmpty) {
+        return values;
+      }
+    }
+
+    return const <String>[];
   }
 
   Future<String> _selectedStudentId() async {
@@ -552,8 +978,8 @@ class RequestLeaveController extends GetxController {
     if (dateStr.isEmpty) return '';
     final date = _parseDate(dateStr);
     if (date == null) return '';
-    // Backend expects local datetime format without trailing timezone suffix.
-    return DateFormat("yyyy-MM-dd'T'HH:mm:ss").format(date);
+    // Backend expects ISO-8601 UTC format, e.g. "2019-08-24T14:15:22Z".
+    return "${DateFormat("yyyy-MM-dd'T'HH:mm:ss").format(date)}Z";
   }
 
   DateTime? _parseDate(String date) {
@@ -698,7 +1124,10 @@ class RequestLeaveController extends GetxController {
 
   String _cacheKey(String studentId) => '$_pendingCachePrefix$studentId';
 
-  List<String> _requestCacheScopes(String selectedRaw, String selectedResolved) {
+  List<String> _requestCacheScopes(
+    String selectedRaw,
+    String selectedResolved,
+  ) {
     final scopes = <String>{};
     if (selectedRaw.trim().isNotEmpty) {
       scopes.add(selectedRaw.trim());
@@ -812,4 +1241,11 @@ class RequestLeaveController extends GetxController {
     }
     return '';
   }
+}
+
+class _RequestLeaveOption {
+  const _RequestLeaveOption({required this.name, this.id});
+
+  final String name;
+  final dynamic id;
 }

@@ -45,21 +45,33 @@ class _TeacherRow extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        const Icon(
-          Icons.perm_contact_calendar_outlined,
-          color: AppColor.primary,
-          size: 26,
+        Container(
+          width: 32,
+          height: 32,
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+            color: AppColor.primary.withValues(alpha: 0.08),
+            borderRadius: BorderRadius.circular(9),
+          ),
+          child: const Icon(
+            Icons.perm_contact_calendar_outlined,
+            color: AppColor.primary,
+            size: 16,
+          ),
         ),
         const SizedBox(width: 10),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Teacher', style: AppTextStyle.normalGreyRegular),
+            const Text('Teacher', style: AppTextStyle.smallGreyRegular),
+            const SizedBox(height: 2),
             Obx(() {
               final name = Get.find<StartController>().userName.value.trim();
               return Text(
                 name.isEmpty ? 'N/A' : name,
-                style: AppTextStyle.mediumPrimaryBold,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: AppTextStyle.midPrimaryBold,
               );
             }),
           ],
@@ -198,37 +210,47 @@ class _SearchAndSelectAllRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Expanded(
-          child: TextField(
-            controller: controller.searchCtl,
-            decoration: InputDecoration(
-              hintText: 'Search Student...',
-              suffixIcon: const Icon(Icons.search),
-              filled: true,
-              fillColor: AppColor.white,
-              contentPadding: const EdgeInsets.symmetric(horizontal: 22),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
-                borderSide: BorderSide.none,
-              ),
+        TextField(
+          controller: controller.searchCtl,
+          decoration: InputDecoration(
+            hintText: 'Search Student...',
+            suffixIcon: const Icon(Icons.search),
+            filled: true,
+            fillColor: AppColor.white,
+            contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
+              borderSide: const BorderSide(color: AppColor.divider),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
+              borderSide: const BorderSide(color: AppColor.divider),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
+              borderSide: const BorderSide(color: AppColor.primary),
             ),
           ),
         ),
-        const SizedBox(width: 12),
-        OutlinedButton.icon(
-          onPressed: controller.selectAllPresent,
-          style: OutlinedButton.styleFrom(
-            foregroundColor: AppColor.primary,
-            side: const BorderSide(color: AppColor.primary),
-            padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 14),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
+        const SizedBox(height: 10),
+        Align(
+          alignment: Alignment.centerRight,
+          child: OutlinedButton.icon(
+            onPressed: controller.selectAllPresent,
+            style: OutlinedButton.styleFrom(
+              foregroundColor: AppColor.primary,
+              side: const BorderSide(color: AppColor.primary),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
             ),
+            icon: const Icon(Icons.check_circle_outline, size: 18),
+            label: const Text('Select All Present'),
           ),
-          icon: const Icon(Icons.check_circle_outline, size: 18),
-          label: const Text('Select All Present'),
         ),
       ],
     );

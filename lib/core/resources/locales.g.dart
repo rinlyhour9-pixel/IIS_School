@@ -555,6 +555,10 @@ class LocaleKeys {
   static const detailedReason = 'detailedReason';
   static const attachments = 'attachments';
   static const document = 'document';
+  static const section = 'section';
+  static const leaveDay = 'leaveDay';
+  static const leaveDaysUnit = 'leaveDaysUnit';
+  static const selectDate = 'selectDate';
 }
 
 class Locales {
@@ -1097,6 +1101,10 @@ class Locales {
     'detailedReason': 'Detailed Reason',
     'attachments': 'Attachments',
     'document': 'Document',
+    'section': 'Section',
+    'leaveDay': 'Day',
+    'leaveDaysUnit': 'Days',
+    'selectDate': 'Select date',
   };
   static const KM_KH = {
     'unableToConnectToTheInternet': 'មិនអាចភ្ជាប់ទៅអ៊ីនធឺណិតបាន',
@@ -1581,5 +1589,9 @@ class Locales {
     'detailedReason': 'លម្អិតពណ៌នាទេ',
     'attachments': 'ឯកសារភ្ជាប់',
     'document': 'ឯកសារ',
+    'section': 'ផ្នែក',
+    'leaveDay': 'ថ្ងៃស្នើសុំច្បាប់',
+    'leaveDaysUnit': 'ចំនួនថ្ងៃស្នើសុំច្បាប់',
+    'selectDate': 'ជ្រើសរើសកាលបរិច្ឆេទ',
   };
 }

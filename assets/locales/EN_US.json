@@ -15,8 +15,7 @@
   "unableToPickImagePleaseTryAgain": "Unable to pick image. Please try again.",
   "successfully": "ជោកជ័យ",
   "youHavesuccessfullyCreatedTheBooking": "អ្នកបានបង្កើតការកក់ដោយជោគជ័យ",
-
-  "forgotPassword" : "Forgot password",
+  "forgotPassword": "Forgot password",
   "password": "Password",
   "cannotBeEmpty": "Can't be empty",
   "invalidPhoneNumber": "Invalid phone number",
@@ -409,8 +408,10 @@
   "paymentDes": "Any friagile valnerable and illegal item are prohibited from shipment and are sender's responsibily",
   "completeDate": "Complete date",
   "featureTemporarilyUnavailable": "This feature is temporarily unavailable. Please try again later.",
-
-
+  "leaveDay": "Day",
+  "leaveDaysUnit": "Days",
+  "selectDate": "Select date",
+  "section": "Section",
   "login": "LOGIN",
   "next": "NEXT",
   "change": "CHANGE",

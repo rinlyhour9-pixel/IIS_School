@@ -138,7 +138,7 @@ class AppTextStyle {
   );
   static const midPrimaryBold = TextStyle(
     color: AppColor.primaryText,
-    fontSize: 16,
+    fontSize: 13,
     fontWeight: AppStyle._bold,
   );
   static const midPrimarySemiBold = TextStyle(
@@ -170,7 +170,7 @@ class AppTextStyle {
   // fontSize: 14
   static const normalPrimaryBold = TextStyle(
     color: AppColor.primaryText,
-    fontSize: 14,
+    fontSize: 12,
     fontWeight: AppStyle._bold,
   );
   static const normalWhiteBold = TextStyle(
@@ -190,7 +190,7 @@ class AppTextStyle {
   );
   static const normalPrimarySemiBold = TextStyle(
     color: AppColor.primaryText,
-    fontSize: 14,
+    fontSize: 12,
     fontWeight: AppStyle._semiBold,
   );
   static const normalSecondaryBold = TextStyle(
@@ -236,7 +236,7 @@ class AppTextStyle {
   );
   static const normalGreyRegular = TextStyle(
     color: AppColor.grey,
-    fontSize: 14,
+    fontSize: 13,
     fontWeight: AppStyle._regular,
   );
   static const normalLightGreyRegular = TextStyle(
