@@ -3,30 +3,23 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:schoolapp/core/core.dart';
-import 'package:schoolapp/models/attendance_summery/attendance_summery.dart'
-    as attendance_summary;
 import 'package:schoolapp/models/models.dart';
-import 'package:schoolapp/models/staff/model.dart';
 
 class AttendanceController extends GetxController {
   final TextEditingController searchCtl = TextEditingController();
   final ScrollController attendanceScrollCtl = ScrollController();
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final RxList<TrackingModel> trackings = <TrackingModel>[].obs;
-  final RxList<attendance_summary.Data> summaries =
-      <attendance_summary.Data>[].obs;
+
+  final RxList<AttendanceDetailRecord> records = <AttendanceDetailRecord>[].obs;
+  final RxList<AttendanceMonthSummary> monthSummaries =
+      <AttendanceMonthSummary>[].obs;
   final RxBool isLoadingSummary = true.obs;
   final RxString summaryError = ''.obs;
   final RxnString selectedStatusFilter = RxnString();
   final RxInt selectedMonth = DateTime.now().month.obs;
   final RxInt selectedYear = DateTime.now().year.obs;
-  final RxInt attendanceRecordLateCount = 0.obs;
-  final RxList<StaffAttendanceItem> attendanceRecordLateItems =
-      <StaffAttendanceItem>[].obs;
-  final RxBool isLoadingMoreSummary = false.obs;
-  final RxInt currentPage = 1.obs;
-  final RxInt lastPage = 1.obs;
-  final RxInt perPage = 15.obs;
+
   SelectedStudentService get _selectedStudentService =>
       Get.find<SelectedStudentService>();
   bool get isParentMode => UserRepository.shared.isParent;
@@ -36,7 +29,6 @@ class AttendanceController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    attendanceScrollCtl.addListener(_onAttendanceScroll);
     fetchAttendanceSummary();
   }
 
@@ -59,7 +51,6 @@ class AttendanceController extends GetxController {
       trackings.value = List.from(
         (data as List).map((e) => TrackingModel.fromJson(e)).toList(),
       );
-
       isDone = true;
       DialogManager.hideLoading();
     } catch (e) {
@@ -85,258 +76,83 @@ class AttendanceController extends GetxController {
     selectedStatusFilter.value = status;
   }
 
-  Future<void> fetchAttendanceSummary({bool reset = true}) async {
-    if (reset) {
-      currentPage.value = 1;
-      isLoadingSummary.value = true;
-    } else {
-      if (isLoadingMoreSummary.value || isLoadingSummary.value) {
-        return;
-      }
-      isLoadingMoreSummary.value = true;
-    }
+  Future<void> fetchAttendanceSummary() async {
+    isLoadingSummary.value = true;
     summaryError.value = '';
     try {
-      final studentId = isParentMode ? await _resolveStudentId() : null;
-      final month = MonthFilterItem.fromMonth(selectedMonth.value);
-      final startDate = month.startDate(selectedYear.value);
-      final endDate = month.endDate(selectedYear.value);
-      final queryParams = <String, dynamic>{
-        'start_date': _formatDate(startDate),
-        'end_date': _formatDate(endDate),
-        'page': currentPage.value,
-        'per_page': perPage.value,
-        if (studentId != null) 'student_id': studentId,
-      };
+      final studentId = await _resolveStudentId();
+      if (studentId == null) {
+        records.clear();
+        monthSummaries.clear();
+        summaryError.value = 'No student selected';
+        return;
+      }
 
       final res = await Get.find<ApiService>().get(
-        EndPoints.attendanceSummary,
-        queryParameters: queryParams,
+        EndPoints.parentAttendanceDetails(studentId.toString()),
         isShowLoading: false,
       );
 
       if (res.data is! Map) {
-        if (reset) {
-          summaries.value = const <attendance_summary.Data>[];
-        }
+        records.clear();
+        monthSummaries.clear();
         return;
       }
 
-      final model = attendance_summary.AttendanceSummery.fromJson(
+      final model = AttendanceDetailResponse.fromJson(
         Map<String, dynamic>.from(res.data as Map),
       );
-      final summary = model.summary ?? const <attendance_summary.Data>[];
-      final data = model.data ?? const <attendance_summary.Data>[];
-      final listData =
-          model.attendancesList?.data ?? const <attendance_summary.Data>[];
-      final page = model.attendancesList;
-      if (page != null && summary.isEmpty) {
-        currentPage.value = page.currentPage ?? currentPage.value;
-        lastPage.value = page.lastPage ?? currentPage.value;
-        perPage.value = page.perPage ?? perPage.value;
-      } else {
-        lastPage.value = currentPage.value;
-      }
-
-      if (summary.isNotEmpty) {
-        _setSummaries(_filterItemsBySelectedMonth(summary), append: !reset);
-      } else if (listData.isNotEmpty) {
-        _setSummaries(_filterItemsBySelectedMonth(listData), append: !reset);
-      } else {
-        _setSummaries(_filterItemsBySelectedMonth(data), append: !reset);
-      }
-      if (reset && isParentMode) {
-        unawaited(_fetchLateCountFromAttendanceRecord(studentId));
-      }
+      monthSummaries.assignAll(model.summary);
+      records.assignAll(_filterBySelectedMonth(model.data));
     } catch (e) {
-      if (reset) {
-        summaries.value = const <attendance_summary.Data>[];
-        attendanceRecordLateCount.value = 0;
-        attendanceRecordLateItems.clear();
-      }
+      records.clear();
+      monthSummaries.clear();
       summaryError.value = 'Failed to load attendance summary';
       ExceptionHandler.handleException(e, alert: false);
     } finally {
-      if (reset) {
-        isLoadingSummary.value = false;
-      } else {
-        isLoadingMoreSummary.value = false;
-      }
+      isLoadingSummary.value = false;
     }
   }
 
-  Future<void> loadMoreAttendanceSummary() async {
-    if (currentPage.value >= lastPage.value) {
-      return;
-    }
-    currentPage.value += 1;
-    await fetchAttendanceSummary(reset: false);
-  }
-
-  int get totalPresent => _sumBy((item) => item.totalPresence);
-  int get totalPermission => _sumBy((item) => item.totalPermission);
-  int get totalAbsent => _sumBy((item) => item.totalAbsent);
-  int get totalLate => attendanceRecordLateCount.value;
-
-  int _sumBy(String? Function(attendance_summary.Data) pick) {
-    var total = 0;
-    for (final item in summaries) {
-      total += int.tryParse((pick(item) ?? '0').trim()) ?? 0;
-    }
-    return total;
-  }
-
-  void _onAttendanceScroll() {
-    if (!attendanceScrollCtl.hasClients) {
-      return;
-    }
-    final position = attendanceScrollCtl.position;
-    if (position.pixels >= position.maxScrollExtent - 120) {
-      loadMoreAttendanceSummary();
-    }
-  }
-
-  void _setSummaries(
-    List<attendance_summary.Data> next, {
-    required bool append,
-  }) {
-    if (!append) {
-      summaries.assignAll(next);
-      return;
-    }
-    summaries.addAll(next);
-  }
-
-  List<attendance_summary.Data> _filterItemsBySelectedMonth(
-    List<attendance_summary.Data> items,
+  List<AttendanceDetailRecord> _filterBySelectedMonth(
+    List<AttendanceDetailRecord> items,
   ) {
-    return items.where((item) {
-      final date = _readItemDate(item);
-      if (date == null) {
-        return _hasAnyAttendanceTotal(item);
-      }
-      return date.month == selectedMonth.value &&
-          date.year == selectedYear.value;
-    }).toList(growable: false);
+    return items
+        .where((item) {
+          final date = DateTime.tryParse(item.date);
+          if (date == null) return true;
+          return date.month == selectedMonth.value &&
+              date.year == selectedYear.value;
+        })
+        .toList(growable: false);
   }
 
-  bool _hasAnyAttendanceTotal(attendance_summary.Data item) {
-    return _toCount(item.totalPresence) > 0 ||
-        _toCount(item.totalLate) > 0 ||
-        _toCount(item.totalAbsent) > 0 ||
-        _toCount(item.totalPermission) > 0;
-  }
-
-  int _toCount(String? value) {
-    return int.tryParse((value ?? '0').trim()) ?? 0;
-  }
-
-  Future<void> _fetchLateCountFromAttendanceRecord(int? studentId) async {
-    attendanceRecordLateCount.value = 0;
-    attendanceRecordLateItems.clear();
-    final month = MonthFilterItem.fromMonth(selectedMonth.value);
-    final params = <String, dynamic>{};
-    if (studentId != null) {
-      params['student_id'] = studentId;
+  AttendanceMonthSummary? get _currentMonthSummary {
+    final key =
+        '${selectedYear.value.toString().padLeft(4, '0')}-${selectedMonth.value.toString().padLeft(2, '0')}';
+    for (final s in monthSummaries) {
+      if (s.month == key) return s;
     }
-    params['start_date'] = _formatDate(month.startDate(selectedYear.value));
-    params['end_date'] = _formatDate(month.endDate(selectedYear.value));
-    params['per_page'] = 1000;
-
-    try {
-      final res = await Get.find<ApiService>().get(
-        EndPoints.parentChildrenAttendanceLog,
-        queryParameters: params.isEmpty ? null : params,
-        isShowLoading: false,
-      );
-      if (res.data is! Map) {
-        return;
-      }
-
-      final model = StaffModel.fromJson(Map<String, dynamic>.from(res.data));
-      final items = model.data?.items ?? const <StaffAttendanceItem>[];
-      final lateItems =
-          items.where((item) {
-            final status = item.status.toLowerCase().trim();
-            final date = _readRecordDate(item);
-            return status.contains('late') &&
-                date?.month == selectedMonth.value &&
-                date?.year == selectedYear.value;
-          }).toList(growable: false);
-      attendanceRecordLateItems.assignAll(lateItems);
-      attendanceRecordLateCount.value = lateItems.length;
-    } catch (_) {
-      attendanceRecordLateCount.value = 0;
-      attendanceRecordLateItems.clear();
-    }
-  }
-
-  DateTime? _readRecordDate(StaffAttendanceItem item) {
-    final raw =
-        (item.attendanceDate.isEmpty ? item.createdAt : item.attendanceDate)
-            .trim();
-    if (raw.isEmpty) {
-      return null;
-    }
-
-    final parsed = DateTime.tryParse(raw);
-    if (parsed != null) {
-      return parsed;
-    }
-
-    final dateOnly = raw.split(' ').first;
-    final slashParts = dateOnly.split('/');
-    if (slashParts.length == 3) {
-      final first = int.tryParse(slashParts[0]);
-      final second = int.tryParse(slashParts[1]);
-      final year = int.tryParse(slashParts[2]);
-      if (first != null && second != null && year != null) {
-        return DateTime(year, second, first);
-      }
-    }
-
     return null;
   }
 
-  DateTime? _readItemDate(attendance_summary.Data item) {
-    final raw = (item.attendanceDate ?? item.createdAt ?? '').trim();
-    if (raw.isEmpty) {
-      return null;
-    }
+  int get totalPresent =>
+      _currentMonthSummary?.totalPresence ?? _countByStatus('present');
+  int get totalLate =>
+      _currentMonthSummary?.totalLate ?? _countByStatus('late');
+  int get totalAbsent =>
+      _currentMonthSummary?.totalAbsent ?? _countByStatus('absent');
+  int get totalPermission =>
+      _currentMonthSummary?.totalPermission ?? _countByStatus('permission');
 
-    final parsed = DateTime.tryParse(raw);
-    if (parsed != null) {
-      return parsed;
-    }
-
-    final dateOnly = raw.split(' ').first;
-    final slashParts = dateOnly.split('/');
-    if (slashParts.length == 3) {
-      final first = int.tryParse(slashParts[0]);
-      final second = int.tryParse(slashParts[1]);
-      final year = int.tryParse(slashParts[2]);
-      if (first != null && second != null && year != null) {
-        return DateTime(year, second, first);
-      }
-    }
-
-    return null;
-  }
-
-  String _formatDate(DateTime date) {
-    final year = date.year.toString().padLeft(4, '0');
-    final month = date.month.toString().padLeft(2, '0');
-    final day = date.day.toString().padLeft(2, '0');
-    return '$year-$month-$day';
-  }
+  int _countByStatus(String status) =>
+      records.where((r) => r.status.toLowerCase() == status).length;
 
   Future<int?> _resolveStudentId() async {
     final selectedId = _selectedStudentService.current?.id.trim() ?? '';
     if (selectedId.isNotEmpty) {
       final parsed = int.tryParse(selectedId);
-      if (parsed != null) {
-        return parsed;
-      }
+      if (parsed != null) return parsed;
     }
 
     final keys = <String>[
@@ -344,16 +160,12 @@ class AttendanceController extends GetxController {
       'student_info_id',
       'last_leave_student_id',
     ];
-
     for (final key in keys) {
-      final value = (await SharedPreferencesManager.get(key) ?? '')
-          .toString()
-          .trim();
+      final value =
+          (await SharedPreferencesManager.get(key) ?? '').toString().trim();
       if (value.isEmpty) continue;
       final parsed = int.tryParse(value);
-      if (parsed != null) {
-        return parsed;
-      }
+      if (parsed != null) return parsed;
     }
     return null;
   }

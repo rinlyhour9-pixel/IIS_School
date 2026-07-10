@@ -24,22 +24,28 @@ class ContactUsController extends GetxController {
       _didFetch = true;
       isLoading.value = true;
 
+      final branchId =
+          (await SharedPreferencesManager.get('branch_id') ?? '')
+              .toString()
+              .trim();
+      if (branchId.isEmpty) {
+        _didFetch = false;
+        return;
+      }
+
       final res = await Get.find<ApiService>()
-          .get(EndPoints.generalSetting)
+          .get(
+            EndPoints.currentBranches(branchId),
+            customBaseUrl: EndPoints.iisBaseUrl,
+          )
           .timeout(const Duration(seconds: 4));
       final data = getPropertyFromJson(res.data, 'data');
-      final setting =
-          (data is Map<String, dynamic>)
-              ? data['setting']
-              : (data is Map)
-              ? Map<String, dynamic>.from(data)['setting']
-              : null;
 
-      if (setting is Map<String, dynamic>) {
-        contactUs.value = ContactUsModel.fromJson(setting);
-        await SharedPreferencesManager.setValue(_cacheKey, jsonEncode(setting));
-      } else if (setting is Map) {
-        final normalized = Map<String, dynamic>.from(setting);
+      if (data is Map<String, dynamic>) {
+        contactUs.value = ContactUsModel.fromJson(data);
+        await SharedPreferencesManager.setValue(_cacheKey, jsonEncode(data));
+      } else if (data is Map) {
+        final normalized = Map<String, dynamic>.from(data);
         contactUs.value = ContactUsModel.fromJson(normalized);
         await SharedPreferencesManager.setValue(
           _cacheKey,

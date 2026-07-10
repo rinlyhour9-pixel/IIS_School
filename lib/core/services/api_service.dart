@@ -102,9 +102,10 @@ class ApiService extends GetxService {
       responseType: request.responseType,
       sendTimeout: request.sendTimeout,
       receiveTimeout: request.receiveTimeout,
-      extra: Map<String, dynamic>.from(request.extra)
-        ..['retry_attempt'] = attempt + 1
-        ..remove('started_at'),
+      extra:
+          Map<String, dynamic>.from(request.extra)
+            ..['retry_attempt'] = attempt + 1
+            ..remove('started_at'),
       validateStatus: request.validateStatus,
       followRedirects: request.followRedirects,
       receiveDataWhenStatusError: request.receiveDataWhenStatusError,
@@ -191,9 +192,7 @@ class ApiService extends GetxService {
       responseType: _client.options.responseType,
       sendTimeout: _client.options.sendTimeout,
       receiveTimeout: _client.options.receiveTimeout,
-      extra: {
-        if (baseUrl != null) 'custom_base_url': baseUrl,
-      },
+      extra: {if (baseUrl != null) 'custom_base_url': baseUrl},
     );
   }
 
@@ -204,11 +203,7 @@ class ApiService extends GetxService {
     return data;
   }
 
-  void _logTiming(
-    d.RequestOptions options, {
-    int? statusCode,
-    String? error,
-  }) {
+  void _logTiming(d.RequestOptions options, {int? statusCode, String? error}) {
     final startedAt = options.extra['started_at'];
     if (startedAt is! DateTime) {
       return;
@@ -227,6 +222,7 @@ class ApiService extends GetxService {
     Map<String, dynamic>? queryParameters,
     Map<String, dynamic>? headers,
     bool? isShowLoading,
+    String? customBaseUrl,
   }) async {
     if (path == null) {
       throw 'Path is null';
@@ -236,7 +232,7 @@ class ApiService extends GetxService {
     return client.get(
       path,
       queryParameters: queryParameters,
-      options: _buildOptions(headers: headers),
+      options: _buildOptions(headers: headers, baseUrl: customBaseUrl),
     );
   }
 
@@ -287,10 +283,7 @@ class ApiService extends GetxService {
 
     return client.put(
       path,
-      data:
-          isMultipart
-              ? _prepareRequestData(formData)
-              : jsonEncode(formData),
+      data: isMultipart ? _prepareRequestData(formData) : jsonEncode(formData),
       options: _buildOptions(
         headers: headers,
         contentType: isMultipart ? null : 'application/json',
@@ -314,10 +307,7 @@ class ApiService extends GetxService {
 
     return client.patch(
       path,
-      data:
-          isMultipart
-              ? _prepareRequestData(formData)
-              : jsonEncode(formData),
+      data: isMultipart ? _prepareRequestData(formData) : jsonEncode(formData),
       options: _buildOptions(
         headers: headers,
         contentType: isMultipart ? null : 'application/json',

@@ -159,8 +159,8 @@ class LeaveCardWidget extends StatelessWidget {
               const Spacer(),
               OutlinedButton(
                 style: OutlinedButton.styleFrom(
-                  foregroundColor: AppColor.red,
-                  side: const BorderSide(color: AppColor.red),
+                  foregroundColor: AppColor.primary,
+                  side: const BorderSide(color: AppColor.primary),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20),
                   ),
@@ -177,7 +177,7 @@ class LeaveCardWidget extends StatelessWidget {
                     const Icon(
                       Icons.chevron_right,
                       size: 18,
-                      color: AppColor.red,
+                      color: AppColor.primary,
                     ),
                   ],
                 ),
@@ -200,17 +200,17 @@ class _StudentIdChip extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
-        color: AppColor.red.withValues(alpha: 0.08),
+        color: AppColor.primary.withValues(alpha: 0.08),
         borderRadius: BorderRadius.circular(8),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const Icon(Icons.person_outline, size: 13, color: AppColor.red),
+          const Icon(Icons.person_outline, size: 13, color: AppColor.primary),
           const SizedBox(width: 4),
           Text(
             '${LocaleKeys.studentId.tr}: $studentId',
-            style: AppTextStyle.smallRedSemibold,
+            style: AppTextStyle.smallPrimarySemibold,
           ),
         ],
       ),
@@ -230,10 +230,10 @@ class _IconBox extends StatelessWidget {
       height: 36,
       alignment: Alignment.center,
       decoration: BoxDecoration(
-        color: AppColor.red.withValues(alpha: 0.08),
+        color: AppColor.primary.withValues(alpha: 0.08),
         borderRadius: BorderRadius.circular(10),
       ),
-      child: Icon(icon, size: 18, color: AppColor.red),
+      child: Icon(icon, size: 18, color: AppColor.primary),
     );
   }
 }

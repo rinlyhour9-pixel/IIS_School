@@ -101,7 +101,7 @@ class _AppBarDateFilter extends GetView<LeavesController> {
                     width: 8,
                     height: 8,
                     decoration: const BoxDecoration(
-                      color: AppColor.red,
+                      color: AppColor.primary,
                       shape: BoxShape.circle,
                     ),
                   ),
@@ -154,7 +154,10 @@ class _StatusTabs extends GetView<LeavesController> {
                         duration: const Duration(milliseconds: 300),
                         padding: const EdgeInsets.symmetric(vertical: 10),
                         decoration: BoxDecoration(
-                          color: isSelected ? AppColor.red : Colors.transparent,
+                          color:
+                              isSelected
+                                  ? AppColor.primary
+                                  : Colors.transparent,
                           borderRadius: BorderRadius.circular(16),
                         ),
                         alignment: Alignment.center,

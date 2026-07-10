@@ -12,7 +12,7 @@ class StudentCard1Widget extends StatelessWidget {
   static const _cardRadius = 20.0;
   static const _sectionCardColor = Color(0xFFF3F3F4);
   static const _leaveDaysColor = Color(0xFFFCEAE8);
-  static final Color _outlineRed = AppColor.red.withValues(alpha: 0.4);
+  static final Color _outlineRed = AppColor.primary.withValues(alpha: 0.4);
 
   @override
   Widget build(BuildContext context) {
@@ -200,7 +200,7 @@ class StudentCard1Widget extends StatelessWidget {
                         height: 32,
                         alignment: Alignment.center,
                         decoration: BoxDecoration(
-                          color: _leaveDaysColor,
+                          color: const Color(0xFFE8FCEA),
                           borderRadius: BorderRadius.circular(8),
                           border: Border.all(color: _outlineRed),
                         ),
@@ -211,7 +211,7 @@ class StudentCard1Widget extends StatelessWidget {
                           style: const TextStyle(
                             fontSize: 13,
                             fontWeight: FontWeight.w600,
-                            color: AppColor.red,
+                            color: AppColor.primary,
                           ),
                         ),
                       ),
@@ -270,7 +270,7 @@ class StudentCard1Widget extends StatelessWidget {
                       hintText: LocaleKeys.otherReasonHint.tr,
                       prefixIcon: const Icon(
                         Icons.edit_outlined,
-                        color: AppColor.red,
+                        color: AppColor.primary,
                         size: 18,
                       ),
                       errorText:
@@ -308,7 +308,7 @@ class StudentCard1Widget extends StatelessWidget {
             child: Obx(
               () => ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColor.red,
+                  backgroundColor: AppColor.primary,
                   foregroundColor: Colors.white,
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   shape: RoundedRectangleBorder(
@@ -363,7 +363,7 @@ class StudentCard1Widget extends StatelessWidget {
             children: [
               const Icon(
                 Icons.calendar_today_outlined,
-                color: AppColor.red,
+                color: AppColor.primary,
                 size: 15,
               ),
               6.width,
@@ -396,7 +396,7 @@ class StudentCard1Widget extends StatelessWidget {
         Flexible(child: Text(text)),
         if (trailingIcon != null) ...[
           8.width,
-          Icon(trailingIcon, color: AppColor.red, size: 18),
+          Icon(trailingIcon, color: AppColor.primary, size: 18),
         ],
       ],
     ),
@@ -437,7 +437,7 @@ class StudentCard1Widget extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Flexible(child: Text(_selectedClassText(controller))),
-            const Icon(Icons.keyboard_arrow_down, color: AppColor.red),
+            const Icon(Icons.keyboard_arrow_down, color: AppColor.primary),
           ],
         ),
       ),
@@ -466,7 +466,7 @@ class StudentCard1Widget extends StatelessWidget {
                 isSelected
                     ? Icons.radio_button_checked
                     : Icons.radio_button_unchecked,
-                color: isSelected ? AppColor.red : Colors.grey,
+                color: isSelected ? AppColor.primary : Colors.grey,
               ),
               const SizedBox(height: 4),
               Text(title, style: AppTextStyle.smallPrimaryBoldBlack),
@@ -487,9 +487,11 @@ class StudentCard1Widget extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         decoration: BoxDecoration(
-          color: isSelected ? AppColor.red : Colors.white,
+          color: isSelected ? AppColor.primary : Colors.white,
           borderRadius: BorderRadius.circular(999),
-          border: Border.all(color: isSelected ? AppColor.red : _outlineRed),
+          border: Border.all(
+            color: isSelected ? AppColor.primary : _outlineRed,
+          ),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
@@ -497,7 +499,7 @@ class StudentCard1Widget extends StatelessWidget {
             Icon(
               icon,
               size: 15,
-              color: isSelected ? Colors.white : AppColor.red,
+              color: isSelected ? Colors.white : AppColor.primary,
             ),
             5.width,
             Text(
@@ -666,7 +668,7 @@ class _ClassMultiSelectSheetState extends State<_ClassMultiSelectSheet> {
                         controlAffinity: ListTileControlAffinity.leading,
                         value: isSelected,
                         title: Text(option),
-                        activeColor: AppColor.red,
+                        activeColor: AppColor.primary,
                         onChanged: (_) {
                           setState(() {
                             if (isSelected) {

@@ -46,7 +46,7 @@ void showLeaveDateFilterSheet(
               width: double.infinity,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColor.red,
+                  backgroundColor: AppColor.primary,
                   foregroundColor: AppColor.white,
                   padding: const EdgeInsets.symmetric(vertical: 14),
                   shape: RoundedRectangleBorder(

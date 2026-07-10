@@ -113,6 +113,11 @@ class LoginController extends GetxController {
           (data['staff_code'] ?? data['code'] ?? data['id'] ?? '')
               .toString()
               .trim();
+      final String branchId =
+          ((data['branches'] is Map) ? (data['branches']['id'] ?? '') : '')
+              .toString()
+              .trim();
+
       final String scannerOwnerId = _resolveScannerOwnerId(
         data: data,
         fallbackUsername: loginIdentity,
@@ -161,6 +166,8 @@ class LoginController extends GetxController {
         'scanner_owner_id',
         scannerOwnerId,
       );
+      await SharedPreferencesManager.setValue('staff_code', staffCode);
+      await SharedPreferencesManager.setValue('branch_id', branchId);
 
       Get.updateLocale(AppConfig.shared.languageLocale);
 
@@ -587,9 +594,10 @@ class LoginController extends GetxController {
   //   return null;
   // }
 
-String? validateIdentity(String? text) {
+  String? validateIdentity(String? text) {
     return FormValidator.empty((text ?? '').trim());
   }
+
   String _normalizePhone(String text) {
     return text.replaceAll(RegExp(r'[\s\-\(\)]'), '');
   }

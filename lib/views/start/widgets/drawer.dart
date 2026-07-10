@@ -374,7 +374,12 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Image.asset('assets/images/logo.png', height: 35),
+                      Image.asset(
+                        'assets/images/logo.png',
+                        height: 50,
+                        width: 130,
+                        fit: BoxFit.contain,
+                      ),
                       const SizedBox(width: 8),
                     ],
                   ),
@@ -528,7 +533,12 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Image.asset('assets/images/logo.png', height: 36),
+                      Image.asset(
+                        'assets/images/logo.png',
+                        height: 50,
+                        width: 130,
+                        fit: BoxFit.contain,
+                      ),
                       const SizedBox(width: 8),
                     ],
                   ),

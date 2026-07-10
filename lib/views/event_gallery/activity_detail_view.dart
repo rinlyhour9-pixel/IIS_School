@@ -50,7 +50,7 @@ class _ActivityDetailViewState extends State<ActivityDetailView> {
                     backgroundColor: AppColor.primary,
                     foregroundColor: Colors.white,
                     icon: const Icon(Icons.edit_rounded),
-                    label: const Text('Edit Activity'),
+                    label: Text(LocaleKeys.editActivity.tr),
                   ),
                   const SizedBox(height: 12),
                   Obx(
@@ -75,8 +75,8 @@ class _ActivityDetailViewState extends State<ActivityDetailView> {
                               : const Icon(Icons.delete_rounded),
                       label: Text(
                         controller.isSubmittingActivity.value
-                            ? 'Deleting...'
-                            : 'Delete Activity',
+                            ? LocaleKeys.deleting.tr
+                            : LocaleKeys.deleteActivity.tr,
                       ),
                     ),
                   ),
@@ -118,7 +118,7 @@ class _ActivityDetailViewState extends State<ActivityDetailView> {
                             child: Text(
                               _summary?.className.trim().isNotEmpty == true
                                   ? _summary!.className
-                                  : 'Class Activity',
+                                  : LocaleKeys.classActivity.tr,
                               style: const TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.w700,
@@ -162,18 +162,18 @@ class _ActivityDetailViewState extends State<ActivityDetailView> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
-                    'Activity Details',
-                    style: TextStyle(
+                  Text(
+                    LocaleKeys.activityDetails.tr,
+                    style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w800,
                       color: Color(0xFF153D6F),
                     ),
                   ),
                   const SizedBox(height: 4),
-                  const Text(
-                    'Everything students should know before opening or responding to this class activity.',
-                    style: TextStyle(
+                  Text(
+                    LocaleKeys.activityDetailsSubtitle.tr,
+                    style: const TextStyle(
                       fontSize: 12,
                       height: 1.4,
                       color: Color(0xFF6B7280),
@@ -190,7 +190,7 @@ class _ActivityDetailViewState extends State<ActivityDetailView> {
                     ),
                     child: Text(
                       _stripHtml(_detail.description).isEmpty
-                          ? 'No description was provided for this activity.'
+                          ? LocaleKeys.noDescriptionProvided.tr
                           : _stripHtml(_detail.description),
                       style: const TextStyle(
                         fontSize: 14,
@@ -272,20 +272,18 @@ class _ActivityDetailViewState extends State<ActivityDetailView> {
           context: context,
           builder:
               (dialogContext) => AlertDialog(
-                title: const Text('Delete Activity'),
-                content: const Text(
-                  'Are you sure you want to delete this activity?',
-                ),
+                title: Text(LocaleKeys.deleteActivity.tr),
+                content: Text(LocaleKeys.confirmDeleteMessage.tr),
                 actions: [
                   TextButton(
                     onPressed: () => Navigator.of(dialogContext).pop(false),
-                    child: const Text('Cancel'),
+                    child: Text(LocaleKeys.cancel.tr),
                   ),
                   TextButton(
                     onPressed: () => Navigator.of(dialogContext).pop(true),
-                    child: const Text(
-                      'Delete',
-                      style: TextStyle(color: Color(0xFFD14343)),
+                    child: Text(
+                      LocaleKeys.delete.tr,
+                      style: const TextStyle(color: Color(0xFFD14343)),
                     ),
                   ),
                 ],
@@ -301,8 +299,8 @@ class _ActivityDetailViewState extends State<ActivityDetailView> {
       await controller.deleteActivity(_summary!.id);
       if (!context.mounted) return;
       Get.back();
-      const snackbarTitle = 'Success';
-      const snackbarMessage = 'Activity deleted successfully';
+      final snackbarTitle = LocaleKeys.success.tr;
+      final snackbarMessage = LocaleKeys.activityDeletedSuccess.tr;
       Get.snackbar(
         snackbarTitle,
         snackbarMessage,

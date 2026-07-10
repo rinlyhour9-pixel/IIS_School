@@ -79,4 +79,10 @@ class EndPoints {
       '/api/v1/setting/announcement/$id/details';
   static String get deleteAccount => '/api/v1/disable-user';
   static String get studentScanCard => '/api/v1/student/scan-card';
+  static String currentBranches(String branchId) =>
+      '/api/v1/setting/current-branches/$branchId';
+  static String parentAttendanceDetails(String id) =>
+      '/api/v1/parent/$id/attendance-details';
+
+  static const String iisBaseUrl = 'https://iis.school.softcreative.live';
 }

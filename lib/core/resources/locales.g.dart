@@ -72,6 +72,8 @@ class LocaleKeys {
   static const studentNameLabel = 'studentNameLabel';
   static const classLabel = 'classLabel';
   static const dateLabel = 'dateLabel';
+  static const sectionLabel = 'sectionLabel';
+  static const subjectLabel = 'subjectLabel';
   static const noClass = 'noClass';
   static const sessionNumber = 'sessionNumber';
   static const teacherLabel = 'teacherLabel';
@@ -559,6 +561,47 @@ class LocaleKeys {
   static const leaveDay = 'leaveDay';
   static const leaveDaysUnit = 'leaveDaysUnit';
   static const selectDate = 'selectDate';
+  static const teacherActivityFeed = 'teacherActivityFeed';
+  static const studentActivityFeed = 'studentActivityFeed';
+  static const noClassActivitiesFound = 'noClassActivitiesFound';
+  static const createActivity = 'createActivity';
+  static const tapToViewTheFullActivityDetails =
+      'tapToViewTheFullActivityDetails';
+  static const editActivity = 'editActivity';
+  static const activityTitleEmpty = 'activityTitleEmpty';
+  static const activityTitleLabel = 'activityTitleLabel';
+  static const descriptionLabel = 'descriptionLabel';
+  static const coverImageOptionalHint = 'coverImageOptionalHint';
+  static const coverImageReplaceHint = 'coverImageReplaceHint';
+  static const chooseImage = 'chooseImage';
+  static const changeImage = 'changeImage';
+  static const activityContent = 'activityContent';
+  static const activityContentSubtitle = 'activityContentSubtitle';
+  static const activityTitleHint = 'activityTitleHint';
+  static const noClassAvailable = 'noClassAvailable';
+  static const selectClass = 'selectClass';
+  static const classTarget = 'classTarget';
+  static const classTargetSubtitle = 'classTargetSubtitle';
+  static const createAndNotifyStudents = 'createAndNotifyStudents';
+  static const submitting = 'submitting';
+  static const updateActivity = 'updateActivity';
+  static const success = 'success';
+  static const activityUpdatedSuccess = 'activityUpdatedSuccess';
+  static const activityCreatedSuccess = 'activityCreatedSuccess';
+  static const pleaseSelectClass = 'pleaseSelectClass';
+  static const descriptionHint = 'descriptionHint';
+  static const imageSelectedReady = 'imageSelectedReady';
+  static const coverImage = 'coverImage';
+  static const coverImageSubtitle = 'coverImageSubtitle';
+  static const deleting = 'deleting';
+  static const deleteActivity = 'deleteActivity';
+  static const confirmDeleteMessage = 'confirmDeleteMessage';
+  static const activityDeletedSuccess = 'activityDeletedSuccess';
+  static const delete = 'delete';
+  static const noDescriptionProvided = 'noDescriptionProvided';
+  static const activityDetails = 'activityDetails';
+  static const activityDetailsSubtitle = 'activityDetailsSubtitle';
+  static const classActivity = 'classActivity';
 }
 
 class Locales {
@@ -816,7 +859,7 @@ class Locales {
     'bonus': 'Bonus',
     'total': 'Total',
     'activity': 'Activity',
-    'activitySubTitle': 'Here is your activity dashboard.',
+    'activitySubTitle': 'This is your activity dashboard.',
     'moneyAtStaff': 'Money at staff',
     'moneyAtCompany': 'Money at company',
     'moneyAtSell': 'Money at sell',
@@ -1105,6 +1148,53 @@ class Locales {
     'leaveDay': 'Day',
     'leaveDaysUnit': 'Days',
     'selectDate': 'Select date',
+    'sectionLabel': 'Section',
+    'subjectLabel': 'Subject',
+    'teacherActivityFeed': 'Teacher Activity Feed',
+    'studentActivityFeed': 'Student Activity Feed',
+    'noClassActivitiesFound': 'No class activities found',
+    'createActivity': 'Create Activity',
+    'tapToViewTheFullActivityDetails': 'Tap to view the full activity details',
+    'editActivity': 'Edit Activity',
+    'activityTitleEmpty': 'Activity title cannot be empty',
+    'activityTitleLabel': 'Activity Title',
+    'descriptionLabel': 'Description',
+    'coverImageOptionalHint':
+        'Optional. Add one cover image to make the activity card more engaging.',
+    'coverImageReplaceHint':
+        'Optional. Choose a new image only if you want to replace the current one.',
+    'chooseImage': 'Choose Image',
+    'changeImage': 'Change Image',
+    'activityContent': 'Activity Content',
+    'activityContentSubtitle':
+        'Write the title and short description students should read first.',
+    'activityTitleHint': 'For example: Science lab, Reading circle',
+    'noClassAvailable': 'No class available',
+    'selectClass': 'Select class',
+    'classTarget': 'Class Target',
+    'classTargetSubtitle': 'Choose which class should receive this activity.',
+    'createAndNotifyStudents': 'Create and Notify Students',
+    'submitting': 'Submitting...',
+    'updateActivity': 'Update Activity',
+    'success': 'Success',
+    'activityUpdatedSuccess': 'Activity updated successfully',
+    'activityCreatedSuccess': 'Activity created successfully',
+    'pleaseSelectClass': 'Please select a class',
+    'descriptionHint': 'Write a short summary.',
+    'imageSelectedReady': 'Image selected and ready to upload.',
+    'coverImage': 'Cover Image',
+    'coverImageSubtitle':
+        'Add one visual to make the activity card more engaging.',
+    'deleting': 'Deleting...',
+    'deleteActivity': 'Delete Activity',
+    'confirmDeleteMessage': 'Are you sure you want to delete this activity?',
+    'activityDeletedSuccess': 'Activity deleted successfully',
+    'delete': 'Delete',
+    'noDescriptionProvided': 'No description was provided for this activity.',
+    'activityDetails': 'Activity Details',
+    'activityDetailsSubtitle':
+        'Everything students should know before opening or responding to this class activity.',
+    'classActivity': 'Class Activity',
   };
   static const KM_KH = {
     'unableToConnectToTheInternet': 'មិនអាចភ្ជាប់ទៅអ៊ីនធឺណិតបាន',
@@ -1589,9 +1679,57 @@ class Locales {
     'detailedReason': 'លម្អិតពណ៌នាទេ',
     'attachments': 'ឯកសារភ្ជាប់',
     'document': 'ឯកសារ',
-    'section': 'ផ្នែក',
+    'section': 'វេន',
     'leaveDay': 'ថ្ងៃស្នើសុំច្បាប់',
     'leaveDaysUnit': 'ចំនួនថ្ងៃស្នើសុំច្បាប់',
     'selectDate': 'ជ្រើសរើសកាលបរិច្ឆេទ',
+    'sectionLabel': 'វេន',
+    'classSectionLabel': 'ថ្នាក់/វេន',
+    'subjectLabel': 'មុខវិជ្ជា',
+    'teacherActivityFeed': 'កំណត់ត្រាវត្តមានគ្រូបង្រៀន',
+    'studentActivityFeed': 'កំណត់ត្រាវត្តមានសិស្ស',
+    'noClassActivitiesFound': 'មិនមានសកម្មភាពថ្នាក់ទីនេះទេ',
+    'createActivity': 'បង្កើតសកម្មភាព',
+    'tapToViewTheFullActivityDetails': 'ចុចដើម្បីមើលព័ត៌មានលម្អិតទាំងអស់',
+    'editActivity': 'កែសម្រួលសកម្មភាព',
+    'activityTitleEmpty': 'ចំណងជើងសកម្មភាពមិនអាចទទេបានទេ',
+    'activityTitleLabel': 'ចំណងជើងសកម្មភាព',
+    'descriptionLabel': 'ការពិពណ៌នា',
+    'coverImageOptionalHint':
+        'ស្រេចចិត្ត។ បន្ថែមរូបភាពមួយដើម្បីធ្វើឲ្យកាតសកម្មភាពទាក់ទាញជាងមុន។',
+    'coverImageReplaceHint':
+        'ស្រេចចិត្ត។ ជ្រើសរើសរូបភាពថ្មីលុះត្រាតែអ្នកចង់ជំនួសរូបភាពបច្ចុប្បន្ន។',
+    'chooseImage': 'ជ្រើសរើសរូបភាព',
+    'changeImage': 'ប្តូររូបភាព',
+    'activityContent': 'មាតិកាសកម្មភាព',
+    'activityContentSubtitle':
+        'សរសេរចំណងជើង និងការពិពណ៌នាសង្ខេបដែលសិស្សគួរអានមុនគេ។',
+    'activityTitleHint': 'ឧទាហរណ៍៖ មន្ទីរពិសោធន៍វិទ្យាសាស្ត្រ, រង្វង់អាន',
+    'noClassAvailable': 'មិនមានថ្នាក់ទេ',
+    'selectClass': 'ជ្រើសរើសថ្នាក់',
+    'classTarget': 'ថ្នាក់គោលដៅ',
+    'classTargetSubtitle': 'ជ្រើសរើសថ្នាក់ណាមួយដែលនឹងទទួលសកម្មភាពនេះ។',
+    'createAndNotifyStudents': 'បង្កើត និងជូនដំណឹងដល់សិស្ស',
+    'submitting': 'កំពុងដាក់ស្នើ...',
+    'updateActivity': 'ធ្វើបច្ចុប្បន្នភាពសកម្មភាព',
+    'success': 'ជោគជ័យ',
+    'activityUpdatedSuccess': 'សកម្មភាពត្រូវបានធ្វើបច្ចុប្បន្នភាពដោយជោគជ័យ',
+    'activityCreatedSuccess': 'សកម្មភាពត្រូវបានបង្កើតដោយជោគជ័យ',
+    'pleaseSelectClass': 'សូមជ្រើសរើសថ្នាក់',
+    'descriptionHint': 'សរសេរសេចក្តីសង្ខេបខ្លីមួយ។',
+    'imageSelectedReady': 'បានជ្រើសរើសរូបភាព និងត្រៀមខ្លួនសម្រាប់ផ្ទុកឡើង។',
+    'coverImage': 'រូបភាពគម្រប',
+    'coverImageSubtitle':
+        'បន្ថែមរូបភាពមួយដើម្បីធ្វើឲ្យកាតសកម្មភាពទាក់ទាញជាងមុន។',
+    'deleting': 'កំពុងលុប...',
+    'deleteActivity': 'លុបសកម្មភាព',
+    'confirmDeleteMessage': 'តើអ្នកប្រាកដថាចង់លុបសកម្មភាពនេះមែនទេ?',
+    'activityDeletedSuccess': 'សកម្មភាពត្រូវបានលុបដោយជោគជ័យ',
+    'delete': 'លុប',
+    'noDescriptionProvided': 'មិនមានការពិពណ៌នាសម្រាប់សកម្មភាពនេះទេ។',
+    'activityDetails': 'ព័ត៌មានលម្អិតសកម្មភាព',
+    'activityDetailsSubtitle':
+        'អ្វីៗទាំងអស់ដែលសិស្សគួរដឹងមុននឹងបើក ឬឆ្លើយតបទៅនឹងសកម្មភាពថ្នាក់នេះ។',
+    'classActivity': 'សកម្មភាពថ្នាក់',
   };
 }

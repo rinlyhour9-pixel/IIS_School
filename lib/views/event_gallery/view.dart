@@ -91,8 +91,8 @@ class ActivityView extends GetView<ActivityController> {
                                     ),
                                     child: Text(
                                       controller.isTeacherRole
-                                          ? 'Teacher Activity Feed'
-                                          : 'Student Activity Feed',
+                                          ? LocaleKeys.teacherActivityFeed.tr
+                                          : LocaleKeys.studentActivityFeed.tr,
                                       style: const TextStyle(
                                         color: Colors.white,
                                         fontWeight: FontWeight.w700,
@@ -100,18 +100,18 @@ class ActivityView extends GetView<ActivityController> {
                                       ),
                                     ),
                                   ),
-                                  const SizedBox(height: 10),
-                                  Text(
-                                    controller.isTeacherRole
-                                        ? 'Track the latest class moments, updates, and posts from every class you teach.'
-                                        : 'See the latest activities prepared for your selected class.',
-                                    style: const TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w800,
-                                      height: 1.3,
-                                    ),
-                                  ),
+                                  // const SizedBox(height: 10),
+                                  // Text(
+                                  //   controller.isTeacherRole
+                                  //       ? 'Track the latest class moments, updates, and posts from every class you teach.'
+                                  //       : 'See the latest activities prepared for your selected class.',
+                                  //   style: const TextStyle(
+                                  //     color: Colors.white,
+                                  //     fontSize: 18,
+                                  //     fontWeight: FontWeight.w800,
+                                  //     height: 1.3,
+                                  //   ),
+                                  // ),
                                 ],
                               ),
                             ),
@@ -250,11 +250,10 @@ class ActivityView extends GetView<ActivityController> {
                       child: ElevatedButton.icon(
                         onPressed: () => _openCreateActivity(context),
                         icon: const Icon(Icons.add_photo_alternate_rounded),
-                        label: const Text('Create Activity'),
+                        label: Text(LocaleKeys.createActivity.tr),
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.transparent,
+                          backgroundColor: AppColor.primary,
                           foregroundColor: Colors.white,
-                          shadowColor: Colors.transparent,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(18),
                           ),
@@ -367,30 +366,20 @@ class _EmptyActivityState extends StatelessWidget {
         borderRadius: BorderRadius.circular(20),
         border: Border.all(color: const Color(0xFFE4E9E7)),
       ),
-      child: const Column(
+      child: Column(
         children: [
-          Icon(
+          const Icon(
             Icons.photo_library_outlined,
             size: 40,
             color: Color(0xFF9CA3AF),
           ),
           SizedBox(height: 12),
           Text(
-            'No class activities found',
-            style: TextStyle(
+            LocaleKeys.noClassActivitiesFound.tr,
+            style: const TextStyle(
               fontSize: 15,
               fontWeight: FontWeight.w700,
               color: Color(0xFF111827),
-            ),
-          ),
-          SizedBox(height: 6),
-          Text(
-            'Pull down to refresh or wait for your teacher to post a new activity.',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 12,
-              height: 1.4,
-              color: Color(0xFF6B7280),
             ),
           ),
         ],

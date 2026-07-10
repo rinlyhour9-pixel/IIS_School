@@ -1,6 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:schoolapp/views/event_gallery/controller.dart';
+import 'package:schoolapp/core/core.dart';
 
 class ActivityCardWidget extends StatelessWidget {
   const ActivityCardWidget({super.key, required this.items, this.onTap});
@@ -69,7 +71,7 @@ class ActivityCardWidget extends StatelessWidget {
                         Expanded(
                           child: Text(
                             description.isEmpty
-                                ? 'Tap to view the full activity details.'
+                                ? LocaleKeys.tapToViewTheFullActivityDetails.tr
                                 : description,
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
@@ -84,17 +86,17 @@ class ActivityCardWidget extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(height: 8),
-                        const Row(
+                        Row(
                           children: [
-                            Icon(
+                            const Icon(
                               Icons.open_in_new_rounded,
                               size: 14,
                               color: Color(0xFFD80F23),
                             ),
                             SizedBox(width: 4),
                             Text(
-                              'View details',
-                              style: TextStyle(
+                              LocaleKeys.viewDetails.tr,
+                              style: const TextStyle(
                                 fontSize: 11,
                                 fontWeight: FontWeight.w700,
                                 color: Color(0xFFD80F23),
@@ -163,8 +165,7 @@ class ActivityCardWidget extends StatelessWidget {
   }
 
   String _descriptionPreview(String rawDescription) {
-    final plainText =
-        rawDescription.replaceAll(RegExp(r'<[^>]*>'), ' ').trim();
+    final plainText = rawDescription.replaceAll(RegExp(r'<[^>]*>'), ' ').trim();
 
     if (plainText.isEmpty) {
       return '';

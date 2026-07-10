@@ -5,17 +5,19 @@ import 'package:schoolapp/core/core.dart';
 class AttendanceStatusCardData {
   const AttendanceStatusCardData({
     required this.studentName,
-    required this.classSection,
+    required this.classroom,
+    required this.section,
+    required this.subject,
     required this.dateText,
     required this.status,
-    required this.count,
   });
 
   final String studentName;
-  final String classSection;
+  final String classroom;
+  final String section;
+  final String subject;
   final String dateText;
   final String status;
-  final int count;
 }
 
 class AttendanceStatusCard extends StatelessWidget {
@@ -50,7 +52,11 @@ class AttendanceStatusCard extends StatelessWidget {
               children: [
                 _line(LocaleKeys.studentNameLabel.tr, card.studentName),
                 const SizedBox(height: 4),
-                _line(LocaleKeys.classLabel.tr, card.classSection),
+                _line(LocaleKeys.classLabel.tr, card.classroom),
+                const SizedBox(height: 4),
+                _line(LocaleKeys.sectionLabel.tr, card.section),
+                const SizedBox(height: 4),
+                _line(LocaleKeys.subjectLabel.tr, card.subject),
                 const SizedBox(height: 4),
                 _line(LocaleKeys.dateLabel.tr, card.dateText),
               ],
@@ -70,7 +76,7 @@ class AttendanceStatusCard extends StatelessWidget {
               statusStyle.label,
               style: TextStyle(
                 color: Colors.white,
-                  fontFamily: AppFontFamily.forText(statusStyle.label),
+                fontFamily: AppFontFamily.forText(statusStyle.label),
                 fontWeight: FontWeight.w600,
                 fontSize: 12,
               ),
@@ -89,7 +95,7 @@ class AttendanceStatusCard extends StatelessWidget {
           child: Text(
             '$label:',
             style: TextStyle(
-                fontFamily: AppFontFamily.forText(label),
+              fontFamily: AppFontFamily.forText(label),
               fontWeight: FontWeight.w700,
               fontSize: 13,
             ),
@@ -100,10 +106,7 @@ class AttendanceStatusCard extends StatelessWidget {
             value,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
-            style: const TextStyle(
-              fontSize: 13,
-              color: Color(0xFF555555),
-            ),
+            style: const TextStyle(fontSize: 13, color: Color(0xFF555555)),
           ),
         ),
       ],
