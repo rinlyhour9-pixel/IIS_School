@@ -62,24 +62,45 @@ class HomeworkController extends GetxController {
   }
 
   // Parent/student homework flow.
+  // Future<void> fetchStudentHomeworks({bool resetBeforeLoad = false}) async {
+  //   if (isAssignmentsLoading.value) return;
+
+  //   if (resetBeforeLoad) {
+  //     assignedHomeworkItems.clear();
+  //   }
+
+  //   final fallbackClassName = await _resolveStudentClassName();
+  //   final classId =
+  //       await _resolveStudentClassId() ??
+  //       await _resolveClassIdFromClassName(fallbackClassName);
+  //   final selectedStudentId = await _resolveSelectedStudentId();
+  //   print(
+  //     'Student homework debug -> studentId: $selectedStudentId, '
+  //     'classId: $classId, fallbackClassName: $fallbackClassName',
+  //   );
+  //   if (classId == null) {
+  //     print('Student homework debug -> classId is null, clearing items');
+  //     assignedHomeworkItems.clear();
+  //     return;
+  //   }
+
+  //   try {
+  //     isAssignmentsLoading.value = true;
+  //     final cachedSubmittedIds = await _loadSubmittedHomeworkIds(
+  //       selectedStudentId,
+  //     );
+  //     final res = await Get.find<ApiService>().get(
+  //       EndPoints.studentHomeworks(classId),
+  //       isShowLoading: false,
+  //     );
   Future<void> fetchStudentHomeworks({bool resetBeforeLoad = false}) async {
     if (isAssignmentsLoading.value) return;
-
-    if (resetBeforeLoad) {
-      assignedHomeworkItems.clear();
-    }
+    if (resetBeforeLoad) assignedHomeworkItems.clear();
 
     final fallbackClassName = await _resolveStudentClassName();
-    final classId =
-        await _resolveStudentClassId() ??
-        await _resolveClassIdFromClassName(fallbackClassName);
     final selectedStudentId = await _resolveSelectedStudentId();
-    print(
-      'Student homework debug -> studentId: $selectedStudentId, '
-      'classId: $classId, fallbackClassName: $fallbackClassName',
-    );
-    if (classId == null) {
-      print('Student homework debug -> classId is null, clearing items');
+
+    if (fallbackClassName.isEmpty || fallbackClassName == 'N/A') {
       assignedHomeworkItems.clear();
       return;
     }
@@ -90,12 +111,10 @@ class HomeworkController extends GetxController {
         selectedStudentId,
       );
       final res = await Get.find<ApiService>().get(
-        EndPoints.studentHomeworks(classId),
+        EndPoints.studentHomeworks(fallbackClassName), // was classId
         isShowLoading: false,
       );
-      print(
-        'Student homework debug -> GET ${EndPoints.studentHomeworks(classId)}',
-      );
+
       print('Student homework debug -> raw response: ${res.data}');
       final rows = _extractHomeworkRows(res.data);
       final items = rows
@@ -1177,6 +1196,8 @@ class HomeworkController extends GetxController {
                 : <String, dynamic>{'student_id': selectedStudentId},
         isShowLoading: false,
       );
+      print('parentProfile raw for classId resolve: ${res.data}'); // ADD THIS
+
       final classId = _findClassId(res.data);
       if (classId != null) {
         await SharedPreferencesManager.setValue(

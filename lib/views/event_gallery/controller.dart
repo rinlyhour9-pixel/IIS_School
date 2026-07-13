@@ -533,13 +533,15 @@ class ActivityController extends GetxController {
     try {
       final selectedStudentId = await _resolveSelectedStudentId();
       final res = await Get.find<ApiService>().get(
-        EndPoints.parentProfile,
+        EndPoints.parentStudentInfo,
         queryParameters:
             selectedStudentId.isEmpty
                 ? null
                 : <String, dynamic>{'student_id': selectedStudentId},
         isShowLoading: false,
       );
+      print('studentInfo raw for classId resolve: ${res.data}');
+
       final classId = await _findClassIdForSelectedStudent(
         res.data,
         selectedStudentId,
