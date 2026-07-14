@@ -459,5 +459,8 @@
   "noDescriptionProvided": "No description was provided for this activity.",
   "activityDetails": "Activity Details",
   "activityDetailsSubtitle": "Everything students should know before opening or responding to this class activity.",
-  "classActivity": "Class Activity"
+  "classActivity": "Class Activity",
+  "timeLabel": "Time",
+  "noticesLabel": "Notices",
+  "taLabel": "TA"
 }

@@ -35,4 +35,29 @@ class StudentIdResolver {
     }
     return null;
   }
+
+  static Future<int?> resolveClassId() async {
+    if (Get.isRegistered<SelectedStudentService>()) {
+      final selectedClassId =
+          Get.find<SelectedStudentService>().current?.classId.trim() ?? '';
+      if (selectedClassId.isNotEmpty) {
+        final parsed = int.tryParse(selectedClassId);
+        if (parsed != null) {
+          return parsed;
+        }
+      }
+    }
+
+    for (final key in ['selected_child_class_id', 'student_info_class_id']) {
+      final raw =
+          (await SharedPreferencesManager.get(key) ?? '').toString().trim();
+      if (raw.isEmpty) continue;
+
+      final parsed = int.tryParse(raw);
+      if (parsed != null) {
+        return parsed;
+      }
+    }
+    return null;
+  }
 }

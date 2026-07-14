@@ -77,6 +77,9 @@ class LocaleKeys {
   static const noClass = 'noClass';
   static const sessionNumber = 'sessionNumber';
   static const teacherLabel = 'teacherLabel';
+  static const taLabel = 'taLabel';
+  static const timeLabel = 'timeLabel';
+  static const noticesLabel = 'noticesLabel';
   static const roomLabel = 'roomLabel';
   static const mondayShort = 'mondayShort';
   static const tuesdayShort = 'tuesdayShort';
@@ -1195,6 +1198,9 @@ class Locales {
     'activityDetailsSubtitle':
         'Everything students should know before opening or responding to this class activity.',
     'classActivity': 'Class Activity',
+    'timeLabel': 'Time',
+    'noticesLabel': 'Notices',
+    'taLabel': 'TA',
   };
   static const KM_KH = {
     'unableToConnectToTheInternet': 'មិនអាចភ្ជាប់ទៅអ៊ីនធឺណិតបាន',
@@ -1731,5 +1737,8 @@ class Locales {
     'activityDetailsSubtitle':
         'អ្វីៗទាំងអស់ដែលសិស្សគួរដឹងមុននឹងបើក ឬឆ្លើយតបទៅនឹងសកម្មភាពថ្នាក់នេះ។',
     'classActivity': 'សកម្មភាពថ្នាក់',
+    'timeLabel': 'ពេលវេលា',
+    'noticesLabel': 'កំណត់ត្រាលដោយ',
+    'taLabel': 'ត្រូវបានអនុវត្ត',
   };
 }
