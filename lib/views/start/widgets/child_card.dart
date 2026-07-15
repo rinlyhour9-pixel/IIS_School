@@ -22,13 +22,13 @@ class ChildCard extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final borderColor =
         active
-            ? const Color(0xFFD50B1E)
+            ? AppColor.primary
             : isDark
             ? const Color(0xFF3A4957)
             : const Color(0xFFE5E7EB);
     final backgroundColor =
         active
-            ? const Color(0xFFFFF1F2)
+            ? AppColor.primary.withValues(alpha: 0.08)
             : isDark
             ? const Color(0xFF223039)
             : Colors.white;
@@ -45,7 +45,7 @@ class ChildCard extends StatelessWidget {
             active
                 ? [
                   BoxShadow(
-                    color: const Color(0xFFD50B1E).withOpacity(0.12),
+                    color: AppColor.primary.withValues(alpha: 0.12),
                     blurRadius: 16,
                     offset: const Offset(0, 8),
                   ),
@@ -76,7 +76,7 @@ class ChildCard extends StatelessWidget {
                           fontWeight: FontWeight.w700,
                           color:
                               active
-                                  ? const Color(0xFF8B0000)
+                                  ? AppColor.primary
                                   : Theme.of(
                                     context,
                                   ).textTheme.bodyLarge?.color,
@@ -94,7 +94,7 @@ class ChildCard extends StatelessWidget {
                           fontWeight: FontWeight.w600,
                           color:
                               active
-                                  ? const Color(0xFFD50B1E)
+                                  ? AppColor.primary
                                   : const Color(0xFF6B7280),
                         ),
                         maxLines: 1,
@@ -123,7 +123,7 @@ class _ActiveBadge extends StatelessWidget {
       width: 30,
       height: 30,
       decoration: BoxDecoration(
-        color: const Color(0xFFD50B1E),
+        color: AppColor.primary,
         borderRadius: BorderRadius.circular(15),
       ),
       child: const Icon(Icons.check_rounded, color: Colors.white, size: 18),

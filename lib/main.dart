@@ -21,7 +21,9 @@ Future<void> main() async {
       WidgetsFlutterBinding.ensureInitialized();
 
       await dotenv.load(fileName: '.env');
-      print("ENV BASE_URL: ${dotenv.env['BASE_URL']}");
+      if (kDebugMode) {
+        debugPrint("ENV BASE_URL: ${dotenv.env['BASE_URL']}");
+      }
 
       final isFirebaseReady = await _initializeFirebase();
       if (isFirebaseReady) {
@@ -132,8 +134,19 @@ Future<void> _initEnvironment() async {
 
 Future<void> _initServices() async {
   AppConfig.shared;
+  await _restoreUserSessionFromStorage();
   Get.put<ApiService>(ApiService());
   await Get.put<SelectedStudentService>(SelectedStudentService()).initialize();
+}
+
+Future<void> _restoreUserSessionFromStorage() async {
+  final token =
+      (await SharedPreferencesManager.get(Credential.token.name) ?? '')
+          .toString()
+          .trim();
+  AppConfig.shared.token = token;
+
+  await UserRepository.shared.restoreUserTypeFromStorage();
 }
 
 Future<void> _bootstrapDeferredServices() async {

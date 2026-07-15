@@ -51,43 +51,60 @@ class ScheduleInfo {
   ScheduleInfo({
     required this.title,
     required this.academicYear,
+    required this.className,
     required this.branch,
     required this.address,
     required this.tel,
     required this.email,
     required this.website,
     required this.date,
+    required this.headerLeft,
+    required this.headerRight,
     required this.days,
     required this.periods,
     required this.notesEn,
     required this.notesCn,
+    required this.notes,
+    required this.dateLine,
+    required this.signatures,
     required this.footerNote,
   });
 
   final String title;
   final String academicYear;
+  final String className;
   final String branch;
   final String address;
   final String tel;
   final String email;
   final String website;
   final String date;
+  final List<String> headerLeft;
+  final List<String> headerRight;
   final List<String> days;
   final List<SchedulePeriod> periods;
   final String notesEn;
   final String notesCn;
+  final List<String> notes;
+  final String dateLine;
+  final List<ScheduleSignature> signatures;
   final String footerNote;
+
+  bool get isKhmerProgram => headerLeft.isNotEmpty || headerRight.isNotEmpty;
 
   factory ScheduleInfo.fromJson(Map<String, dynamic> json) {
     return ScheduleInfo(
       title: (json['title'] ?? '').toString(),
       academicYear: (json['academic_year'] ?? '').toString(),
+      className: (json['class'] ?? '').toString(),
       branch: (json['branch'] ?? '').toString(),
       address: (json['address'] ?? '').toString(),
       tel: (json['tel'] ?? '').toString(),
       email: (json['email'] ?? '').toString(),
       website: (json['website'] ?? '').toString(),
       date: (json['date'] ?? '').toString(),
+      headerLeft: _stringList(json['header_left']),
+      headerRight: _stringList(json['header_right']),
       days:
           json['days'] is List
               ? List<String>.from(
@@ -106,7 +123,38 @@ class ScheduleInfo {
               : <SchedulePeriod>[],
       notesEn: (json['notes_en'] ?? '').toString(),
       notesCn: (json['notes_cn'] ?? '').toString(),
+      notes: _stringList(json['notes']),
+      dateLine: (json['date_line'] ?? '').toString(),
+      signatures:
+          json['signatures'] is List
+              ? (json['signatures'] as List)
+                  .whereType<Map>()
+                  .map(
+                    (e) => ScheduleSignature.fromJson(
+                      Map<String, dynamic>.from(e),
+                    ),
+                  )
+                  .toList()
+              : <ScheduleSignature>[],
       footerNote: (json['footer_note'] ?? '').toString(),
+    );
+  }
+
+  static List<String> _stringList(Object? raw) {
+    return raw is List ? raw.map((e) => e.toString()).toList() : <String>[];
+  }
+}
+
+class ScheduleSignature {
+  ScheduleSignature({required this.title, required this.name});
+
+  final String title;
+  final String name;
+
+  factory ScheduleSignature.fromJson(Map<String, dynamic> json) {
+    return ScheduleSignature(
+      title: (json['title'] ?? '').toString(),
+      name: (json['name'] ?? '').toString(),
     );
   }
 }
@@ -132,10 +180,11 @@ class SchedulePeriod {
 
   factory SchedulePeriod.fromJson(Map<String, dynamic> json) {
     final rawCells = json['cells'];
+    final type = (json['type'] ?? '').toString();
     return SchedulePeriod(
       am: (json['am'] ?? '').toString(),
       pm: (json['pm'] ?? '').toString(),
-      isBreak: (json['type'] ?? '').toString() == 'break',
+      isBreak: type == 'break' || type == 'activity',
       label: (json['label'] ?? '').toString(),
       teacher: (json['teacher'] ?? '').toString(),
       ta: (json['ta'] ?? '').toString(),

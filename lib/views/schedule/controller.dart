@@ -6,7 +6,9 @@ import 'package:schoolapp/models/models.dart';
 class ScheduleController extends GetxController {
   final TextEditingController searchCtl = TextEditingController();
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  final RxList<ScheduleTimetable> timetables = <ScheduleTimetable>[].obs;
   final Rxn<ScheduleTimetable> timetable = Rxn<ScheduleTimetable>();
+  final RxInt selectedIndex = 0.obs;
   final RxBool isLoading = false.obs;
   final RxString error = ''.obs;
 
@@ -22,6 +24,13 @@ class ScheduleController extends GetxController {
     super.onClose();
   }
 
+  void selectTimetable(int index) {
+    if (index < 0 || index >= timetables.length) return;
+
+    selectedIndex.value = index;
+    timetable.value = timetables[index];
+  }
+
   Future<void> fetchStudentTimeSheet() async {
     isLoading.value = true;
     error.value = '';
@@ -35,7 +44,9 @@ class ScheduleController extends GetxController {
               : null; // TODO see note below
 
       if (isParent && (studentId == null || classId == null)) {
+        timetables.clear();
         timetable.value = null;
+        selectedIndex.value = 0;
         error.value = LocaleKeys.scheduleStudentRequired.tr;
         return;
       }
@@ -48,7 +59,9 @@ class ScheduleController extends GetxController {
       );
 
       if (res.data is! Map) {
+        timetables.clear();
         timetable.value = null;
+        selectedIndex.value = 0;
         error.value = LocaleKeys.invalidResponseData.tr;
         return;
       }
@@ -56,14 +69,19 @@ class ScheduleController extends GetxController {
       final parsed = ScheduleResponse.fromJson(
         Map<String, dynamic>.from(res.data as Map),
       );
-      timetable.value =
-          parsed.timetables.isNotEmpty ? parsed.timetables.first : null;
+      timetables.assignAll(parsed.timetables);
+      final nextIndex =
+          selectedIndex.value < timetables.length ? selectedIndex.value : 0;
+      selectedIndex.value = nextIndex;
+      timetable.value = timetables.isNotEmpty ? timetables[nextIndex] : null;
       if (timetable.value == null) {
         error.value = LocaleKeys.invalidResponseData.tr;
       }
     } catch (e) {
       debugPrint('Failed to load schedule: $e');
+      timetables.clear();
       timetable.value = null;
+      selectedIndex.value = 0;
       error.value = LocaleKeys.failedToLoadSchedule.tr;
       ExceptionHandler.handleException(e, alert: false);
     } finally {

@@ -279,20 +279,23 @@ class LoginController extends GetxController {
     required String fcmToken,
     required String deviceName,
   }) async {
-    final attempts = <Map<String, dynamic>>[
-      ..._teacherAttempts(
-        loginIdentity: loginIdentity,
-        password: password,
-        fcmToken: fcmToken,
-        deviceName: deviceName,
-      ),
-      ..._parentAttempts(
-        loginIdentity: loginIdentity,
-        password: password,
-        fcmToken: fcmToken,
-        deviceName: deviceName,
-      ),
-    ];
+    final parentAttempts = _parentAttempts(
+      loginIdentity: loginIdentity,
+      password: password,
+      fcmToken: fcmToken,
+      deviceName: deviceName,
+    );
+    final teacherAttempts = _teacherAttempts(
+      loginIdentity: loginIdentity,
+      password: password,
+      fcmToken: fcmToken,
+      deviceName: deviceName,
+    );
+
+    final attempts =
+        _isLikelyPhone(loginIdentity)
+            ? <Map<String, dynamic>>[...parentAttempts, ...teacherAttempts]
+            : <Map<String, dynamic>>[...teacherAttempts, ...parentAttempts];
     return _performLoginAttempts(attempts);
   }
 

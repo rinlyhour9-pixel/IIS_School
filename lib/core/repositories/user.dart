@@ -45,6 +45,49 @@ class UserRepository {
     _isParent = userType == UserType.parent;
   }
 
+  Future<String> restoreUserTypeFromStorage() async {
+    final savedRole =
+        (await SharedPreferencesManager.get('user_role') ?? '')
+            .toString()
+            .trim()
+            .toLowerCase();
+    var resolvedRole = UserType.fromKey(savedRole)?.key ?? '';
+
+    if (resolvedRole != UserType.parent.key && await _hasParentStorage()) {
+      resolvedRole = UserType.parent.key;
+      await SharedPreferencesManager.setValue('user_role', resolvedRole);
+    }
+
+    if (resolvedRole.isNotEmpty) {
+      setUserType(resolvedRole);
+    }
+    return resolvedRole;
+  }
+
+  Future<bool> _hasParentStorage() async {
+    const parentKeys = <String>[
+      'selected_child_id',
+      'selected_child_name',
+      'selected_child_class_id',
+      'student_info_id',
+      'student_info_class_id',
+      'last_leave_student_id',
+    ];
+
+    for (final key in parentKeys) {
+      final value =
+          (await SharedPreferencesManager.get(key) ?? '').toString().trim();
+      final lower = value.toLowerCase();
+      if (value.isNotEmpty &&
+          lower != 'null' &&
+          lower != 'undefined' &&
+          lower != 'false') {
+        return true;
+      }
+    }
+    return false;
+  }
+
   bool _isTablet = false;
   bool get isTablet => _isTablet;
 
@@ -52,6 +95,11 @@ class UserRepository {
   BuildContext? get context => _context;
 
   void _checkDeviceType() {
-    _isTablet = context!.isTablet;
+    final currentContext = context;
+    if (currentContext == null) {
+      _isTablet = false;
+      return;
+    }
+    _isTablet = currentContext.isTablet;
   }
 }

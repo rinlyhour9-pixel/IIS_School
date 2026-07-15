@@ -21,7 +21,10 @@ class DialogManager {
     }
   }
 
-  static Future<dynamic> showCustom(Widget content) {
+  static Future<dynamic> showCustom(
+    Widget content, {
+    bool barrierDismissible = true,
+  }) {
     if (!_isGetReady) {
       return Future.value();
     }
@@ -30,6 +33,7 @@ class DialogManager {
 
     return Get.dialog(
       content,
+      barrierDismissible: barrierDismissible,
       transitionDuration: const Duration(milliseconds: 150),
     );
   }

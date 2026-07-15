@@ -32,12 +32,8 @@ class StartController extends GetxController {
         profileUrl.value = _normalizeProfileUrl(child?.avatar ?? '');
       },
     );
-    _syncRoleFromStorage();
-    _setLocalProfileFallback();
-    _loadLocalProfileFromStorage();
-    fetchUserProfileFromApi();
-
     super.onInit();
+    unawaited(_bootstrap());
   }
 
   @override
@@ -155,16 +151,19 @@ class StartController extends GetxController {
     }
   }
 
+  Future<void> _bootstrap() async {
+    await _syncRoleFromStorage();
+    _setLocalProfileFallback();
+    await _loadLocalProfileFromStorage();
+    await fetchUserProfileFromApi();
+  }
+
   Future<void> _syncRoleFromStorage() async {
-    final savedRole =
-        (await SharedPreferencesManager.get('user_role') ?? '')
-            .toString()
-            .trim()
-            .toLowerCase();
-    if (savedRole.isEmpty) {
+    final restoredRole =
+        await UserRepository.shared.restoreUserTypeFromStorage();
+    if (restoredRole.isEmpty) {
       return;
     }
-    UserRepository.shared.setUserType(savedRole);
     isParentUser.value = UserRepository.shared.isParent;
     _normalizeSelectionForRole();
     await _refreshParentAppBarChild();
@@ -177,7 +176,7 @@ class StartController extends GetxController {
       case 1:
         return const NotificationView();
       case 2:
-        return CardScanView();
+        return const CardScanView();
       case 3:
         return const PaymentHistoryView();
       case 4:

@@ -724,11 +724,13 @@ class _DrawerWidgetState extends State<DrawerWidget> {
     if (unquoted.startsWith('//')) {
       return 'https:$unquoted';
     }
+    
     if (unquoted.startsWith('/')) {
       final base = AppConfig.shared.baseUrl.trim();
       if (base.isEmpty) {
         return '';
       }
+
       final baseUri = Uri.parse(base.endsWith('/') ? base : '$base/');
       return baseUri.resolve(unquoted.substring(1)).toString();
     }
