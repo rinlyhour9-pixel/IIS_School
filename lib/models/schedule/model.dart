@@ -5,19 +5,31 @@ class ScheduleResponse {
 
   factory ScheduleResponse.fromJson(Map<String, dynamic> json) {
     final rawData = json['data'];
-    return ScheduleResponse(
-      timetables:
-          rawData is List
-              ? rawData
-                  .whereType<Map>()
-                  .map(
-                    (e) => ScheduleTimetable.fromJson(
-                      Map<String, dynamic>.from(e),
-                    ),
-                  )
-                  .toList()
-              : <ScheduleTimetable>[],
-    );
+
+    if (rawData is List) {
+      return ScheduleResponse(
+        timetables:
+            rawData
+                .whereType<Map>()
+                .map(
+                  (e) =>
+                      ScheduleTimetable.fromJson(Map<String, dynamic>.from(e)),
+                )
+                .toList(),
+      );
+    }
+
+    if (rawData is Map) {
+      // Teacher endpoint (/api/v1/time-sheet/teacher) returns a single
+      // { program, schedule } object instead of a list of timetables.
+      return ScheduleResponse(
+        timetables: [
+          ScheduleTimetable.fromJson(Map<String, dynamic>.from(rawData)),
+        ],
+      );
+    }
+
+    return ScheduleResponse(timetables: <ScheduleTimetable>[]);
   }
 }
 
@@ -36,13 +48,17 @@ class ScheduleTimetable {
 
   factory ScheduleTimetable.fromJson(Map<String, dynamic> json) {
     final rawSchedule = json['schedule'];
+    final info = ScheduleInfo.fromJson(
+      rawSchedule is Map ? Map<String, dynamic>.from(rawSchedule) : {},
+    );
     return ScheduleTimetable(
-      programName: (json['program_name'] ?? '').toString(),
-      className: (json['class_name'] ?? '').toString(),
+      // Parent payload uses "program_name"; teacher payload uses "program".
+      programName: (json['program_name'] ?? json['program'] ?? '').toString(),
+      // Parent payload has "class_name" at this level; teacher payload
+      // doesn't, so fall back to the class name inside "schedule".
+      className: (json['class_name'] ?? info.className).toString(),
       isKge: json['is_kge'] == true,
-      info: ScheduleInfo.fromJson(
-        rawSchedule is Map ? Map<String, dynamic>.from(rawSchedule) : {},
-      ),
+      info: info,
     );
   }
 }

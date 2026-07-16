@@ -88,7 +88,10 @@ class StartView extends GetView<StartController> {
                         ),
                       ),
                       subTitle: roleSubTitle,
-                      imagePath: 'assets/images/sliver_banner1.png',
+                      imagePath:
+                          controller.bannerUrl.value.isEmpty
+                              ? 'assets/images/sliver_banner1.png'
+                              : controller.bannerUrl.value,
                     ),
                   )
                   : null,

@@ -14,6 +14,7 @@ class StartController extends GetxController {
   final RxString profileUrl = ''.obs;
   final RxString userName = ''.obs;
   final RxBool isParentUser = false.obs;
+  final RxString bannerUrl = ''.obs;
   late Rx<Widget> selectedScreen = _buildScreen(0).obs;
   SelectedStudentService get _selectedStudentService =>
       Get.find<SelectedStudentService>();
@@ -151,11 +152,32 @@ class StartController extends GetxController {
     }
   }
 
+  Future<void> fetchGeneralSetting() async {
+    try {
+      final res = await Get.find<ApiService>().get(
+        EndPoints.generalSetting,
+        isShowLoading: false,
+      );
+      final data = getPropertyFromJson(res.data, 'data');
+      if (data is! Map<String, dynamic>) {
+        return;
+      }
+      final setting = data['setting'];
+      if (setting is Map<String, dynamic>) {
+        final bannerImage = (setting['app_banner'] ?? '').toString().trim();
+        if (bannerImage.isNotEmpty) {
+          bannerUrl.value = bannerImage;
+        }
+      }
+    } catch (_) {}
+  }
+
   Future<void> _bootstrap() async {
     await _syncRoleFromStorage();
     _setLocalProfileFallback();
     await _loadLocalProfileFromStorage();
     await fetchUserProfileFromApi();
+    await fetchGeneralSetting();
   }
 
   Future<void> _syncRoleFromStorage() async {

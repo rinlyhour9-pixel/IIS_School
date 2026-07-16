@@ -24,3 +24,4 @@ export 'student_attendance.dart/student_attendance.dart';
 export 'leaves/leaves.dart';
 export 'detail_attendance/detail_attendance.dart';
 export 'attendance_detail/attendance_detail.dart';
+export 'term_condition/term_condition.dart';

@@ -63,7 +63,7 @@ class _DashboardWidgetState extends State<DashboardWidget> {
     if (isParent) {
       return const [0, 1, 2, 3, 4, 5, 6, 7, 8];
     }
-    return const [3, 4, 7, 8, 9, 10];
+    return const [3, 7, 8, 9, 10];
   }
 
   void click(int index) {

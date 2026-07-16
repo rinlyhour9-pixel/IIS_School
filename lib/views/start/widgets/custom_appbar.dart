@@ -100,7 +100,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           flexibleSpace: Stack(
             fit: StackFit.expand,
             children: [
-              Image.asset(imagePath, fit: BoxFit.cover),
+              _buildBannerImage(imagePath),
               Container(
                 decoration: const BoxDecoration(
                   gradient: LinearGradient(
@@ -144,6 +144,37 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Size get preferredSize => Size.fromHeight(height);
+  Widget _buildBannerImage(String path) {
+    final source = path.trim();
+
+    if (_isNetworkUrl(source)) {
+      return CachedNetworkImage(
+        imageUrl: source,
+        fit: BoxFit.cover,
+        httpHeaders: _networkHeaders(),
+        placeholder:
+            (_, __) => Image.asset(
+              'assets/images/sliver_banner1.png',
+              fit: BoxFit.cover,
+            ),
+        errorWidget:
+            (_, __, ___) => Image.asset(
+              'assets/images/sliver_banner1.png',
+              fit: BoxFit.cover,
+            ),
+      );
+    }
+
+    return Image.asset(
+      source,
+      fit: BoxFit.cover,
+      errorBuilder:
+          (_, __, ___) => Image.asset(
+            'assets/images/sliver_banner1.png',
+            fit: BoxFit.cover,
+          ),
+    );
+  }
 
   Widget _buildProfileImage() {
     final resolvedUrl = _resolveProfileUrl((profileUrl ?? '').trim());
@@ -274,7 +305,10 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       if (Get.isRegistered<StudentInformationController>()) {
         Get.delete<StudentInformationController>();
       }
-      Get.toNamed(Routes.studentInforation, arguments: {'fromProfileAction': true});
+      Get.toNamed(
+        Routes.studentInforation,
+        arguments: {'fromProfileAction': true},
+      );
     }
   }
 }

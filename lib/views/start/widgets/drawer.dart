@@ -320,16 +320,11 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                 fit: BoxFit.cover,
               ),
             ),
-            const SizedBox(height: 10),
-            Text(
-              profileName.isEmpty ? 'IIS School' : profileName,
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w600,
-                color: Theme.of(context).textTheme.bodyLarge?.color,
-              ),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
+            const SizedBox(height: 7),
+            Image.asset(
+              'assets/images/text_logo.png',
+              height: 65,
+              fit: BoxFit.contain,
             ),
             const SizedBox(height: 12),
             _parentMenuItem(
@@ -724,7 +719,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
     if (unquoted.startsWith('//')) {
       return 'https:$unquoted';
     }
-    
+
     if (unquoted.startsWith('/')) {
       final base = AppConfig.shared.baseUrl.trim();
       if (base.isEmpty) {

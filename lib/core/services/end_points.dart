@@ -83,6 +83,7 @@ class EndPoints {
       '/api/v1/setting/current-branches/$branchId';
   static String parentAttendanceDetails(String id) =>
       '/api/v1/parent/$id/attendance-details';
-
+  static String get termsAndConditions =>
+      '/api/v1/setting/pages/terms-and-conditions';
   static const String iisBaseUrl = 'https://iis.school.softcreative.live';
 }
