@@ -82,7 +82,7 @@ class MyApp extends StatelessWidget {
                   ? UpgradeDialogStyle.cupertino
                   : UpgradeDialogStyle.material,
           child: GestureDetector(
-            onTap: () => KeyboardHelper.dismissKeyboard(),
+            onTap: () => KeyboardHelper.dismissKeyboard(context),
             child: MediaQuery(
               data: mediaQueryData.copyWith(
                 textScaler: TextScaler.linear(

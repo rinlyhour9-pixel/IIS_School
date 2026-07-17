@@ -41,48 +41,46 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyDqF2c4y2a92VQSoIo4-xOqYhjeHKbSAG0',
-    appId: '1:478573598288:web:9ce1234610bdc74d186355',
-    messagingSenderId: '478573598288',
-    projectId: 'ciac-school',
-    authDomain: 'ciac-school.firebaseapp.com',
-    storageBucket: 'ciac-school.firebasestorage.app',
-    measurementId: 'G-TY5LFF5CZJ',
+    apiKey: 'AIzaSyAYp1gCM5AnHZn7_mjssAPiibLfUtLZzA8',
+    appId: '1:705242179121:web:508de0e5395e909651d710',
+    messagingSenderId: '705242179121',
+    projectId: 'iis-school-32b09',
+    authDomain: 'iis-school-32b09.firebaseapp.com',
+    storageBucket: 'iis-school-32b09.firebasestorage.app',
+    measurementId: 'G-4YNZSZKTKX',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyD7Popu-gCSuJ1egdGKgv08sMtV5z2nZfc',
-    appId: '1:478573598288:android:8c0fc906d5d0d7e6186355',
-    messagingSenderId: '478573598288',
-    projectId: 'ciac-school',
-    storageBucket: 'ciac-school.firebasestorage.app',
+    apiKey: 'AIzaSyDcfWVLG-OQEbHCzBYCIopClRwG56YdPV4',
+    appId: '1:705242179121:android:ee412392946f9bac51d710',
+    messagingSenderId: '705242179121',
+    projectId: 'iis-school-32b09',
+    storageBucket: 'iis-school-32b09.firebasestorage.app',
   );
-
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyBD3o-7gdKk-z3BIYpMl5r22_trDiKmWNg',
-    appId: '1:478573598288:ios:3fc6fb0a11400608186355',
-    messagingSenderId: '478573598288',
-    projectId: 'ciac-school',
-    storageBucket: 'ciac-school.firebasestorage.app',
+    apiKey: 'AIzaSyAg3caN-wtIvEhhZkxOeWFAAySl4N3GhqQ',
+    appId: '1:705242179121:ios:9ba79facee2ba1a651d710',
+    messagingSenderId: '705242179121',
+    projectId: 'iis-school-32b09',
+    storageBucket: 'iis-school-32b09.firebasestorage.app',
     iosBundleId: 'com.kh.iischool',
   );
-
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyBD3o-7gdKk-z3BIYpMl5r22_trDiKmWNg',
-    appId: '1:478573598288:ios:344ba48e53f8cd84186355',
-    messagingSenderId: '478573598288',
-    projectId: 'ciac-school',
-    storageBucket: 'ciac-school.firebasestorage.app',
+    apiKey: 'AIzaSyAg3caN-wtIvEhhZkxOeWFAAySl4N3GhqQ',
+    appId: '1:705242179121:ios:419f353a04da414a51d710',
+    messagingSenderId: '705242179121',
+    projectId: 'iis-school-32b09',
+    storageBucket: 'iis-school-32b09.firebasestorage.app',
     iosBundleId: 'com.example.ciacShcool',
   );
 
   static const FirebaseOptions windows = FirebaseOptions(
-    apiKey: 'AIzaSyDqF2c4y2a92VQSoIo4-xOqYhjeHKbSAG0',
-    appId: '1:478573598288:web:870e51cebd11db90186355',
-    messagingSenderId: '478573598288',
-    projectId: 'ciac-school',
-    authDomain: 'ciac-school.firebaseapp.com',
-    storageBucket: 'ciac-school.firebasestorage.app',
-    measurementId: 'G-5KN330Q7E9',
+    apiKey: 'AIzaSyAYp1gCM5AnHZn7_mjssAPiibLfUtLZzA8',
+    appId: '1:705242179121:web:6d20d2591a85f85a51d710',
+    messagingSenderId: '705242179121',
+    projectId: 'iis-school-32b09',
+    authDomain: 'iis-school-32b09.firebaseapp.com',
+    storageBucket: 'iis-school-32b09.firebasestorage.app',
+    measurementId: 'G-WWVBEZE8ZS',
   );
 }
