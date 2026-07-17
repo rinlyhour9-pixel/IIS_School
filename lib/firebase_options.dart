@@ -59,11 +59,11 @@ class DefaultFirebaseOptions {
   );
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyAg3caN-wtIvEhhZkxOeWFAAySl4N3GhqQ',
-    appId: '1:705242179121:ios:9ba79facee2ba1a651d710',
+    appId: '1:705242179121:ios:43f204738e78127151d710',
     messagingSenderId: '705242179121',
     projectId: 'iis-school-32b09',
     storageBucket: 'iis-school-32b09.firebasestorage.app',
-    iosBundleId: 'com.kh.iischool',
+    iosBundleId: 'com.kh.iisschool',
   );
   static const FirebaseOptions macos = FirebaseOptions(
     apiKey: 'AIzaSyAg3caN-wtIvEhhZkxOeWFAAySl4N3GhqQ',
