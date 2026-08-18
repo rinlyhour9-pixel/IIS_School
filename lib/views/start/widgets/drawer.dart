@@ -438,16 +438,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
               padding: EdgeInsets.fromLTRB(14, 8, 14, 6),
               child: Row(
                 children: [
-                  // IconButton(
-                  //   onPressed: () => Get.back(),
-                  //   icon: const Icon(Icons.close, color: Color(0xFF555555)),
-                  // ),
-                  // const Text(
-                  //   'Setting',
-                  //   style: TextStyle(fontSize: 30, color: Color(0xFF666666)),
-                  // ),
-                  // const Spacer(),
-                  // _profileCircle(size: 42),
+                 
                 ],
               ),
             ),
