@@ -1,0 +1,4 @@
+enum Rule {
+  teacher,
+  parent,
+}

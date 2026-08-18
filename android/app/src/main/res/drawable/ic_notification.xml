@@ -1,0 +1,17 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+
+    <!-- Main shield -->
+    <path
+        android:fillColor="@android:color/white"
+        android:pathData="M12,2.5L4,6.1V12.2C4,17.2 7.4,21.6 12,22.5C16.6,21.6 20,17.2 20,12.2V6.1L12,2.5Z" />
+
+    <!-- House -->
+    <path
+        android:fillColor="@android:color/black"
+        android:pathData="M9,10L12,8L15,10V15H13V12.5H11V15H9V10Z" />
+
+</vector>

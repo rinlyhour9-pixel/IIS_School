@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "478573598288",
+    "project_id": "ciac-school",
+    "storage_bucket": "ciac-school.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:478573598288:android:8c0fc906d5d0d7e6186355",
+        "android_client_info": {
+          "package_name": "com.kh.iisschool"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD7Popu-gCSuJ1egdGKgv08sMtV5z2nZfc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
