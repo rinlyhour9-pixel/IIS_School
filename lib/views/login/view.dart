@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:schoolapp/core/core.dart';
-import 'package:schoolapp/routes.dart';
 import 'package:schoolapp/views/login/widgets/inline_language_dropdown.dart';
 import 'package:schoolapp/views/login/widgets/role_switch_label.dart';
 import 'package:schoolapp/views/login/widgets/socialButtonCustom.dart';
@@ -296,26 +295,9 @@ class LoginView extends GetView<LoginController> {
                                 ),
                               ),
                               UIConstants.spacing.height,
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  const InlineLanguageDropdown(),
-
-                                  InkWell(
-                                    child: Text(
-                                      '${LocaleKeys.forgotPassword.tr}?',
-                                      style: const TextStyle(
-                                        color: AppColor.primary,
-                                        fontSize: 14,
-                                        decoration: TextDecoration.underline,
-                                      ),
-                                    ),
-                                    onTap:
-                                        () =>
-                                            Get.toNamed(Routes.forgotPassword),
-                                  ),
-                                ],
+                              const Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [InlineLanguageDropdown()],
                               ),
                               UIConstants.spacing.height,
                               Obx(() {
@@ -380,32 +362,6 @@ class LoginView extends GetView<LoginController> {
                                   ),
                                 );
                               }),
-                              UIConstants.spacing.height,
-                              Center(
-                                child: Wrap(
-                                  alignment: WrapAlignment.center,
-                                  spacing: 10,
-                                  runSpacing: 4,
-                                  children: [
-                                    Text(
-                                      LocaleKeys.doNotHaveAnAccount.tr,
-                                      style: AppTextStyle.normalGreenRegular,
-                                    ),
-                                    InkWell(
-                                      onTap: () => Get.toNamed(Routes.register),
-                                      child: Text(
-                                        LocaleKeys.signUp.tr,
-                                        style: const TextStyle(
-                                          color: AppColor.primary,
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.bold,
-                                          decoration: TextDecoration.underline,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
                               const SizedBox(height: 2),
                             ],
                           ),

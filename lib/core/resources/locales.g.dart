@@ -247,6 +247,7 @@ class LocaleKeys {
   static const yourNameOrShopName = 'yourNameOrShopName';
   static const confirmPassword = 'confirmPassword';
   static const registerSuccessful = 'registerSuccessful';
+  static const registerUnavailable = 'registerUnavailable';
   static const deliveryInprogress = 'deliveryInprogress';
   static const paymentReceipt = 'paymentReceipt';
   static const paymentReport = 'paymentReport';
@@ -847,6 +848,8 @@ class Locales {
     'yourNameOrShopName': 'Your Name or Shop Name',
     'confirmPassword': 'Confirm Password',
     'registerSuccessful': 'Register successful.',
+    'registerUnavailable':
+        'Account creation is not available in the app. Please contact the school office to get your account.',
     'deliveryInprogress': 'Delivery Inprogress',
     'paymentReceipt': 'Payment Receipt',
     'paymentReport': 'Payment Report',
@@ -934,7 +937,7 @@ class Locales {
     'searchNotFound': 'Search not found',
     'deleteAccount': 'Delete account',
     'deleteAccountMessage':
-        'Are you sure you want to delete your account? Deleteing your account is permanent and will remove all content and profile setting',
+        'Are you sure you want to delete your account? Deleting your account is permanent and will remove all of your content and profile settings.',
     'youHaveSuccesfulyDeletedYourAccount':
         'Your have successfully deleted your account',
     'startBillcreate': 'Start bill create',
@@ -1440,6 +1443,8 @@ class Locales {
     'register': 'ចុះឈ្មោះ',
     'confirmPassword': 'បញ្ជាក់ពាក្យសម្ងាត់',
     'registerSuccessful': 'ចុះឈ្មោះដោយជោគជ័យ',
+    'registerUnavailable':
+        'ការបង្កើតគណនីមិនអាចធ្វើបានក្នុងកម្មវិធីទេ។ សូមទាក់ទងការិយាល័យសាលា ដើម្បីទទួលបានគណនីរបស់អ្នក។',
     'typeOfCoc': 'ប្រភេទ COD',
     'deliveryInprogress': 'ការដឹកជញ្ជូនកំពុងដំណើរការ',
     'paymentReceipt': 'វិក្កយបត្រទូទាត់',

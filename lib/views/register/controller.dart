@@ -4,7 +4,6 @@ import 'package:schoolapp/core/resources/locales.g.dart';
 import 'package:schoolapp/core/constants/constants.dart';
 import 'package:schoolapp/core/utils/form_validator.dart';
 import 'package:schoolapp/core/utils/dialog_manager.dart';
-import 'package:schoolapp/routes.dart';
 
 class RegisterController extends GetxController {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -46,22 +45,12 @@ class RegisterController extends GetxController {
     formKey.currentState?.validate();
   }
 
+  /// The sign up screen is display only: no account is created from the app.
   Future<void> register() async {
-    if (!(formKey.currentState?.validate() ?? false)) return;
-    if (isLoading.value) return;
-
-    try {
-      isLoading.value = true;
-      await Future<void>.delayed(const Duration(milliseconds: 450));
-
-      DialogManager.showDialog(
-        title: LocaleKeys.register.tr,
-        subTitle: LocaleKeys.registerSuccessful.tr,
-      );
-      Get.offAllNamed(Routes.login);
-    } finally {
-      isLoading.value = false;
-    }
+    DialogManager.showDialog(
+      title: LocaleKeys.signUp.tr,
+      subTitle: LocaleKeys.registerUnavailable.tr,
+    );
   }
 
   String? validateIdentity(String? text) {

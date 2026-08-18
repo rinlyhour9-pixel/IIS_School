@@ -290,6 +290,25 @@ class _DrawerWidgetState extends State<DrawerWidget> {
     );
   }
 
+  void deleteAccountHandleTap() {
+    Get.back();
+    DialogManager.showCustom(
+      PrimaryDialog(
+        title: LocaleKeys.deleteAccount.tr,
+        subTitle: LocaleKeys.deleteAccountMessage.tr,
+        btnText: LocaleKeys.yes.tr.toUpperCase(),
+        onPressed: () async {
+          Get.back();
+          try {
+            await UserRepository.shared.deleteAccount();
+          } catch (e) {
+            ExceptionHandler.handleException(e);
+          }
+        },
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     if (_isParentRole) {
@@ -360,6 +379,12 @@ class _DrawerWidgetState extends State<DrawerWidget> {
               icon: Icons.logout,
               label: LocaleKeys.logout.tr,
               onTap: logOutHandleTap,
+            ),
+            _divider(),
+            _parentMenuItem(
+              icon: Icons.delete_forever,
+              label: LocaleKeys.deleteAccount.tr,
+              onTap: deleteAccountHandleTap,
             ),
             const Spacer(),
             Padding(
@@ -519,6 +544,12 @@ class _DrawerWidgetState extends State<DrawerWidget> {
               icon: Icons.logout,
               label: LocaleKeys.logout.tr,
               onTap: logOutHandleTap,
+            ),
+            _divider(),
+            _parentMenuItem(
+              icon: Icons.delete_forever,
+              label: LocaleKeys.deleteAccount.tr,
+              onTap: deleteAccountHandleTap,
             ),
             const Spacer(),
             Padding(

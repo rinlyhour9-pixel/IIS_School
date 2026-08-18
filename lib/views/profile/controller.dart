@@ -94,11 +94,7 @@ class ProfileController extends GetxController {
 
   Future<void> deleteAccount() async {
     try {
-      await Get.find<ApiService>().get(
-        EndPoints.deleteAccount,
-        isShowLoading: true,
-      );
-      await UserRepository.shared.logout();
+      await UserRepository.shared.deleteAccount();
     } catch (e) {
       if (isClosed) {
         return;

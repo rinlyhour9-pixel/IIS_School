@@ -196,6 +196,7 @@
   "enterYourNameOrShopName": "បញ្ចូលឈ្មោះអ្នក ឬឈ្មោះហាង",
   "confirmPassword": "បញ្ជាក់ពាក្យសម្ងាត់",
   "registerSuccessful": "ការបង្កើតគណនីទទូលបានជោគជ័យ",
+  "registerUnavailable": "ការបង្កើតគណនីមិនអាចធ្វើបានក្នុងកម្មវិធីទេ។ សូមទាក់ទងការិយាល័យសាលា ដើម្បីទទួលបានគណនីរបស់អ្នក។",
   "typeOfCoc": "ប្រភេទ COD",
   "deliveryInprogress": "កំពុងដំណើរការ",
   "paymentReceipt": "បង្កាន់ដៃបង់ប្រាក់",

@@ -22,6 +22,15 @@ class UserRepository {
   late ProfileModel _profile;
   ProfileModel get profile => _profile;
 
+  /// Permanently deletes the signed in account, then clears the session.
+  Future<void> deleteAccount() async {
+    await Get.find<ApiService>().get(
+      EndPoints.deleteAccount,
+      isShowLoading: true,
+    );
+    await logout();
+  }
+
   Future<void> logout() async {
     if (Get.isRegistered<SelectedStudentService>()) {
       await Get.find<SelectedStudentService>().clear();

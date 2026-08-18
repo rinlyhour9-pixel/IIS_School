@@ -9,7 +9,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:478573598288:android:8c0fc906d5d0d7e6186355",
         "android_client_info": {
-          "package_name": "com.kh.iischool"
+          "package_name": "com.kh.iisschool"
         }
       },
       "oauth_client": [],
