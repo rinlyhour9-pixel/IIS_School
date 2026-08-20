@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:schoolapp/core/core.dart';
+import 'package:schoolapp/flavor/app_config.dart';
 import 'package:schoolapp/models/models.dart';
 import 'package:schoolapp/routes.dart';
 
@@ -35,7 +36,33 @@ class UserRepository {
     if (Get.isRegistered<SelectedStudentService>()) {
       await Get.find<SelectedStudentService>().clear();
     }
-    SharedPreferencesManager.remove(Credential.token.name);
+
+    // Clear every session-scoped key, not just the token — a leftover
+    // student_info_id/last_leave_student_id from a parent session used to
+    // survive logout and (via _hasParentStorage below) flip the NEXT
+    // account's role back to 'parent' even after a valid teacher login.
+    await Future.wait([
+      SharedPreferencesManager.remove(Credential.token.name),
+      SharedPreferencesManager.remove('username'),
+      SharedPreferencesManager.remove('password'),
+      SharedPreferencesManager.remove('name'),
+      SharedPreferencesManager.remove('profile'),
+      SharedPreferencesManager.remove('user_id'),
+      SharedPreferencesManager.remove('staff_code'),
+      SharedPreferencesManager.remove('user_role'),
+      SharedPreferencesManager.remove('scanner_owner_id'),
+      SharedPreferencesManager.remove('branch_id'),
+      SharedPreferencesManager.remove('student_info_id'),
+      SharedPreferencesManager.remove('student_info_mode'),
+      SharedPreferencesManager.remove('student_info_name'),
+      SharedPreferencesManager.remove('student_info_profile'),
+      SharedPreferencesManager.remove('student_info_profession'),
+      SharedPreferencesManager.remove('last_leave_student_id'),
+    ]);
+
+    AppConfig.shared.token = '';
+    _isParent = false;
+
     Get.offAllNamed(Routes.login);
   }
 
@@ -62,7 +89,14 @@ class UserRepository {
             .toLowerCase();
     var resolvedRole = UserType.fromKey(savedRole)?.key ?? '';
 
-    if (resolvedRole != UserType.parent.key && await _hasParentStorage()) {
+    // Only guess the role from leftover parent-scoped keys when we don't
+    // already have an explicit, valid role in storage. Previously this ran
+    // whenever resolvedRole wasn't already 'parent' — so a correctly
+    // stored 'teacher' role from a fresh login got silently overwritten
+    // back to 'parent' by a PREVIOUS account's still-cached
+    // student_info_id/last_leave_student_id, and that wrong value was then
+    // re-persisted to storage.
+    if (resolvedRole.isEmpty && await _hasParentStorage()) {
       resolvedRole = UserType.parent.key;
       await SharedPreferencesManager.setValue('user_role', resolvedRole);
     }

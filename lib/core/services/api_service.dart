@@ -180,6 +180,7 @@ class ApiService extends GetxService {
     Map<String, dynamic>? headers,
     String? contentType,
     String? baseUrl,
+    Duration? sendTimeout,
   }) {
     final mergedHeaders = <String, dynamic>{
       ..._client.options.headers,
@@ -190,7 +191,7 @@ class ApiService extends GetxService {
       headers: mergedHeaders,
       contentType: contentType ?? _client.options.contentType,
       responseType: _client.options.responseType,
-      sendTimeout: _client.options.sendTimeout,
+      sendTimeout: sendTimeout ?? _client.options.sendTimeout,
       receiveTimeout: _client.options.receiveTimeout,
       extra: {if (baseUrl != null) 'custom_base_url': baseUrl},
     );
@@ -244,6 +245,7 @@ class ApiService extends GetxService {
     bool encode = true,
     Map<String, dynamic>? cusHeaders,
     bool? isShowLoading,
+    Duration? sendTimeout,
   }) async {
     final client = _client;
 
@@ -269,6 +271,7 @@ class ApiService extends GetxService {
         headers: headers,
         contentType: isMultipart ? null : 'application/json',
         baseUrl: customBaseUrl,
+        sendTimeout: sendTimeout,
       ),
     );
   }

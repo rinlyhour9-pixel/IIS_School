@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -18,12 +17,27 @@ class TeacherCreateActivityView extends StatefulWidget {
 }
 
 class _TeacherCreateActivityViewState extends State<TeacherCreateActivityView> {
+  static const int _maxImages = 10;
+
   final TextEditingController _titleCtl = TextEditingController();
   final TextEditingController _descriptionCtl = TextEditingController();
   String? _selectedClassValue;
-  XFile? _selectedImage;
+
+  /// Existing remote images still kept on this activity (edit mode only).
+  final List<ActivityImageRef> _keptRemote = [];
+
+  /// Ids of remote images the teacher removed — sent as `delete_images` on
+  /// update. The API's update contract is a delete-list, not a keep-list:
+  /// anything already attached and NOT in this list is kept automatically.
+  final List<int> _removedRemoteImageIds = [];
+
+  /// Newly picked local images, not yet uploaded.
+  final List<XFile> _newImages = [];
 
   bool get _isEditMode => widget.initialActivity != null;
+
+  int get _totalImageCount => _keptRemote.length + _newImages.length;
+  int get _remainingImageSlots => _maxImages - _totalImageCount;
 
   @override
   void initState() {
@@ -32,6 +46,7 @@ class _TeacherCreateActivityViewState extends State<TeacherCreateActivityView> {
     if (initialActivity != null) {
       _titleCtl.text = initialActivity.title;
       _descriptionCtl.text = initialActivity.description;
+      _keptRemote.addAll(initialActivity.imageRefs);
       final className = initialActivity.className.trim();
       if (className.isNotEmpty) {
         _selectedClassValue =
@@ -162,16 +177,32 @@ class _TeacherCreateActivityViewState extends State<TeacherCreateActivityView> {
               ),
             ),
             const SizedBox(height: 24),
-            _SectionTitle(
-              titleKey: LocaleKeys.coverImage,
-              subtitleKey: LocaleKeys.coverImageSubtitle,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Expanded(
+                  child: _SectionTitle(
+                    titleKey: LocaleKeys.coverImage,
+                    subtitleKey: LocaleKeys.coverImageSubtitle,
+                  ),
+                ),
+                Text(
+                  '$_totalImageCount/$_maxImages',
+                  style: const TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w700,
+                    color: Color(0xFF6B7280),
+                  ),
+                ),
+              ],
             ),
             const SizedBox(height: 10),
             OutlinedButton.icon(
-              onPressed: _pickImage,
-              icon: const Icon(Icons.image_rounded),
+              onPressed: _remainingImageSlots <= 0 ? null : _pickImages,
+              icon: const Icon(Icons.add_photo_alternate_rounded),
               label: Text(
-                _selectedImage == null
+                _totalImageCount == 0
                     ? LocaleKeys.chooseImage.tr
                     : LocaleKeys.changeImage.tr,
               ),
@@ -184,57 +215,57 @@ class _TeacherCreateActivityViewState extends State<TeacherCreateActivityView> {
                 ),
               ),
             ),
-            const SizedBox(height: 8),
-            Text(
-              _selectedImage == null
-                  ? (_isEditMode &&
-                          (widget.initialActivity?.image.trim().isNotEmpty ??
-                              false)
-                      ? LocaleKeys.coverImageReplaceHint.tr
-                      : LocaleKeys.coverImageOptionalHint.tr)
-                  : LocaleKeys.imageSelectedReady.tr,
-              style: const TextStyle(
-                fontSize: 12,
-                height: 1.35,
-                color: Color(0xFF6B7280),
-              ),
-            ),
-            if (_selectedImage != null) ...[
-              const SizedBox(height: 12),
-              ClipRRect(
-                borderRadius: BorderRadius.circular(12),
-                child: Image.file(
-                  File(_selectedImage!.path),
-                  height: 180,
-                  width: double.infinity,
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ] else if (_isEditMode &&
-                (widget.initialActivity?.image.trim().isNotEmpty ?? false)) ...[
-              const SizedBox(height: 12),
-              ClipRRect(
-                borderRadius: BorderRadius.circular(12),
-                child: CachedNetworkImage(
-                  imageUrl: widget.initialActivity!.image,
-                  height: 180,
-                  width: double.infinity,
-                  fit: BoxFit.cover,
-                  placeholder:
-                      (_, __) => Container(color: const Color(0xFFE9EEF2)),
-                  errorWidget:
-                      (_, __, ___) => Container(
-                        height: 180,
-                        color: const Color(0xFFE9EEF2),
-                        alignment: Alignment.center,
-                        child: const Icon(
-                          Icons.broken_image,
-                          color: Colors.grey,
-                        ),
+            const SizedBox(height: 10),
+            if (_totalImageCount > 0)
+              Wrap(
+                spacing: 10,
+                runSpacing: 10,
+                children: [
+                  for (final ref in _keptRemote)
+                    _ImageTile(
+                      key: ValueKey('kept-${ref.id ?? ref.url}'),
+                      onRemove: () => _removeKeptImage(ref),
+                      child: ResolvedNetworkImage(
+                        rawPath: ref.url,
+                        width: 92,
+                        height: 92,
                       ),
+                    ),
+                  for (final file in _newImages)
+                    _ImageTile(
+                      key: ValueKey('new-${file.path}'),
+                      onRemove: () => setState(() => _newImages.remove(file)),
+                      child: Image.file(
+                        File(file.path),
+                        width: 92,
+                        height: 92,
+                        fit: BoxFit.cover,
+                        errorBuilder:
+                            (_, __, ___) => Container(
+                              width: 92,
+                              height: 92,
+                              color: const Color(0xFFE9EEF2),
+                              alignment: Alignment.center,
+                              child: const Icon(
+                                Icons.broken_image,
+                                color: Colors.grey,
+                              ),
+                            ),
+                      ),
+                    ),
+                ],
+              )
+            else
+              Text(
+                _isEditMode
+                    ? LocaleKeys.coverImageReplaceHint.tr
+                    : LocaleKeys.coverImageOptionalHint.tr,
+                style: const TextStyle(
+                  fontSize: 12,
+                  height: 1.35,
+                  color: Color(0xFF6B7280),
                 ),
               ),
-            ],
             const SizedBox(height: 28),
             Obx(
               () => SizedBox(
@@ -304,12 +335,45 @@ class _TeacherCreateActivityViewState extends State<TeacherCreateActivityView> {
     );
   }
 
-  Future<void> _pickImage() async {
+  void _removeKeptImage(ActivityImageRef ref) {
+    setState(() => _keptRemote.remove(ref));
+    if (ref.id != null) {
+      _removedRemoteImageIds.add(ref.id!);
+      return;
+    }
+    // No id to send in delete_images — the server has no way to know which
+    // attachment this was, so it will still be there after save. Tell the
+    // teacher rather than silently pretending the removal worked.
+    Get.snackbar(
+      LocaleKeys.error.tr,
+      LocaleKeys.imageRemovalNotSupportedMessage.tr,
+      snackPosition: SnackPosition.BOTTOM,
+    );
+  }
+
+  Future<void> _pickImages() async {
+    // Capture the room available *before* the pick — pickMultiImage's
+    // `limit` is a hint some platforms ignore, so we re-clamp here rather
+    // than trust it.
+    final room = _remainingImageSlots;
+    if (room <= 0) {
+      Get.snackbar(
+        LocaleKeys.error.tr,
+        LocaleKeys.maxImagesReachedMessage.tr,
+        snackPosition: SnackPosition.BOTTOM,
+      );
+      return;
+    }
+
     try {
       final picker = ImagePicker();
-      final image = await picker.pickImage(source: ImageSource.gallery);
-      if (!mounted || image == null) return;
-      setState(() => _selectedImage = image);
+      final picked = await picker.pickMultiImage(limit: room);
+      // Cancel returns an empty list, not null — bail out before touching
+      // state so cancelling never wipes an existing selection.
+      if (!mounted || picked.isEmpty) return;
+      setState(() {
+        _newImages.addAll(picked.take(room));
+      });
     } catch (e) {
       ExceptionHandler.handleException(e);
     }
@@ -341,21 +405,44 @@ class _TeacherCreateActivityViewState extends State<TeacherCreateActivityView> {
       return;
     }
 
+    final description = _descriptionCtl.text.trim();
+    if (description.isEmpty) {
+      Get.snackbar(
+        LocaleKeys.error.tr,
+        LocaleKeys.activityDescriptionEmpty.tr,
+        snackPosition: SnackPosition.BOTTOM,
+      );
+      return;
+    }
+
     try {
+      final imagePaths = _newImages.map((file) => file.path).toList();
+      // The gallery displays kept remote images first, then new picks — so
+      // the true "first image" is only one of the new files when there's
+      // no kept remote image ahead of it. A kept remote image can't become
+      // the cover here since we'd need to download it before re-sending it
+      // as binary.
+      final coverImagePath =
+          _keptRemote.isEmpty && _newImages.isNotEmpty
+              ? _newImages.first.path
+              : null;
       if (_isEditMode) {
         await controller.updateActivity(
           id: widget.initialActivity!.id,
           classId: selectedClassId,
           title: title,
-          description: _descriptionCtl.text.trim(),
-          imagePath: _selectedImage?.path ?? '',
+          description: description,
+          imagePaths: imagePaths,
+          deleteImageIds: _removedRemoteImageIds,
+          coverImagePath: coverImagePath,
         );
       } else {
         await controller.createActivity(
           classId: selectedClassId,
           title: title,
-          description: _descriptionCtl.text.trim(),
-          imagePath: _selectedImage?.path ?? '',
+          description: description,
+          imagePaths: imagePaths,
+          coverImagePath: coverImagePath,
         );
       }
       if (!mounted) return;
@@ -441,6 +528,48 @@ class _FieldLabel extends StatelessWidget {
         fontWeight: FontWeight.w700,
         color: Color(0xFF1F2937),
       ),
+    );
+  }
+}
+
+/// A single 92x92 image thumbnail with a circular remove button, used by
+/// both the kept-remote and newly-picked image grids.
+class _ImageTile extends StatelessWidget {
+  const _ImageTile({super.key, required this.child, required this.onRemove});
+
+  final Widget child;
+  final VoidCallback onRemove;
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      clipBehavior: Clip.none,
+      children: [
+        ClipRRect(
+          borderRadius: BorderRadius.circular(12),
+          child: SizedBox(width: 92, height: 92, child: child),
+        ),
+        Positioned(
+          top: -6,
+          right: -6,
+          child: GestureDetector(
+            onTap: onRemove,
+            child: Container(
+              width: 22,
+              height: 22,
+              decoration: const BoxDecoration(
+                color: Color(0xFFD14343),
+                shape: BoxShape.circle,
+              ),
+              child: const Icon(
+                Icons.close_rounded,
+                size: 14,
+                color: Colors.white,
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

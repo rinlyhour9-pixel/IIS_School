@@ -573,12 +573,16 @@ class LocaleKeys {
       'tapToViewTheFullActivityDetails';
   static const editActivity = 'editActivity';
   static const activityTitleEmpty = 'activityTitleEmpty';
+  static const activityDescriptionEmpty = 'activityDescriptionEmpty';
   static const activityTitleLabel = 'activityTitleLabel';
   static const descriptionLabel = 'descriptionLabel';
   static const coverImageOptionalHint = 'coverImageOptionalHint';
   static const coverImageReplaceHint = 'coverImageReplaceHint';
   static const chooseImage = 'chooseImage';
   static const changeImage = 'changeImage';
+  static const maxImagesReachedMessage = 'maxImagesReachedMessage';
+  static const imageRemovalNotSupportedMessage =
+      'imageRemovalNotSupportedMessage';
   static const activityContent = 'activityContent';
   static const activityContentSubtitle = 'activityContentSubtitle';
   static const activityTitleHint = 'activityTitleHint';
@@ -1163,14 +1167,18 @@ class Locales {
     'tapToViewTheFullActivityDetails': 'Tap to view the full activity details',
     'editActivity': 'Edit Activity',
     'activityTitleEmpty': 'Activity title cannot be empty',
+    'activityDescriptionEmpty': 'Description cannot be empty',
     'activityTitleLabel': 'Activity Title',
     'descriptionLabel': 'Description',
     'coverImageOptionalHint':
-        'Optional. Add one cover image to make the activity card more engaging.',
+        'Optional. Add up to 10 photos to make the activity card more engaging.',
     'coverImageReplaceHint':
-        'Optional. Choose a new image only if you want to replace the current one.',
-    'chooseImage': 'Choose Image',
-    'changeImage': 'Change Image',
+        'Optional. Add new photos or remove existing ones below.',
+    'chooseImage': 'Choose Photos',
+    'changeImage': 'Add More Photos',
+    'maxImagesReachedMessage': 'You can add up to 10 images.',
+    'imageRemovalNotSupportedMessage':
+        'This image could not be deleted from the server and will reappear after saving.',
     'activityContent': 'Activity Content',
     'activityContentSubtitle':
         'Write the title and short description students should read first.',
@@ -1188,9 +1196,9 @@ class Locales {
     'pleaseSelectClass': 'Please select a class',
     'descriptionHint': 'Write a short summary.',
     'imageSelectedReady': 'Image selected and ready to upload.',
-    'coverImage': 'Cover Image',
+    'coverImage': 'Photos',
     'coverImageSubtitle':
-        'Add one visual to make the activity card more engaging.',
+        'Add up to 10 photos to make the activity card more engaging.',
     'deleting': 'Deleting...',
     'deleteActivity': 'Delete Activity',
     'confirmDeleteMessage': 'Are you sure you want to delete this activity?',
@@ -1704,18 +1712,22 @@ class Locales {
     'tapToViewTheFullActivityDetails': 'ចុចដើម្បីមើលព័ត៌មានលម្អិតទាំងអស់',
     'editActivity': 'កែសម្រួលសកម្មភាព',
     'activityTitleEmpty': 'ចំណងជើងសកម្មភាពមិនអាចទទេបានទេ',
+    'activityDescriptionEmpty': 'ការពិពណ៌នាមិនអាចទទេបានទេ',
     'activityTitleLabel': 'ចំណងជើងសកម្មភាព',
     'descriptionLabel': 'ការពិពណ៌នា',
     'coverImageOptionalHint':
-        'ស្រេចចិត្ត។ បន្ថែមរូបភាពមួយដើម្បីធ្វើឲ្យកាតសកម្មភាពទាក់ទាញជាងមុន។',
+        'បន្ថែមរូបភាពបានរហូតដល់ ១០សន្លឹក ដើម្បីធ្វើឲ្យកាតសកម្មភាពទាក់ទាញជាងមុន។',
     'coverImageReplaceHint':
-        'ស្រេចចិត្ត។ ជ្រើសរើសរូបភាពថ្មីលុះត្រាតែអ្នកចង់ជំនួសរូបភាពបច្ចុប្បន្ន។',
+        'បន្ថែមរូបភាពថ្មី ឬលុបរូបភាពដែលមានស្រាប់នៅខាងក្រោម។',
     'chooseImage': 'ជ្រើសរើសរូបភាព',
-    'changeImage': 'ប្តូររូបភាព',
+    'changeImage': 'បន្ថែមរូបភាព',
+    'maxImagesReachedMessage': 'អ្នកអាចបន្ថែមរូបភាពបានរហូតដល់ ១០សន្លឹក។',
+    'imageRemovalNotSupportedMessage':
+        'រូបភាពនេះមិនអាចលុបចេញពីម៉ាស៊ីនមេបានទេ ហើយនឹងបង្ហាញឡើងវិញបន្ទាប់ពីរក្សាទុក។',
     'activityContent': 'មាតិកាសកម្មភាព',
     'activityContentSubtitle':
         'សរសេរចំណងជើង និងការពិពណ៌នាសង្ខេបដែលសិស្សគួរអានមុនគេ។',
-    'activityTitleHint': 'ឧទាហរណ៍៖ មន្ទីរពិសោធន៍វិទ្យាសាស្ត្រ, រង្វង់អាន',
+    'activityTitleHint': 'ចំណងជើង',
     'noClassAvailable': 'មិនមានថ្នាក់ទេ',
     'selectClass': 'ជ្រើសរើសថ្នាក់',
     'classTarget': 'ថ្នាក់គោលដៅ',
@@ -1729,9 +1741,9 @@ class Locales {
     'pleaseSelectClass': 'សូមជ្រើសរើសថ្នាក់',
     'descriptionHint': 'សរសេរសេចក្តីសង្ខេបខ្លីមួយ។',
     'imageSelectedReady': 'បានជ្រើសរើសរូបភាព និងត្រៀមខ្លួនសម្រាប់ផ្ទុកឡើង។',
-    'coverImage': 'រូបភាពគម្រប',
+    'coverImage': 'រូបភាព',
     'coverImageSubtitle':
-        'បន្ថែមរូបភាពមួយដើម្បីធ្វើឲ្យកាតសកម្មភាពទាក់ទាញជាងមុន។',
+        'បន្ថែមរូបភាពរហូតដល់ ១០សន្លឹក ដើម្បីធ្វើឲ្យកាតសកម្មភាពទាក់ទាញជាងមុន។',
     'deleting': 'កំពុងលុប...',
     'deleteActivity': 'លុបសកម្មភាព',
     'confirmDeleteMessage': 'តើអ្នកប្រាកដថាចង់លុបសកម្មភាពនេះមែនទេ?',

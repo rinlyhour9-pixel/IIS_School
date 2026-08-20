@@ -1,4 +1,4 @@
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:schoolapp/views/event_gallery/controller.dart';
@@ -48,7 +48,7 @@ class ActivityCardWidget extends StatelessWidget {
                   borderRadius: const BorderRadius.vertical(
                     top: Radius.circular(16),
                   ),
-                  child: _cardImage(item.image),
+                  child: _ActivityCardImage(images: item.images),
                 ),
                 Expanded(
                   child: Padding(
@@ -116,54 +116,6 @@ class ActivityCardWidget extends StatelessWidget {
     );
   }
 
-  Widget _cardImage(String imagePath) {
-    final normalizedPath = imagePath.trim();
-    if (normalizedPath.isEmpty) {
-      return Image.asset(
-        'assets/images/placeholder.png',
-        width: double.infinity,
-        height: 108,
-        fit: BoxFit.cover,
-        filterQuality: FilterQuality.high,
-      );
-    }
-
-    if (normalizedPath.startsWith('http://') ||
-        normalizedPath.startsWith('https://')) {
-      return CachedNetworkImage(
-        imageUrl: normalizedPath,
-        width: double.infinity,
-        height: 95,
-        fit: BoxFit.cover,
-        placeholder: (_, __) => Container(color: const Color(0xFFE9EEF2)),
-        errorWidget:
-            (_, __, ___) => Image.asset(
-              'assets/images/placeholder.png',
-              width: double.infinity,
-              height: 108,
-              fit: BoxFit.cover,
-              filterQuality: FilterQuality.high,
-            ),
-      );
-    }
-
-    return Image.asset(
-      normalizedPath,
-      width: double.infinity,
-      height: 108,
-      fit: BoxFit.cover,
-      filterQuality: FilterQuality.high,
-      errorBuilder:
-          (_, __, ___) => Image.asset(
-            'assets/images/placeholder.png',
-            width: double.infinity,
-            height: 108,
-            fit: BoxFit.cover,
-            filterQuality: FilterQuality.high,
-          ),
-    );
-  }
-
   String _descriptionPreview(String rawDescription) {
     final plainText = rawDescription.replaceAll(RegExp(r'<[^>]*>'), ' ').trim();
 
@@ -184,5 +136,81 @@ class ActivityCardWidget extends StatelessWidget {
     }
 
     return '${words.take(maxWords).join(' ')}...';
+  }
+}
+
+/// Grid-card image: a single image, or a swipeable mini carousel with a
+/// "1/4" position badge when the activity has more than one photo. A
+/// numeric badge reads better than dots at this thumbnail size.
+class _ActivityCardImage extends StatefulWidget {
+  const _ActivityCardImage({required this.images});
+
+  final List<String> images;
+
+  @override
+  State<_ActivityCardImage> createState() => _ActivityCardImageState();
+}
+
+class _ActivityCardImageState extends State<_ActivityCardImage> {
+  int _index = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    final images = widget.images;
+    if (images.length <= 1) {
+      return ResolvedNetworkImage(
+        rawPath: images.isEmpty ? '' : images.first,
+        width: double.infinity,
+        height: 108,
+        memCacheWidth: 340,
+        memCacheHeight: 216,
+      );
+    }
+
+    return Stack(
+      children: [
+        CarouselSlider(
+          options: CarouselOptions(
+            height: 108,
+            viewportFraction: 1.0,
+            autoPlay: false,
+            // Safe here because this branch only runs with length > 1.
+            enableInfiniteScroll: true,
+            onPageChanged: (index, _) => setState(() => _index = index),
+          ),
+          items:
+              images
+                  .map(
+                    (url) => ResolvedNetworkImage(
+                      rawPath: url,
+                      width: double.infinity,
+                      height: 108,
+                      memCacheWidth: 340,
+                      memCacheHeight: 216,
+                    ),
+                  )
+                  .toList(),
+        ),
+        Positioned(
+          right: 8,
+          bottom: 8,
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
+            decoration: BoxDecoration(
+              color: const Color(0x99000000),
+              borderRadius: BorderRadius.circular(999),
+            ),
+            child: Text(
+              '${_index + 1}/${images.length}',
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 10,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
   }
 }

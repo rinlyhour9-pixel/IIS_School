@@ -1,4 +1,4 @@
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:schoolapp/core/core.dart';
@@ -18,6 +18,7 @@ class ActivityDetailView extends StatefulWidget {
 class _ActivityDetailViewState extends State<ActivityDetailView> {
   late ClassActivityDetailItem _detail;
   ClassActivityItem? _summary;
+  int _currentImageIndex = 0;
 
   @override
   void initState() {
@@ -92,7 +93,7 @@ class _ActivityDetailViewState extends State<ActivityDetailView> {
               borderRadius: BorderRadius.circular(22),
               child: Stack(
                 children: [
-                  _detailImage(_detail.image),
+                  _detailImages(_detail.images),
                   Positioned(
                     left: 16,
                     right: 16,
@@ -208,51 +209,77 @@ class _ActivityDetailViewState extends State<ActivityDetailView> {
     );
   }
 
-  Widget _detailImage(String imagePath) {
-    final normalizedPath = imagePath.trim();
-    if (normalizedPath.isEmpty) {
-      return Image.asset(
-        'assets/images/placeholder.png',
+  Widget _detailImages(List<String> images) {
+    if (images.length <= 1) {
+      return ResolvedNetworkImage(
+        rawPath: images.isEmpty ? '' : images.first,
         width: double.infinity,
         height: 300,
-        fit: BoxFit.cover,
-        filterQuality: FilterQuality.high,
       );
     }
 
-    if (normalizedPath.startsWith('http://') ||
-        normalizedPath.startsWith('https://')) {
-      return CachedNetworkImage(
-        imageUrl: normalizedPath,
-        width: double.infinity,
-        height: 300,
-        fit: BoxFit.cover,
-        placeholder: (_, __) => Container(color: const Color(0xFFE9EEF2)),
-        errorWidget:
-            (_, __, ___) => Image.asset(
-              'assets/images/placeholder.png',
-              width: double.infinity,
-              height: 300,
-              fit: BoxFit.cover,
-              filterQuality: FilterQuality.high,
-            ),
-      );
-    }
-
-    return Image.asset(
-      normalizedPath,
-      width: double.infinity,
-      height: 300,
-      fit: BoxFit.cover,
-      filterQuality: FilterQuality.high,
-      errorBuilder:
-          (_, __, ___) => Image.asset(
-            'assets/images/placeholder.png',
-            width: double.infinity,
+    return Stack(
+      children: [
+        CarouselSlider(
+          options: CarouselOptions(
             height: 300,
-            fit: BoxFit.cover,
-            filterQuality: FilterQuality.high,
+            viewportFraction: 1.0,
+            // Only safe to enable with more than one item — with exactly
+            // one, carousel_slider still builds a looping PageView, which
+            // can drag to a blank page and desyncs the dot indicator.
+            enableInfiniteScroll: true,
+            autoPlay: true,
+            autoPlayInterval: const Duration(seconds: 4),
+            autoPlayAnimationDuration: const Duration(milliseconds: 700),
+            autoPlayCurve: Curves.easeInOut,
+            // Let a manual swipe interrupt the slideshow instead of fighting
+            // it — pauses briefly, then resumes auto-advancing.
+            pauseAutoPlayOnTouch: true,
+            onPageChanged:
+                (index, _) => setState(() => _currentImageIndex = index),
           ),
+          items:
+              images
+                  .map(
+                    (url) => ResolvedNetworkImage(
+                      rawPath: url,
+                      width: double.infinity,
+                      height: 300,
+                    ),
+                  )
+                  .toList(),
+        ),
+        Positioned(
+          top: 14,
+          right: 14,
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+            decoration: BoxDecoration(
+              color: const Color(0x66000000),
+              borderRadius: BorderRadius.circular(999),
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: List.generate(images.length, (index) {
+                final isActive = index == _currentImageIndex;
+                return AnimatedContainer(
+                  duration: const Duration(milliseconds: 220),
+                  margin: EdgeInsets.only(
+                    right: index == images.length - 1 ? 0 : 5,
+                  ),
+                  width: isActive ? 14 : 6,
+                  height: 6,
+                  decoration: BoxDecoration(
+                    color:
+                        isActive ? Colors.white : Colors.white.withOpacity(0.45),
+                    borderRadius: BorderRadius.circular(999),
+                  ),
+                );
+              }),
+            ),
+          ),
+        ),
+      ],
     );
   }
 

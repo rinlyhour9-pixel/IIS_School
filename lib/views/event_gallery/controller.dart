@@ -1,7 +1,9 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:dio/dio.dart' as d;
 import 'package:get/get.dart';
+import 'package:http_parser/http_parser.dart';
 import 'package:schoolapp/core/core.dart';
 
 class ActivityController extends GetxController {
@@ -133,12 +135,12 @@ class ActivityController extends GetxController {
                   id: 0,
                   className: '',
                   title: '',
-                  image: '',
+                  imageRefs: [],
                   description: '',
                   timeText: '',
                 );
               })
-              .where((e) => e.image.isNotEmpty || e.title.isNotEmpty)
+              .where((e) => e.images.isNotEmpty || e.title.isNotEmpty)
               .toList();
 
       if (reset) {
@@ -244,11 +246,76 @@ class ActivityController extends GetxController {
     }
   }
 
+  /// Multipart field names for /teacher/class-activity (store) and
+  /// /teacher/class-activity/update/{id}:
+  /// - `images[]` — repeated per new file. The docs' curl sample shows a
+  ///   bare `--form images=`, but live testing showed that name drops every
+  ///   uploaded photo — the created activity comes back with no images at
+  ///   all. That matches standard PHP/Laravel multipart parsing: repeated
+  ///   fields sharing one name collapse to just the last part (or fail an
+  ///   `array` validation rule) unless the name carries the `[]` suffix,
+  ///   which is what actually builds an array server-side. The docs' own
+  ///   example was simply wrong/incomplete for this array-of-files case.
+  /// - `delete_images[]` — repeated per id to remove; anything already
+  ///   attached and NOT listed here is kept. This is the inverse of what
+  ///   this file originally assumed (a "keep list"); the real contract is a
+  ///   "delete list". The docs typed this field as a plain `string`, which
+  ///   read as "send one comma-joined value" — but that produced a raw PHP
+  ///   `count(): Argument #1 ($value) must be of type Countable|array,
+  ///   string given` from the server, proving it's actually consumed as an
+  ///   array server-side and needs the same `[]` treatment as `images[]`.
+  static const String _newImagesField = 'images[]';
+  static const String _deleteImagesField = 'delete_images[]';
+
+  Future<d.MultipartFile> _multipartForImage(String path) async {
+    final extension = File(path).path.split('.').last.toLowerCase();
+    final mediaType = switch (extension) {
+      'jpg' || 'jpeg' => MediaType('image', 'jpeg'),
+      'png' => MediaType('image', 'png'),
+      'webp' => MediaType('image', 'webp'),
+      'heic' => MediaType('image', 'heic'),
+      _ => MediaType('application', 'octet-stream'),
+    };
+    return d.MultipartFile.fromFile(
+      path,
+      filename: File(path).uri.pathSegments.last,
+      contentType: mediaType,
+    );
+  }
+
+  /// Attaches every path in [imagePaths] under `images[]`, and — when
+  /// [coverImagePath] is given — attaches that same file a second time
+  /// under the legacy singular `image` field, so the first photo also
+  /// becomes the activity's cover for any consumer that still only reads
+  /// `image`. The caller decides what counts as "first": on create it's
+  /// simply the first pick; on update it's only set when there's no kept
+  /// remote image ahead of it (a remote image can't be re-sent as binary
+  /// without downloading it first).
+  Future<void> _attachImages(
+    d.FormData form,
+    List<String> imagePaths, {
+    String? coverImagePath,
+  }) async {
+    for (final rawPath in imagePaths) {
+      final trimmedPath = rawPath.trim();
+      if (trimmedPath.isEmpty) continue;
+      form.files.add(
+        MapEntry(_newImagesField, await _multipartForImage(trimmedPath)),
+      );
+    }
+
+    final trimmedCover = coverImagePath?.trim() ?? '';
+    if (trimmedCover.isNotEmpty) {
+      form.files.add(MapEntry('image', await _multipartForImage(trimmedCover)));
+    }
+  }
+
   Future<ClassActivityItem?> createActivity({
     required String classId,
     required String title,
     required String description,
-    String imagePath = '',
+    List<String> imagePaths = const [],
+    String? coverImagePath,
   }) async {
     if (isSubmittingActivity.value) {
       return null;
@@ -264,29 +331,32 @@ class ActivityController extends GetxController {
 
       final trimmedTitle = title.trim();
       final trimmedDescription = description.trim();
-      final trimmedImagePath = imagePath.trim();
 
       if (trimmedTitle.isEmpty) {
         throw Exception('Activity title is required');
       }
-
-      final formMap = <String, dynamic>{
-        'class_id': trimmedClassId,
-        'title': trimmedTitle,
-        'description': trimmedDescription,
-        'status': 'active',
-      };
-
-      if (trimmedImagePath.isNotEmpty) {
-        formMap['image'] = await d.MultipartFile.fromFile(trimmedImagePath);
+      // The API marks description as required — validate client-side so a
+      // blank description surfaces a clear message instead of a raw 422.
+      if (trimmedDescription.isEmpty) {
+        throw Exception('Activity description is required');
       }
 
-      final payload = d.FormData.fromMap(formMap);
+      final form =
+          d.FormData()
+            ..fields.addAll(<MapEntry<String, String>>[
+              MapEntry('class_id', trimmedClassId),
+              MapEntry('title', trimmedTitle),
+              MapEntry('description', trimmedDescription),
+              const MapEntry('status', 'active'),
+            ]);
+
+      await _attachImages(form, imagePaths, coverImagePath: coverImagePath);
 
       final res = await Get.find<ApiService>().post(
         EndPoints.teacherClassActivity,
-        payload,
+        form,
         isShowLoading: false,
+        sendTimeout: const Duration(seconds: 120),
       );
 
       final rawData = getPropertyFromJson(res.data, 'data');
@@ -313,7 +383,9 @@ class ActivityController extends GetxController {
     required String classId,
     required String title,
     required String description,
-    String imagePath = '',
+    List<String> imagePaths = const [],
+    List<int> deleteImageIds = const [],
+    String? coverImagePath,
   }) async {
     if (isSubmittingActivity.value) {
       return null;
@@ -329,29 +401,34 @@ class ActivityController extends GetxController {
 
       final trimmedTitle = title.trim();
       final trimmedDescription = description.trim();
-      final trimmedImagePath = imagePath.trim();
 
       if (trimmedTitle.isEmpty) {
         throw Exception('Activity title is required');
       }
-
-      final formMap = <String, dynamic>{
-        'class_id': trimmedClassId,
-        'title': trimmedTitle,
-        'description': trimmedDescription,
-        'status': 'active',
-      };
-
-      if (trimmedImagePath.isNotEmpty) {
-        formMap['image'] = await d.MultipartFile.fromFile(trimmedImagePath);
+      // The API marks description as required — validate client-side so a
+      // blank description surfaces a clear message instead of a raw 422.
+      if (trimmedDescription.isEmpty) {
+        throw Exception('Activity description is required');
       }
 
-      final payload = d.FormData.fromMap(formMap);
+      final form =
+          d.FormData()
+            ..fields.addAll(<MapEntry<String, String>>[
+              MapEntry('class_id', trimmedClassId),
+              MapEntry('title', trimmedTitle),
+              MapEntry('description', trimmedDescription),
+              const MapEntry('status', 'active'),
+              for (final deleteId in deleteImageIds)
+                MapEntry(_deleteImagesField, deleteId.toString()),
+            ]);
+
+      await _attachImages(form, imagePaths, coverImagePath: coverImagePath);
 
       final res = await Get.find<ApiService>().post(
         EndPoints.teacherClassActivityUpdate(id),
-        payload,
+        form,
         isShowLoading: false,
+        sendTimeout: const Duration(seconds: 120),
       );
 
       final rawData = getPropertyFromJson(res.data, 'data');
@@ -812,13 +889,23 @@ class ActivityController extends GetxController {
   }
 }
 
+/// One activity image as returned by the API. [id] is the server-side
+/// image id, used to tell the backend which images to keep on update; it is
+/// null when the API returns bare URL/path strings with no per-image id.
+class ActivityImageRef {
+  const ActivityImageRef({this.id, required this.url});
+
+  final int? id;
+  final String url;
+}
+
 class ClassActivityItem {
   const ClassActivityItem({
     required this.id,
     this.classId,
     required this.className,
     required this.title,
-    required this.image,
+    required this.imageRefs,
     required this.description,
     required this.timeText,
   });
@@ -827,9 +914,18 @@ class ClassActivityItem {
   final int? classId;
   final String className;
   final String title;
-  final String image;
+  final List<ActivityImageRef> imageRefs;
   final String description;
   final String timeText;
+
+  List<String> get images =>
+      imageRefs
+          .map((ref) => ref.url)
+          .where((url) => url.isNotEmpty)
+          .toList(growable: false);
+
+  /// Back-compat: the first image, or '' when there are none.
+  String get image => images.isEmpty ? '' : images.first;
 
   factory ClassActivityItem.fromJson(Map<String, dynamic> json) {
     final classId = _readActivityClassId(json);
@@ -840,7 +936,7 @@ class ClassActivityItem {
       className:
           className.isNotEmpty ? className : _fallbackClassLabelFromId(classId),
       title: (json['title'] ?? '').toString().trim(),
-      image: (json['image'] ?? '').toString().trim(),
+      imageRefs: _readActivityImages(json),
       description: (json['description'] ?? '').toString().trim(),
       timeText: _firstNonEmpty(<dynamic>[
         json['time'],
@@ -857,6 +953,97 @@ class ClassActivityItem {
         json['publish_date'],
       ]),
     );
+  }
+
+  /// Tolerant, multi-key image parser. Prefers a gallery list (`images`,
+  /// `photos`, `gallery`, `attachments`, `activity_images`) over the
+  /// singular cover-image keys — the two are NOT merged, because APIs that
+  /// return both typically already include the cover as the gallery's first
+  /// entry, and merging would duplicate it.
+  static List<ActivityImageRef> _readActivityImages(
+    Map<String, dynamic> json,
+  ) {
+    final seenUrls = <String>{};
+    final refs = <ActivityImageRef>[];
+
+    void addRef(String rawUrl, {int? id}) {
+      final trimmed = rawUrl.trim();
+      if (trimmed.isEmpty) return;
+      final lower = trimmed.toLowerCase();
+      if (lower == 'null' || lower == 'undefined') return;
+      if (seenUrls.add(trimmed)) {
+        refs.add(ActivityImageRef(id: id, url: trimmed));
+      }
+    }
+
+    String urlFromMap(Map<String, dynamic> map) {
+      for (final key in const [
+        'image',
+        'image_url',
+        'url',
+        'path',
+        'photo',
+        'full_url',
+        'file',
+      ]) {
+        final value = (map[key] ?? '').toString().trim();
+        if (value.isNotEmpty && value.toLowerCase() != 'null') {
+          return value;
+        }
+      }
+      return '';
+    }
+
+    int? idFromMap(Map<String, dynamic> map) {
+      final raw = map['id'] ?? map['image_id'];
+      if (raw is int) return raw;
+      if (raw is num) return raw.toInt();
+      return int.tryParse((raw ?? '').toString().trim());
+    }
+
+    void collectFromList(List<dynamic> list) {
+      for (final item in list) {
+        if (item is String) {
+          addRef(item);
+        } else if (item is Map) {
+          final map = Map<String, dynamic>.from(item);
+          addRef(urlFromMap(map), id: idFromMap(map));
+        }
+      }
+    }
+
+    for (final key in const [
+      'images',
+      'photos',
+      'gallery',
+      'attachments',
+      'activity_images',
+    ]) {
+      final value = json[key];
+      if (value is List && value.isNotEmpty) {
+        collectFromList(value);
+      } else if (value is Map) {
+        final nestedList = Map<String, dynamic>.from(value)['data'];
+        if (nestedList is List) collectFromList(nestedList);
+      }
+    }
+
+    if (refs.isEmpty) {
+      for (final key in const [
+        'image',
+        'image_url',
+        'photo',
+        'photo_url',
+        'url',
+        'path',
+        'src',
+        'full_url',
+      ]) {
+        addRef((json[key] ?? '').toString().trim());
+      }
+    }
+
+    return refs;
   }
 
   static String _firstNonEmpty(List<dynamic> values) {
@@ -927,20 +1114,29 @@ class ClassActivityDetailItem {
   const ClassActivityDetailItem({
     required this.id,
     required this.title,
-    required this.image,
+    required this.imageRefs,
     required this.description,
   });
 
   final int id;
   final String title;
-  final String image;
+  final List<ActivityImageRef> imageRefs;
   final String description;
+
+  List<String> get images =>
+      imageRefs
+          .map((ref) => ref.url)
+          .where((url) => url.isNotEmpty)
+          .toList(growable: false);
+
+  /// Back-compat: the first image, or '' when there are none.
+  String get image => images.isEmpty ? '' : images.first;
 
   factory ClassActivityDetailItem.fromJson(Map<String, dynamic> json) {
     return ClassActivityDetailItem(
       id: (json['id'] as num?)?.toInt() ?? 0,
       title: (json['title'] ?? '').toString().trim(),
-      image: (json['image'] ?? '').toString().trim(),
+      imageRefs: ClassActivityItem._readActivityImages(json),
       description: (json['description'] ?? '').toString().trim(),
     );
   }
