@@ -1,15 +1,9 @@
 import 'dart:async';
-<<<<<<< HEAD
 import 'dart:io';
 
 import 'package:dio/dio.dart' as d;
 import 'package:get/get.dart';
 import 'package:http_parser/http_parser.dart';
-=======
-
-import 'package:dio/dio.dart' as d;
-import 'package:get/get.dart';
->>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87
 import 'package:schoolapp/core/core.dart';
 
 class ActivityController extends GetxController {
@@ -141,20 +135,12 @@ class ActivityController extends GetxController {
                   id: 0,
                   className: '',
                   title: '',
-<<<<<<< HEAD
                   imageRefs: [],
-=======
-                  image: '',
->>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87
                   description: '',
                   timeText: '',
                 );
               })
-<<<<<<< HEAD
               .where((e) => e.images.isNotEmpty || e.title.isNotEmpty)
-=======
-              .where((e) => e.image.isNotEmpty || e.title.isNotEmpty)
->>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87
               .toList();
 
       if (reset) {
@@ -260,7 +246,6 @@ class ActivityController extends GetxController {
     }
   }
 
-<<<<<<< HEAD
   /// Multipart field names for /teacher/class-activity (store) and
   /// /teacher/class-activity/update/{id}:
   /// - `images[]` — repeated per new file. The docs' curl sample shows a
@@ -325,18 +310,12 @@ class ActivityController extends GetxController {
     }
   }
 
-=======
->>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87
   Future<ClassActivityItem?> createActivity({
     required String classId,
     required String title,
     required String description,
-<<<<<<< HEAD
     List<String> imagePaths = const [],
     String? coverImagePath,
-=======
-    String imagePath = '',
->>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87
   }) async {
     if (isSubmittingActivity.value) {
       return null;
@@ -352,15 +331,10 @@ class ActivityController extends GetxController {
 
       final trimmedTitle = title.trim();
       final trimmedDescription = description.trim();
-<<<<<<< HEAD
-=======
-      final trimmedImagePath = imagePath.trim();
->>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87
 
       if (trimmedTitle.isEmpty) {
         throw Exception('Activity title is required');
       }
-<<<<<<< HEAD
       // The API marks description as required — validate client-side so a
       // blank description surfaces a clear message instead of a raw 422.
       if (trimmedDescription.isEmpty) {
@@ -383,26 +357,6 @@ class ActivityController extends GetxController {
         form,
         isShowLoading: false,
         sendTimeout: const Duration(seconds: 120),
-=======
-
-      final formMap = <String, dynamic>{
-        'class_id': trimmedClassId,
-        'title': trimmedTitle,
-        'description': trimmedDescription,
-        'status': 'active',
-      };
-
-      if (trimmedImagePath.isNotEmpty) {
-        formMap['image'] = await d.MultipartFile.fromFile(trimmedImagePath);
-      }
-
-      final payload = d.FormData.fromMap(formMap);
-
-      final res = await Get.find<ApiService>().post(
-        EndPoints.teacherClassActivity,
-        payload,
-        isShowLoading: false,
->>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87
       );
 
       final rawData = getPropertyFromJson(res.data, 'data');
@@ -429,13 +383,9 @@ class ActivityController extends GetxController {
     required String classId,
     required String title,
     required String description,
-<<<<<<< HEAD
     List<String> imagePaths = const [],
     List<int> deleteImageIds = const [],
     String? coverImagePath,
-=======
-    String imagePath = '',
->>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87
   }) async {
     if (isSubmittingActivity.value) {
       return null;
@@ -451,15 +401,10 @@ class ActivityController extends GetxController {
 
       final trimmedTitle = title.trim();
       final trimmedDescription = description.trim();
-<<<<<<< HEAD
-=======
-      final trimmedImagePath = imagePath.trim();
->>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87
 
       if (trimmedTitle.isEmpty) {
         throw Exception('Activity title is required');
       }
-<<<<<<< HEAD
       // The API marks description as required — validate client-side so a
       // blank description surfaces a clear message instead of a raw 422.
       if (trimmedDescription.isEmpty) {
@@ -484,26 +429,6 @@ class ActivityController extends GetxController {
         form,
         isShowLoading: false,
         sendTimeout: const Duration(seconds: 120),
-=======
-
-      final formMap = <String, dynamic>{
-        'class_id': trimmedClassId,
-        'title': trimmedTitle,
-        'description': trimmedDescription,
-        'status': 'active',
-      };
-
-      if (trimmedImagePath.isNotEmpty) {
-        formMap['image'] = await d.MultipartFile.fromFile(trimmedImagePath);
-      }
-
-      final payload = d.FormData.fromMap(formMap);
-
-      final res = await Get.find<ApiService>().post(
-        EndPoints.teacherClassActivityUpdate(id),
-        payload,
-        isShowLoading: false,
->>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87
       );
 
       final rawData = getPropertyFromJson(res.data, 'data');
@@ -964,7 +889,6 @@ class ActivityController extends GetxController {
   }
 }
 
-<<<<<<< HEAD
 /// One activity image as returned by the API. [id] is the server-side
 /// image id, used to tell the backend which images to keep on update; it is
 /// null when the API returns bare URL/path strings with no per-image id.
@@ -975,19 +899,13 @@ class ActivityImageRef {
   final String url;
 }
 
-=======
->>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87
 class ClassActivityItem {
   const ClassActivityItem({
     required this.id,
     this.classId,
     required this.className,
     required this.title,
-<<<<<<< HEAD
     required this.imageRefs,
-=======
-    required this.image,
->>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87
     required this.description,
     required this.timeText,
   });
@@ -996,7 +914,6 @@ class ClassActivityItem {
   final int? classId;
   final String className;
   final String title;
-<<<<<<< HEAD
   final List<ActivityImageRef> imageRefs;
   final String description;
   final String timeText;
@@ -1010,12 +927,6 @@ class ClassActivityItem {
   /// Back-compat: the first image, or '' when there are none.
   String get image => images.isEmpty ? '' : images.first;
 
-=======
-  final String image;
-  final String description;
-  final String timeText;
-
->>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87
   factory ClassActivityItem.fromJson(Map<String, dynamic> json) {
     final classId = _readActivityClassId(json);
     final className = _readActivityClassName(json);
@@ -1025,11 +936,7 @@ class ClassActivityItem {
       className:
           className.isNotEmpty ? className : _fallbackClassLabelFromId(classId),
       title: (json['title'] ?? '').toString().trim(),
-<<<<<<< HEAD
       imageRefs: _readActivityImages(json),
-=======
-      image: (json['image'] ?? '').toString().trim(),
->>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87
       description: (json['description'] ?? '').toString().trim(),
       timeText: _firstNonEmpty(<dynamic>[
         json['time'],
@@ -1048,7 +955,6 @@ class ClassActivityItem {
     );
   }
 
-<<<<<<< HEAD
   /// Tolerant, multi-key image parser. Prefers a gallery list (`images`,
   /// `photos`, `gallery`, `attachments`, `activity_images`) over the
   /// singular cover-image keys — the two are NOT merged, because APIs that
@@ -1140,8 +1046,6 @@ class ClassActivityItem {
     return refs;
   }
 
-=======
->>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87
   static String _firstNonEmpty(List<dynamic> values) {
     for (final value in values) {
       final text = (value ?? '').toString().trim();
@@ -1210,17 +1114,12 @@ class ClassActivityDetailItem {
   const ClassActivityDetailItem({
     required this.id,
     required this.title,
-<<<<<<< HEAD
     required this.imageRefs,
-=======
-    required this.image,
->>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87
     required this.description,
   });
 
   final int id;
   final String title;
-<<<<<<< HEAD
   final List<ActivityImageRef> imageRefs;
   final String description;
 
@@ -1233,20 +1132,11 @@ class ClassActivityDetailItem {
   /// Back-compat: the first image, or '' when there are none.
   String get image => images.isEmpty ? '' : images.first;
 
-=======
-  final String image;
-  final String description;
-
->>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87
   factory ClassActivityDetailItem.fromJson(Map<String, dynamic> json) {
     return ClassActivityDetailItem(
       id: (json['id'] as num?)?.toInt() ?? 0,
       title: (json['title'] ?? '').toString().trim(),
-<<<<<<< HEAD
       imageRefs: ClassActivityItem._readActivityImages(json),
-=======
-      image: (json['image'] ?? '').toString().trim(),
->>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87
       description: (json['description'] ?? '').toString().trim(),
     );
   }

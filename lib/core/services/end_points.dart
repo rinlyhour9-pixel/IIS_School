@@ -69,7 +69,6 @@ class EndPoints {
       '/api/v1/parent/student-class/$studentId';
   static String parentStudentSection(dynamic studentId) =>
       '/api/v1/parent/student-section/$studentId';
-<<<<<<< HEAD
 
   /// Each row pairs a class with its own section object directly — the
   /// authoritative source for the class→section relationship (confirmed
@@ -77,8 +76,6 @@ class EndPoints {
   /// not cross-reference each other at all).
   static String parentStudentClassSection(dynamic studentId) =>
       '/api/v1/parent/student-class-section/$studentId';
-=======
->>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87
   static String paymentHistory(int studentId) =>
       '/api/v1/parent/payment-history/$studentId';
   static String parentInvoiceDetails(int id) =>

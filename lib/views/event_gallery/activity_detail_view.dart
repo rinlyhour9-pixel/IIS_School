@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 import 'package:carousel_slider/carousel_slider.dart';
-=======
-import 'package:cached_network_image/cached_network_image.dart';
->>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:schoolapp/core/core.dart';
@@ -22,10 +18,7 @@ class ActivityDetailView extends StatefulWidget {
 class _ActivityDetailViewState extends State<ActivityDetailView> {
   late ClassActivityDetailItem _detail;
   ClassActivityItem? _summary;
-<<<<<<< HEAD
   int _currentImageIndex = 0;
-=======
->>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87
 
   @override
   void initState() {
@@ -100,11 +93,7 @@ class _ActivityDetailViewState extends State<ActivityDetailView> {
               borderRadius: BorderRadius.circular(22),
               child: Stack(
                 children: [
-<<<<<<< HEAD
                   _detailImages(_detail.images),
-=======
-                  _detailImage(_detail.image),
->>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87
                   Positioned(
                     left: 16,
                     right: 16,
@@ -220,7 +209,6 @@ class _ActivityDetailViewState extends State<ActivityDetailView> {
     );
   }
 
-<<<<<<< HEAD
   Widget _detailImages(List<String> images) {
     if (images.length <= 1) {
       return ResolvedNetworkImage(
@@ -292,53 +280,6 @@ class _ActivityDetailViewState extends State<ActivityDetailView> {
           ),
         ),
       ],
-=======
-  Widget _detailImage(String imagePath) {
-    final normalizedPath = imagePath.trim();
-    if (normalizedPath.isEmpty) {
-      return Image.asset(
-        'assets/images/placeholder.png',
-        width: double.infinity,
-        height: 300,
-        fit: BoxFit.cover,
-        filterQuality: FilterQuality.high,
-      );
-    }
-
-    if (normalizedPath.startsWith('http://') ||
-        normalizedPath.startsWith('https://')) {
-      return CachedNetworkImage(
-        imageUrl: normalizedPath,
-        width: double.infinity,
-        height: 300,
-        fit: BoxFit.cover,
-        placeholder: (_, __) => Container(color: const Color(0xFFE9EEF2)),
-        errorWidget:
-            (_, __, ___) => Image.asset(
-              'assets/images/placeholder.png',
-              width: double.infinity,
-              height: 300,
-              fit: BoxFit.cover,
-              filterQuality: FilterQuality.high,
-            ),
-      );
-    }
-
-    return Image.asset(
-      normalizedPath,
-      width: double.infinity,
-      height: 300,
-      fit: BoxFit.cover,
-      filterQuality: FilterQuality.high,
-      errorBuilder:
-          (_, __, ___) => Image.asset(
-            'assets/images/placeholder.png',
-            width: double.infinity,
-            height: 300,
-            fit: BoxFit.cover,
-            filterQuality: FilterQuality.high,
-          ),
->>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87
     );
   }
 

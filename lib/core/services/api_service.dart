@@ -77,10 +77,7 @@ class ApiService extends GetxService {
               statusCode: error.response?.statusCode,
               error: error.message,
             );
-<<<<<<< HEAD
             _logErrorBody(error);
-=======
->>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87
           }
           handler.next(error);
         },
@@ -184,10 +181,7 @@ class ApiService extends GetxService {
     Map<String, dynamic>? headers,
     String? contentType,
     String? baseUrl,
-<<<<<<< HEAD
     Duration? sendTimeout,
-=======
->>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87
   }) {
     final mergedHeaders = <String, dynamic>{
       ..._client.options.headers,
@@ -198,11 +192,7 @@ class ApiService extends GetxService {
       headers: mergedHeaders,
       contentType: contentType ?? _client.options.contentType,
       responseType: _client.options.responseType,
-<<<<<<< HEAD
       sendTimeout: sendTimeout ?? _client.options.sendTimeout,
-=======
-      sendTimeout: _client.options.sendTimeout,
->>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87
       receiveTimeout: _client.options.receiveTimeout,
       extra: {if (baseUrl != null) 'custom_base_url': baseUrl},
     );
@@ -215,7 +205,6 @@ class ApiService extends GetxService {
     return data;
   }
 
-<<<<<<< HEAD
   /// Prints the server's error body on a failed request. A Laravel 500 with
   /// debug enabled carries `exception`, `file` and `line`, which pinpoint a
   /// server-side crash far better than the surfaced `message` alone.
@@ -230,8 +219,6 @@ class ApiService extends GetxService {
     );
   }
 
-=======
->>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87
   void _logTiming(d.RequestOptions options, {int? statusCode, String? error}) {
     final startedAt = options.extra['started_at'];
     if (startedAt is! DateTime) {
@@ -273,10 +260,7 @@ class ApiService extends GetxService {
     bool encode = true,
     Map<String, dynamic>? cusHeaders,
     bool? isShowLoading,
-<<<<<<< HEAD
     Duration? sendTimeout,
-=======
->>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87
   }) async {
     final client = _client;
 
@@ -302,10 +286,7 @@ class ApiService extends GetxService {
         headers: headers,
         contentType: isMultipart ? null : 'application/json',
         baseUrl: customBaseUrl,
-<<<<<<< HEAD
         sendTimeout: sendTimeout,
-=======
->>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87
       ),
     );
   }

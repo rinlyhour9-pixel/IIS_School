@@ -1,10 +1,7 @@
 {
   "unableToConnectToTheInternet": "Unable to connect to the internet",
   "cancelled": "Cancelled",
-<<<<<<< HEAD
   "send": "Send",
-=======
->>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87
   "yourRequestHasBeenCancelled": "Your request has been cancelled.",
   "connectionTimeout": "Connection timeout",
   "yourConnectionIsTimeout": "Your connection is timeout",
@@ -70,13 +67,8 @@
   "sundayShort": "Sun",
   "requestLeaveTitle": "Request Leave",
   "requestLeaveSubTitle": "You can submit a leave request.",
-<<<<<<< HEAD
   "requestLeaveSelectStudent": "Select the student you want to request leave for",
   "requestLeaveFillInfo": "Fill in your leave request information",
-=======
-  "requestLeaveSelectStudent": "1. Select the student you want to request leave for",
-  "requestLeaveFillInfo": "2. Fill in your leave request information",
->>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87
   "student": "Student",
   "studentId": "Student ID",
   "studentName": "Student Name",
@@ -101,14 +93,10 @@
   "leaveFromDate": "Leave from",
   "leaveToDate": "To",
   "leaveReason": "Reason",
-<<<<<<< HEAD
   "otherReasonHint": "Please provide more details...",
   "otherReasonLabel": "Other reason (optional)",
   "leaveRequestReviewNote": "Your request will be reviewed by the school administrator.",
   "studentIdCopied": "Student ID copied",
-=======
-  "otherReasonHint": "Other reason...",
->>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87
   "sick": "Sick",
   "busy": "Busy",
   "all": "All",
@@ -444,7 +432,6 @@
   "tapToViewTheFullActivityDetails": "Tap to view the full activity details",
   "editActivity": "Edit Activity",
   "activityTitleEmpty": "Activity title cannot be empty",
-<<<<<<< HEAD
   "activityDescriptionEmpty": "Description cannot be empty",
   "activityTitleLabel": "Activity Title",
   "descriptionLabel": "Description",
@@ -454,14 +441,6 @@
   "changeImage": "Add More Photos",
   "maxImagesReachedMessage": "You can add up to 10 images.",
   "imageRemovalNotSupportedMessage": "This image could not be deleted from the server and will reappear after saving.",
-=======
-  "activityTitleLabel": "Activity Title",
-  "descriptionLabel": "Description",
-  "coverImageOptionalHint": "Optional. Add one cover image to make the activity card more engaging.",
-  "coverImageReplaceHint": "Optional. Choose a new image only if you want to replace the current one.",
-  "chooseImage": "Choose Image",
-  "changeImage": "Change Image",
->>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87
   "activityContent": "Activity Content",
   "activityContentSubtitle": "Write the title and short description students should read first.",
   "activityTitleHint": "For example: Science lab, Reading circle",
@@ -478,13 +457,8 @@
   "pleaseSelectClass": "Please select a class",
   "descriptionHint": "Write a short summary.",
   "imageSelectedReady": "Image selected and ready to upload.",
-<<<<<<< HEAD
   "coverImage": "Photos",
   "coverImageSubtitle": "Add up to 10 photos to make the activity card more engaging.",
-=======
-  "coverImage": "Cover Image",
-  "coverImageSubtitle": "Add one visual to make the activity card more engaging.",
->>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87
   "deleting": "Deleting...",
   "deleteActivity": "Delete Activity",
   "confirmDeleteMessage": "Are you sure you want to delete this activity?",

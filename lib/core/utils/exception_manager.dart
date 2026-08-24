@@ -102,6 +102,10 @@ class ExceptionHandler {
           return 'No internet connection. Please check your network.';
         }
         return msg;
+      default:
+        // Covers newer DioExceptionType values (e.g. transformTimeout)
+        // added by dio versions after this switch was written.
+        return 'Server is taking too long to respond. Please try again.';
     }
   }
 

@@ -57,7 +57,6 @@ class StudentProfileWidget extends GetView<StudentInformationController> {
                     controller.displayName(student),
                   ),
                   _infoRow(LocaleKeys.dob.tr, controller.displayDob(student)),
-<<<<<<< HEAD
                   if (controller.hasPob(student))
                     _infoRow(
                       LocaleKeys.pob.tr,
@@ -74,16 +73,6 @@ class StudentProfileWidget extends GetView<StudentInformationController> {
                   ),
                   _infoRow(
                     LocaleKeys.parent.tr,
-=======
-                  _infoRow(LocaleKeys.pob.tr, controller.displayPob(student)),
-                  _infoRow(LocaleKeys.sex.tr, controller.displaySex(student)),
-                  _infoRow(
-                    LocaleKeys.classSection.tr,
-                    controller.displayClass(student),
-                  ),
-                  _infoRow(
-                    LocaleKeys.parentTeacher.tr,
->>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87
                     controller.displayParent(student),
                   ),
                   _infoRow(
