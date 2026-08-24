@@ -109,10 +109,17 @@ packages:
     dependency: transitive
     description:
       name: characters
+<<<<<<< HEAD
       sha256: f71061c654a3380576a52b451dd5532377954cf9dbd272a78fc8479606670803
       url: "https://pub.dev"
     source: hosted
     version: "1.4.0"
+=======
+      sha256: faf38497bda5ead2a8c7615f4f7939df04333478bf32e4173fcb06d428b5716b
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.4.1"
+>>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87
   checked_yaml:
     dependency: transitive
     description:
@@ -884,26 +891,47 @@ packages:
     dependency: transitive
     description:
       name: matcher
+<<<<<<< HEAD
       sha256: dc58c723c3c24bf8d3e2d3ad3f2f9d7bd9cf43ec6feaa64181775e60190153f2
       url: "https://pub.dev"
     source: hosted
     version: "0.12.17"
+=======
+      sha256: dc0b7dc7651697ea4ff3e69ef44b0407ea32c487a39fff6a4004fa585e901861
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.12.19"
+>>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87
   material_color_utilities:
     dependency: transitive
     description:
       name: material_color_utilities
+<<<<<<< HEAD
       sha256: f7142bb1154231d7ea5f96bc7bde4bda2a0945d2806bb11670e30b850d56bdec
       url: "https://pub.dev"
     source: hosted
     version: "0.11.1"
+=======
+      sha256: "9c337007e82b1889149c82ed242ed1cb24a66044e30979c44912381e9be4c48b"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.13.0"
+>>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87
   meta:
     dependency: transitive
     description:
       name: meta
+<<<<<<< HEAD
       sha256: "23f08335362185a5ea2ad3a4e597f1375e78bce8a040df5c600c8d3552ef2394"
       url: "https://pub.dev"
     source: hosted
     version: "1.17.0"
+=======
+      sha256: "1741988757a65eb6b36abe716829688cf01910bbf91c34354ff7ec1c3de2b349"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.18.0"
+>>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87
   mime:
     dependency: transitive
     description:
@@ -1545,18 +1573,32 @@ packages:
     dependency: transitive
     description:
       name: video_player
+<<<<<<< HEAD
       sha256: "48a7bdaa38a3d50ec10c78627abdbfad863fdf6f0d6e08c7c3c040cfd80ae36f"
       url: "https://pub.dev"
     source: hosted
     version: "2.11.1"
+=======
+      sha256: "20ef311160e2ced020a62f38e4cc399a1bf289e722fc5fe37c9d7b18e44c9e8d"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.13.0"
+>>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87
   video_player_android:
     dependency: transitive
     description:
       name: video_player_android
+<<<<<<< HEAD
       sha256: "877a6c7ba772456077d7bfd71314629b3fe2b73733ce503fc77c3314d43a0ca0"
       url: "https://pub.dev"
     source: hosted
     version: "2.9.5"
+=======
+      sha256: "5121de08444d00363efdda630a69ad4d27a208a9f7586482d4909a44a1cdbc63"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.11.0"
+>>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87
   video_player_avfoundation:
     dependency: transitive
     description:
@@ -1633,10 +1675,17 @@ packages:
     dependency: transitive
     description:
       name: webview_flutter_android
+<<<<<<< HEAD
       sha256: ad5182eff9a550925330cb9f0cb038eddfdd5712aba8b77aa0f0400e50f6e688
       url: "https://pub.dev"
     source: hosted
     version: "4.12.0"
+=======
+      sha256: a97db7a44f8e71af2f3971c45550a08cce1fb60059c1b8e534251e6cfb753490
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.13.0"
+>>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87
   webview_flutter_platform_interface:
     dependency: transitive
     description:
@@ -1649,10 +1698,17 @@ packages:
     dependency: transitive
     description:
       name: webview_flutter_wkwebview
+<<<<<<< HEAD
       sha256: "82648217f537573e1ca9ae9952d3eacedca6ab5aee69dc84445fc763766dcea2"
       url: "https://pub.dev"
     source: hosted
     version: "3.25.1"
+=======
+      sha256: c879dd64b87c452aa84381b244d5469da57ba7e8cca6884c7b1e0d406372c12d
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.26.0"
+>>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87
   win32:
     dependency: transitive
     description:
@@ -1686,5 +1742,10 @@ packages:
     source: hosted
     version: "3.1.3"
 sdks:
+<<<<<<< HEAD
   dart: ">=3.10.0 <4.0.0"
   flutter: ">=3.38.0"
+=======
+  dart: ">=3.12.0 <4.0.0"
+  flutter: ">=3.44.0"
+>>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87

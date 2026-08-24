@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:schoolapp/core/core.dart';
+<<<<<<< HEAD
 import 'package:schoolapp/flavor/app_config.dart';
+=======
+>>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87
 import 'package:schoolapp/models/models.dart';
 import 'package:schoolapp/routes.dart';
 
@@ -20,6 +23,7 @@ class UserRepository {
   final String _phoneNumber = '098 970 960';
   String get phoneNumber => _phoneNumber.replaceAll('@', '');
 
+<<<<<<< HEAD
   // Nullable (not `late`) specifically so logout() can clear it. Left as
   // `late` before, this held the PREVIOUS account's profile in memory
   // across an entire logout→login cycle (nothing ever reset it) — if the
@@ -35,6 +39,10 @@ class UserRepository {
     }
     return profile;
   }
+=======
+  late ProfileModel _profile;
+  ProfileModel get profile => _profile;
+>>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87
 
   /// Permanently deletes the signed in account, then clears the session.
   Future<void> deleteAccount() async {
@@ -49,6 +57,7 @@ class UserRepository {
     if (Get.isRegistered<SelectedStudentService>()) {
       await Get.find<SelectedStudentService>().clear();
     }
+<<<<<<< HEAD
 
     // Clear every session-scoped key, not just the token — a leftover
     // student_info_id/last_leave_student_id from a parent session used to
@@ -77,6 +86,9 @@ class UserRepository {
     _isParent = false;
     _profile = null;
 
+=======
+    SharedPreferencesManager.remove(Credential.token.name);
+>>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87
     Get.offAllNamed(Routes.login);
   }
 
@@ -103,6 +115,7 @@ class UserRepository {
             .toLowerCase();
     var resolvedRole = UserType.fromKey(savedRole)?.key ?? '';
 
+<<<<<<< HEAD
     // Only guess the role from leftover parent-scoped keys when we don't
     // already have an explicit, valid role in storage. Previously this ran
     // whenever resolvedRole wasn't already 'parent' — so a correctly
@@ -111,6 +124,9 @@ class UserRepository {
     // student_info_id/last_leave_student_id, and that wrong value was then
     // re-persisted to storage.
     if (resolvedRole.isEmpty && await _hasParentStorage()) {
+=======
+    if (resolvedRole != UserType.parent.key && await _hasParentStorage()) {
+>>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87
       resolvedRole = UserType.parent.key;
       await SharedPreferencesManager.setValue('user_role', resolvedRole);
     }

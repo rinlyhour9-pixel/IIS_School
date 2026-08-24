@@ -43,7 +43,10 @@ class StudentProfileData {
   String? pod;
   String? address;
   String? className;
+<<<<<<< HEAD
   String? section;
+=======
+>>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87
   String? teacher;
 
   StudentProfileData({
@@ -59,7 +62,10 @@ class StudentProfileData {
     this.pod,
     this.address,
     this.className,
+<<<<<<< HEAD
     this.section,
+=======
+>>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87
     this.teacher,
   });
 
@@ -76,7 +82,10 @@ class StudentProfileData {
     pod = _first(json, const ['pod', 'pob', 'place_of_birth']);
     address = _first(json, const ['address']);
     className = _readClassName(json);
+<<<<<<< HEAD
     section = _first(json, const ['section', 'section_name']);
+=======
+>>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87
     teacher = _first(json, const ['teacher', 'teacher_name']);
   }
 
@@ -94,7 +103,10 @@ class StudentProfileData {
     map['pod'] = pod;
     map['address'] = address;
     map['class'] = className;
+<<<<<<< HEAD
     map['section'] = section;
+=======
+>>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87
     map['teacher'] = teacher;
     return map;
   }

@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+=======
+import 'package:cached_network_image/cached_network_image.dart';
+>>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:schoolapp/core/core.dart';
@@ -53,8 +57,13 @@ class ActivityView extends GetView<ActivityController> {
                         borderRadius: BorderRadius.circular(24),
                         child: Stack(
                           children: [
+<<<<<<< HEAD
                             ResolvedNetworkImage(
                               rawPath: topImage,
+=======
+                            _galleryImage(
+                              topImage,
+>>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87
                               height: 190,
                               width: double.infinity,
                             ),
@@ -270,6 +279,56 @@ class ActivityView extends GetView<ActivityController> {
     Get.to(() => const TeacherCreateActivityView());
   }
 
+<<<<<<< HEAD
+=======
+  Widget _galleryImage(String imagePath, {double? height, double? width}) {
+    final normalizedPath = imagePath.trim();
+    if (normalizedPath.isEmpty) {
+      return Image.asset(
+        'assets/images/placeholder.png',
+        height: height,
+        width: width,
+        fit: BoxFit.cover,
+        filterQuality: FilterQuality.high,
+      );
+    }
+
+    if (normalizedPath.startsWith('http://') ||
+        normalizedPath.startsWith('https://')) {
+      return CachedNetworkImage(
+        imageUrl: normalizedPath,
+        height: height,
+        width: width,
+        fit: BoxFit.cover,
+        placeholder: (_, __) => Container(color: const Color(0xFFE9EEF2)),
+        errorWidget:
+            (_, __, ___) => Image.asset(
+              'assets/images/placeholder.png',
+              height: height,
+              width: width,
+              fit: BoxFit.cover,
+              filterQuality: FilterQuality.high,
+            ),
+      );
+    }
+
+    return Image.asset(
+      normalizedPath,
+      width: width,
+      height: height,
+      fit: BoxFit.cover,
+      filterQuality: FilterQuality.high,
+      errorBuilder:
+          (_, __, ___) => Image.asset(
+            'assets/images/placeholder.png',
+            height: height,
+            width: width,
+            fit: BoxFit.cover,
+            filterQuality: FilterQuality.high,
+          ),
+    );
+  }
+>>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87
 }
 
 class _ClassChip extends StatelessWidget {

@@ -456,6 +456,7 @@ class HomeworkController extends GetxController {
     );
   }
 
+<<<<<<< HEAD
   /// Builds the multipart part for a homework attachment.
   ///
   /// Always sets an explicit `filename` and `contentType`. Without them Dio
@@ -490,6 +491,8 @@ class HomeworkController extends GetxController {
     return cleaned.isEmpty || cleaned == '.' ? 'attachment' : cleaned;
   }
 
+=======
+>>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87
   // Teacher create homework flow.
   Future<HomeworkAssignment> createAssignment({
     required String title,
@@ -529,7 +532,11 @@ class HomeworkController extends GetxController {
       'due_date': _deadlineForApi(trimmedDeadline),
     };
     if (trimmedAttachmentPath.isNotEmpty) {
+<<<<<<< HEAD
       formMap['file'] = await _multipartForAttachment(trimmedAttachmentPath);
+=======
+      formMap['file'] = await d.MultipartFile.fromFile(trimmedAttachmentPath);
+>>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87
     }
     final payload = d.FormData.fromMap(formMap);
 
@@ -546,12 +553,15 @@ class HomeworkController extends GetxController {
         isShowLoading: false,
       );
       print('Teacher homework create debug -> raw response: ${res.data}');
+<<<<<<< HEAD
       // The server can return HTTP 200 with `success: false` (e.g. a
       // rejected validation) and no `data`. Without this check that fell
       // through to the "no data" branch below, which silently returned the
       // locally-built placeholder as if it had been saved — the UI showed
       // a success toast and navigated away even though nothing was created.
       _ensureApiCallSucceeded(res.data);
+=======
+>>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87
       final data = getPropertyFromJson(res.data, 'data');
       if (data is Map) {
         final map = Map<String, dynamic>.from(data);
@@ -652,7 +662,11 @@ class HomeworkController extends GetxController {
       'due_date': _deadlineForApi(trimmedDeadline),
     };
     if (trimmedAttachmentPath.isNotEmpty) {
+<<<<<<< HEAD
       formMap['file'] = await _multipartForAttachment(trimmedAttachmentPath);
+=======
+      formMap['file'] = await d.MultipartFile.fromFile(trimmedAttachmentPath);
+>>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87
     }
     final payload = d.FormData.fromMap(formMap);
 
@@ -669,7 +683,10 @@ class HomeworkController extends GetxController {
         isShowLoading: false,
       );
       print('Teacher homework update debug -> raw response: ${res.data}');
+<<<<<<< HEAD
       _ensureApiCallSucceeded(res.data);
+=======
+>>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87
       final data = getPropertyFromJson(res.data, 'data');
       HomeworkAssignment updatedItem = localItem;
       if (data is Map) {
@@ -798,7 +815,23 @@ class HomeworkController extends GetxController {
         'file_path: $trimmedAttachmentPath',
       );
       if (hasAttachment) {
+<<<<<<< HEAD
         formMap['file'] = await _multipartForAttachment(trimmedAttachmentPath);
+=======
+        final extension =
+            File(trimmedAttachmentPath).path.split('.').last.toLowerCase();
+        final mediaType = switch (extension) {
+          'jpg' || 'jpeg' => MediaType('image', 'jpeg'),
+          'png' => MediaType('image', 'png'),
+          'webp' => MediaType('image', 'webp'),
+          _ => MediaType('application', 'octet-stream'),
+        };
+        formMap['file'] = await d.MultipartFile.fromFile(
+          trimmedAttachmentPath,
+          filename: File(trimmedAttachmentPath).uri.pathSegments.last,
+          contentType: mediaType,
+        );
+>>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87
       }
 
       final payload = d.FormData.fromMap(formMap);
@@ -811,7 +844,11 @@ class HomeworkController extends GetxController {
         },
         isShowLoading: false,
       );
+<<<<<<< HEAD
       _ensureApiCallSucceeded(res.data);
+=======
+      _ensureHomeworkSubmitSucceeded(res.data);
+>>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87
       submittedAssignmentIds.add(trimmedHomeworkId);
       await _saveSubmittedHomeworkIds(
         studentId.toString(),
@@ -866,6 +903,7 @@ class HomeworkController extends GetxController {
 
     try {
       teacherSubmittingStudentIds.add(trimmedStudentId);
+<<<<<<< HEAD
       // Sent as multipart/form-data with `student_id[]` repeated per
       // student, matching the convention every other write endpoint in
       // this API uses (see images[] / delete_images[] on class-activity,
@@ -891,6 +929,23 @@ class HomeworkController extends GetxController {
       );
       print('Teacher submit homework debug -> raw response: ${res.data}');
       _ensureApiCallSucceeded(res.data);
+=======
+      final payload = <String, dynamic>{
+        'homework_id': int.tryParse(trimmedHomeworkId) ?? trimmedHomeworkId,
+        'answer_text': answerText.trim(),
+        'submitted_by': int.tryParse(teacherId) ?? teacherId,
+        'student_id': <dynamic>[
+          int.tryParse(trimmedStudentId) ?? trimmedStudentId,
+        ],
+      };
+      print('Teacher submit homework debug -> payload: $payload');
+      final res = await Get.find<ApiService>().post(
+        EndPoints.teacherSubmitHomework,
+        payload,
+        isShowLoading: false,
+      );
+      print('Teacher submit homework debug -> raw response: ${res.data}');
+>>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87
     } finally {
       teacherSubmittingStudentIds.remove(trimmedStudentId);
     }
@@ -1272,7 +1327,11 @@ class HomeworkController extends GetxController {
     return 'N/A';
   }
 
+<<<<<<< HEAD
   void _ensureApiCallSucceeded(dynamic raw) {
+=======
+  void _ensureHomeworkSubmitSucceeded(dynamic raw) {
+>>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87
     if (raw is String) {
       final text = raw.trim().toLowerCase();
       if (text.startsWith('<!doctype html') ||

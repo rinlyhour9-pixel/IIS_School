@@ -1,6 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+<<<<<<< HEAD
 import 'package:flutter/services.dart';
+=======
+>>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87
 import 'package:get/get.dart';
 import 'package:schoolapp/core/core.dart';
 import 'package:schoolapp/flavor/app_config.dart';
@@ -12,6 +15,10 @@ class StudentCard1Widget extends StatelessWidget {
   static const _fieldRadius = 12.0;
   static const _cardRadius = 20.0;
   static const _sectionCardColor = Color(0xFFF3F3F4);
+<<<<<<< HEAD
+=======
+  static const _leaveDaysColor = Color(0xFFFCEAE8);
+>>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87
   static final Color _outlineRed = AppColor.primary.withValues(alpha: 0.4);
 
   @override
@@ -21,6 +28,7 @@ class StudentCard1Widget extends StatelessWidget {
     return SingleChildScrollView(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: Column(
+<<<<<<< HEAD
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(
@@ -37,6 +45,32 @@ class StudentCard1Widget extends StatelessWidget {
                 /// STUDENT INFO
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
+=======
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          /// SECTION 1: STUDENT INFO
+          Padding(
+            padding: const EdgeInsets.only(bottom: 10),
+            child: Text(
+              LocaleKeys.requestLeaveSelectStudent.tr,
+              style: AppTextStyle.mediumPrimaryBoldText.copyWith(
+                color: AppColor.black,
+              ),
+              softWrap: true,
+            ),
+          ),
+
+          Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: _sectionCardColor,
+              borderRadius: BorderRadius.circular(_cardRadius),
+            ),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Column(
+>>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87
                   children: [
                     Container(
                       width: 90,
@@ -50,6 +84,7 @@ class StudentCard1Widget extends StatelessWidget {
                         () => _studentImage(controller.studentImageUrl.value),
                       ),
                     ),
+<<<<<<< HEAD
                     const SizedBox(width: 16),
                     Flexible(
                       child: Column(
@@ -70,10 +105,77 @@ class StudentCard1Widget extends StatelessWidget {
                                   () => _copyStudentId(
                                     controller.studentIdText.value,
                                   ),
+=======
+                    const SizedBox(height: 8),
+                    Obx(
+                      () => Text(
+                        controller.studentNameText.value.isEmpty
+                            ? LocaleKeys.student.tr
+                            : controller.studentNameText.value,
+                        textAlign: TextAlign.center,
+                        style: AppTextStyle.regularPrimaryBoldblack,
+                      ),
+                    ),
+                    Text(
+                      LocaleKeys.student.tr,
+                      style: const TextStyle(color: Colors.grey, fontSize: 12),
+                    ),
+                  ],
+                ),
+                const SizedBox(width: 16),
+                Flexible(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        LocaleKeys.studentId.tr,
+                        style: AppTextStyle.regularPrimaryBoldblack,
+                      ),
+                      const SizedBox(height: 6),
+                      Obx(
+                        () => _buildInput(
+                          controller.studentIdText.value.isEmpty
+                              ? '-'
+                              : controller.studentIdText.value,
+                          trailingIcon: Icons.person_outline,
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+                      Text(
+                        LocaleKeys.classLabel.tr,
+                        style: AppTextStyle.regularPrimaryBoldblack,
+                      ),
+                      const SizedBox(height: 6),
+                      Obx(() => _buildClassField(controller)),
+                      const SizedBox(height: 12),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            LocaleKeys.section.tr,
+                            style: AppTextStyle.regularPrimaryBoldblack,
+                          ),
+                          12.width,
+                          Expanded(
+                            child: Obx(
+                              () => Wrap(
+                                spacing: 16,
+                                runSpacing: 8,
+                                alignment: WrapAlignment.spaceBetween,
+                                children:
+                                    controller.sectionOptions
+                                        .map(
+                                          (section) =>
+                                              _buildRadio(controller, section),
+                                        )
+                                        .toList(),
+                              ),
+>>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87
                             ),
                           ),
                         ],
                       ),
+<<<<<<< HEAD
                     ),
                   ],
                 ),
@@ -129,6 +231,44 @@ class StudentCard1Widget extends StatelessWidget {
                 8.height,
                 Row(
                   children: [
+=======
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+
+          /// SECTION 2: LEAVE DETAILS
+          Padding(
+            padding: const EdgeInsets.only(top: 20, bottom: 10),
+            child: Text(
+              LocaleKeys.requestLeaveFillInfo.tr,
+              style: AppTextStyle.mediumPrimaryBoldText.copyWith(
+                color: AppColor.black,
+              ),
+              softWrap: true,
+            ),
+          ),
+
+          Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(_cardRadius),
+              border: Border.all(color: _outlineRed, width: 1),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Text(
+                      '${LocaleKeys.leaveFromDate.tr}:',
+                      style: AppTextStyle.smallPrimaryBoldBlack,
+                    ),
+                    6.width,
+>>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87
                     Expanded(
                       child: Obx(
                         () => _dateBox(
@@ -137,6 +277,7 @@ class StudentCard1Widget extends StatelessWidget {
                         ),
                       ),
                     ),
+<<<<<<< HEAD
                     8.width,
                     const Icon(
                       Icons.arrow_forward,
@@ -144,6 +285,14 @@ class StudentCard1Widget extends StatelessWidget {
                       color: AppColor.primary,
                     ),
                     8.width,
+=======
+                    10.width,
+                    Text(
+                      '${LocaleKeys.leaveToDate.tr}:',
+                      style: AppTextStyle.smallPrimaryBoldBlack,
+                    ),
+                    6.width,
+>>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87
                     Expanded(
                       child: Obx(
                         () => _dateBox(
@@ -158,11 +307,17 @@ class StudentCard1Widget extends StatelessWidget {
                 Obx(
                   () => Row(
                     children: [
+<<<<<<< HEAD
                       _iconLabel(
                         Icons.calendar_month_outlined,
                         '${LocaleKeys.totalLeaveDays.tr}:',
                         style: AppTextStyle.smallPrimaryBoldBlack,
                         badgeSize: 22,
+=======
+                      Text(
+                        '${LocaleKeys.totalLeaveDays.tr}:',
+                        style: AppTextStyle.smallPrimaryBoldBlack,
+>>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87
                       ),
                       8.width,
                       Container(
@@ -177,7 +332,11 @@ class StudentCard1Widget extends StatelessWidget {
                         child: Text(
                           controller.totalDays == 0
                               ? '-'
+<<<<<<< HEAD
                               : controller.totalDays.toString().padLeft(2, '0'),
+=======
+                              : controller.totalDays.toString(),
+>>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87
                           style: const TextStyle(
                             fontSize: 13,
                             fontWeight: FontWeight.w600,
@@ -192,11 +351,17 @@ class StudentCard1Widget extends StatelessWidget {
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
+<<<<<<< HEAD
                     _iconLabel(
                       Icons.shield_outlined,
                       '${LocaleKeys.leaveReason.tr}: ',
                       style: AppTextStyle.smallPrimaryBoldBlack,
                       badgeSize: 22,
+=======
+                    Text(
+                      '${LocaleKeys.leaveReason.tr}: ',
+                      style: AppTextStyle.smallPrimaryBoldBlack,
+>>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87
                     ),
                     Expanded(
                       child: Wrap(
@@ -227,11 +392,14 @@ class StudentCard1Widget extends StatelessWidget {
                   ],
                 ),
                 14.height,
+<<<<<<< HEAD
                 Text(
                   LocaleKeys.otherReasonLabel.tr,
                   style: AppTextStyle.smallPrimaryBoldBlack,
                 ),
                 6.height,
+=======
+>>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87
                 Obx(
                   () => TextFormField(
                     controller: controller.reasonController,
@@ -273,6 +441,7 @@ class StudentCard1Widget extends StatelessWidget {
                     ),
                   ),
                 ),
+<<<<<<< HEAD
 
                 UIConstants.spacing.height,
 
@@ -338,6 +507,54 @@ class StudentCard1Widget extends StatelessWidget {
               ),
             ],
           ),
+=======
+              ],
+            ),
+          ),
+
+          UIConstants.spacing.height,
+
+          /// SUBMIT BUTTON
+          SizedBox(
+            width: double.infinity,
+            child: Obx(
+              () => ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColor.primary,
+                  foregroundColor: Colors.white,
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(14),
+                  ),
+                ),
+                onPressed:
+                    controller.isloading.value
+                        ? null
+                        : () async {
+                          final created = await controller.submitRequest();
+                          if (created != null) {
+                            Get.back(result: created);
+                          }
+                        },
+                child:
+                    controller.isloading.value
+                        ? const SizedBox(
+                          height: 20,
+                          width: 20,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            color: Colors.white,
+                          ),
+                        )
+                        : Text(
+                          LocaleKeys.send.tr,
+                          style: AppTextStyle.mediumWhiteSemiBold,
+                        ),
+              ),
+            ),
+          ),
+          UIConstants.spacing.height,
+>>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87
         ],
       ),
     );
@@ -355,8 +572,19 @@ class StudentCard1Widget extends StatelessWidget {
             color: Colors.white,
           ),
           child: Row(
+<<<<<<< HEAD
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
+=======
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Icon(
+                Icons.calendar_today_outlined,
+                color: AppColor.primary,
+                size: 15,
+              ),
+              6.width,
+>>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87
               Flexible(
                 child: Text(
                   text.isEmpty ? LocaleKeys.selectDate.tr : text,
@@ -367,22 +595,29 @@ class StudentCard1Widget extends StatelessWidget {
                   ),
                 ),
               ),
+<<<<<<< HEAD
               6.width,
               const Icon(
                 Icons.calendar_today_outlined,
                 color: AppColor.primary,
                 size: 15,
               ),
+=======
+>>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87
             ],
           ),
         ),
       );
 
+<<<<<<< HEAD
   Widget _buildInput(
     String text, {
     IconData? trailingIcon,
     VoidCallback? onTrailingTap,
   }) => Container(
+=======
+  Widget _buildInput(String text, {IconData? trailingIcon}) => Container(
+>>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87
     width: double.infinity,
     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
     decoration: BoxDecoration(
@@ -396,15 +631,20 @@ class StudentCard1Widget extends StatelessWidget {
         Flexible(child: Text(text)),
         if (trailingIcon != null) ...[
           8.width,
+<<<<<<< HEAD
           GestureDetector(
             onTap: onTrailingTap,
             child: Icon(trailingIcon, color: AppColor.primary, size: 18),
           ),
+=======
+          Icon(trailingIcon, color: AppColor.primary, size: 18),
+>>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87
         ],
       ],
     ),
   );
 
+<<<<<<< HEAD
   void _copyStudentId(String value) {
     if (value.trim().isEmpty) return;
     Clipboard.setData(ClipboardData(text: value));
@@ -489,6 +729,80 @@ class StudentCard1Widget extends StatelessWidget {
       ),
     ],
   );
+=======
+  Widget _buildClassField(RequestLeaveController controller) {
+    final classText = _selectedClassText(controller);
+    if (controller.classOptions.length <= 1) {
+      return _buildInput(classText, trailingIcon: Icons.keyboard_arrow_down);
+    }
+    return _buildClassDropdown(controller);
+  }
+
+  Widget _buildClassDropdown(RequestLeaveController controller) => Obx(
+    () => GestureDetector(
+      onTap: () async {
+        final selected = await Get.bottomSheet<List<String>>(
+          _ClassMultiSelectSheet(
+            options: controller.classOptions.toList(growable: false),
+            selected:
+                controller.selectedClasses.isEmpty
+                    ? <String>[_selectedClassText(controller)]
+                    : controller.selectedClasses.toList(growable: false),
+          ),
+        );
+        if (selected != null) {
+          controller.setSelectedClasses(selected);
+        }
+      },
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+        decoration: BoxDecoration(
+          border: Border.all(color: _outlineRed),
+          borderRadius: BorderRadius.circular(_fieldRadius),
+          color: Colors.white,
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Flexible(child: Text(_selectedClassText(controller))),
+            const Icon(Icons.keyboard_arrow_down, color: AppColor.primary),
+          ],
+        ),
+      ),
+    ),
+  );
+
+  String _selectedClassText(RequestLeaveController controller) {
+    if (controller.selectedClasses.isNotEmpty) {
+      return controller.selectedClasses.join(', ');
+    }
+    final classText =
+        controller.selectedClass.value.trim().isEmpty
+            ? controller.studentGradeText.value.trim()
+            : controller.selectedClass.value.trim();
+    return classText.isEmpty ? '-' : classText;
+  }
+
+  Widget _buildRadio(RequestLeaveController controller, String title) =>
+      Obx(() {
+        final isSelected = controller.selectedSection.value == title;
+        return GestureDetector(
+          onTap: () => controller.selectedSection.value = title,
+          child: Column(
+            children: [
+              Icon(
+                isSelected
+                    ? Icons.radio_button_checked
+                    : Icons.radio_button_unchecked,
+                color: isSelected ? AppColor.primary : Colors.grey,
+              ),
+              const SizedBox(height: 4),
+              Text(title, style: AppTextStyle.smallPrimaryBoldBlack),
+            ],
+          ),
+        );
+      });
+>>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87
 
   Widget _buildLeaveType(
     RequestLeaveController controller, {
@@ -644,3 +958,72 @@ class StudentCard1Widget extends StatelessWidget {
     return '/${compact.join('/')}';
   }
 }
+<<<<<<< HEAD
+=======
+
+class _ClassMultiSelectSheet extends StatefulWidget {
+  const _ClassMultiSelectSheet({required this.options, required this.selected});
+
+  final List<String> options;
+  final List<String> selected;
+
+  @override
+  State<_ClassMultiSelectSheet> createState() => _ClassMultiSelectSheetState();
+}
+
+class _ClassMultiSelectSheetState extends State<_ClassMultiSelectSheet> {
+  late final Set<String> _selected;
+
+  @override
+  void initState() {
+    super.initState();
+    final options = widget.options.toSet();
+    _selected = widget.selected.where(options.contains).toSet();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: Container(
+        color: Colors.white,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Flexible(
+              child: ListView(
+                shrinkWrap: true,
+                children:
+                    widget.options.map((option) {
+                      final isSelected = _selected.contains(option);
+                      return CheckboxListTile(
+                        controlAffinity: ListTileControlAffinity.leading,
+                        value: isSelected,
+                        title: Text(option),
+                        activeColor: AppColor.primary,
+                        onChanged: (_) {
+                          setState(() {
+                            if (isSelected) {
+                              _selected.remove(option);
+                            } else {
+                              _selected.add(option);
+                            }
+                          });
+                        },
+                      );
+                    }).toList(),
+              ),
+            ),
+            Align(
+              alignment: Alignment.centerRight,
+              child: TextButton(
+                onPressed: () => Get.back(result: _selected.toList()),
+                child: Text(LocaleKeys.done.tr),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+>>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87

@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import 'package:carousel_slider/carousel_slider.dart';
+=======
+import 'package:cached_network_image/cached_network_image.dart';
+>>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:schoolapp/views/event_gallery/controller.dart';
@@ -48,7 +52,11 @@ class ActivityCardWidget extends StatelessWidget {
                   borderRadius: const BorderRadius.vertical(
                     top: Radius.circular(16),
                   ),
+<<<<<<< HEAD
                   child: _ActivityCardImage(images: item.images),
+=======
+                  child: _cardImage(item.image),
+>>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87
                 ),
                 Expanded(
                   child: Padding(
@@ -116,6 +124,57 @@ class ActivityCardWidget extends StatelessWidget {
     );
   }
 
+<<<<<<< HEAD
+=======
+  Widget _cardImage(String imagePath) {
+    final normalizedPath = imagePath.trim();
+    if (normalizedPath.isEmpty) {
+      return Image.asset(
+        'assets/images/placeholder.png',
+        width: double.infinity,
+        height: 108,
+        fit: BoxFit.cover,
+        filterQuality: FilterQuality.high,
+      );
+    }
+
+    if (normalizedPath.startsWith('http://') ||
+        normalizedPath.startsWith('https://')) {
+      return CachedNetworkImage(
+        imageUrl: normalizedPath,
+        width: double.infinity,
+        height: 95,
+        fit: BoxFit.cover,
+        placeholder: (_, __) => Container(color: const Color(0xFFE9EEF2)),
+        errorWidget:
+            (_, __, ___) => Image.asset(
+              'assets/images/placeholder.png',
+              width: double.infinity,
+              height: 108,
+              fit: BoxFit.cover,
+              filterQuality: FilterQuality.high,
+            ),
+      );
+    }
+
+    return Image.asset(
+      normalizedPath,
+      width: double.infinity,
+      height: 108,
+      fit: BoxFit.cover,
+      filterQuality: FilterQuality.high,
+      errorBuilder:
+          (_, __, ___) => Image.asset(
+            'assets/images/placeholder.png',
+            width: double.infinity,
+            height: 108,
+            fit: BoxFit.cover,
+            filterQuality: FilterQuality.high,
+          ),
+    );
+  }
+
+>>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87
   String _descriptionPreview(String rawDescription) {
     final plainText = rawDescription.replaceAll(RegExp(r'<[^>]*>'), ' ').trim();
 
@@ -138,6 +197,7 @@ class ActivityCardWidget extends StatelessWidget {
     return '${words.take(maxWords).join(' ')}...';
   }
 }
+<<<<<<< HEAD
 
 /// Grid-card image: a single image, or a swipeable mini carousel with a
 /// "1/4" position badge when the activity has more than one photo. A
@@ -214,3 +274,5 @@ class _ActivityCardImageState extends State<_ActivityCardImage> {
     );
   }
 }
+=======
+>>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87

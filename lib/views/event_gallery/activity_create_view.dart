@@ -1,5 +1,9 @@
 import 'dart:io';
 
+<<<<<<< HEAD
+=======
+import 'package:cached_network_image/cached_network_image.dart';
+>>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -17,6 +21,7 @@ class TeacherCreateActivityView extends StatefulWidget {
 }
 
 class _TeacherCreateActivityViewState extends State<TeacherCreateActivityView> {
+<<<<<<< HEAD
   static const int _maxImages = 10;
 
   final TextEditingController _titleCtl = TextEditingController();
@@ -39,6 +44,15 @@ class _TeacherCreateActivityViewState extends State<TeacherCreateActivityView> {
   int get _totalImageCount => _keptRemote.length + _newImages.length;
   int get _remainingImageSlots => _maxImages - _totalImageCount;
 
+=======
+  final TextEditingController _titleCtl = TextEditingController();
+  final TextEditingController _descriptionCtl = TextEditingController();
+  String? _selectedClassValue;
+  XFile? _selectedImage;
+
+  bool get _isEditMode => widget.initialActivity != null;
+
+>>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87
   @override
   void initState() {
     super.initState();
@@ -46,7 +60,10 @@ class _TeacherCreateActivityViewState extends State<TeacherCreateActivityView> {
     if (initialActivity != null) {
       _titleCtl.text = initialActivity.title;
       _descriptionCtl.text = initialActivity.description;
+<<<<<<< HEAD
       _keptRemote.addAll(initialActivity.imageRefs);
+=======
+>>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87
       final className = initialActivity.className.trim();
       if (className.isNotEmpty) {
         _selectedClassValue =
@@ -177,6 +194,7 @@ class _TeacherCreateActivityViewState extends State<TeacherCreateActivityView> {
               ),
             ),
             const SizedBox(height: 24),
+<<<<<<< HEAD
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.end,
@@ -203,6 +221,18 @@ class _TeacherCreateActivityViewState extends State<TeacherCreateActivityView> {
               icon: const Icon(Icons.add_photo_alternate_rounded),
               label: Text(
                 _totalImageCount == 0
+=======
+            _SectionTitle(
+              titleKey: LocaleKeys.coverImage,
+              subtitleKey: LocaleKeys.coverImageSubtitle,
+            ),
+            const SizedBox(height: 10),
+            OutlinedButton.icon(
+              onPressed: _pickImage,
+              icon: const Icon(Icons.image_rounded),
+              label: Text(
+                _selectedImage == null
+>>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87
                     ? LocaleKeys.chooseImage.tr
                     : LocaleKeys.changeImage.tr,
               ),
@@ -215,6 +245,7 @@ class _TeacherCreateActivityViewState extends State<TeacherCreateActivityView> {
                 ),
               ),
             ),
+<<<<<<< HEAD
             const SizedBox(height: 10),
             if (_totalImageCount > 0)
               Wrap(
@@ -266,6 +297,59 @@ class _TeacherCreateActivityViewState extends State<TeacherCreateActivityView> {
                   color: Color(0xFF6B7280),
                 ),
               ),
+=======
+            const SizedBox(height: 8),
+            Text(
+              _selectedImage == null
+                  ? (_isEditMode &&
+                          (widget.initialActivity?.image.trim().isNotEmpty ??
+                              false)
+                      ? LocaleKeys.coverImageReplaceHint.tr
+                      : LocaleKeys.coverImageOptionalHint.tr)
+                  : LocaleKeys.imageSelectedReady.tr,
+              style: const TextStyle(
+                fontSize: 12,
+                height: 1.35,
+                color: Color(0xFF6B7280),
+              ),
+            ),
+            if (_selectedImage != null) ...[
+              const SizedBox(height: 12),
+              ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: Image.file(
+                  File(_selectedImage!.path),
+                  height: 180,
+                  width: double.infinity,
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ] else if (_isEditMode &&
+                (widget.initialActivity?.image.trim().isNotEmpty ?? false)) ...[
+              const SizedBox(height: 12),
+              ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: CachedNetworkImage(
+                  imageUrl: widget.initialActivity!.image,
+                  height: 180,
+                  width: double.infinity,
+                  fit: BoxFit.cover,
+                  placeholder:
+                      (_, __) => Container(color: const Color(0xFFE9EEF2)),
+                  errorWidget:
+                      (_, __, ___) => Container(
+                        height: 180,
+                        color: const Color(0xFFE9EEF2),
+                        alignment: Alignment.center,
+                        child: const Icon(
+                          Icons.broken_image,
+                          color: Colors.grey,
+                        ),
+                      ),
+                ),
+              ),
+            ],
+>>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87
             const SizedBox(height: 28),
             Obx(
               () => SizedBox(
@@ -335,6 +419,7 @@ class _TeacherCreateActivityViewState extends State<TeacherCreateActivityView> {
     );
   }
 
+<<<<<<< HEAD
   void _removeKeptImage(ActivityImageRef ref) {
     setState(() => _keptRemote.remove(ref));
     if (ref.id != null) {
@@ -374,6 +459,14 @@ class _TeacherCreateActivityViewState extends State<TeacherCreateActivityView> {
       setState(() {
         _newImages.addAll(picked.take(room));
       });
+=======
+  Future<void> _pickImage() async {
+    try {
+      final picker = ImagePicker();
+      final image = await picker.pickImage(source: ImageSource.gallery);
+      if (!mounted || image == null) return;
+      setState(() => _selectedImage = image);
+>>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87
     } catch (e) {
       ExceptionHandler.handleException(e);
     }
@@ -405,6 +498,7 @@ class _TeacherCreateActivityViewState extends State<TeacherCreateActivityView> {
       return;
     }
 
+<<<<<<< HEAD
     final description = _descriptionCtl.text.trim();
     if (description.isEmpty) {
       Get.snackbar(
@@ -426,23 +520,36 @@ class _TeacherCreateActivityViewState extends State<TeacherCreateActivityView> {
           _keptRemote.isEmpty && _newImages.isNotEmpty
               ? _newImages.first.path
               : null;
+=======
+    try {
+>>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87
       if (_isEditMode) {
         await controller.updateActivity(
           id: widget.initialActivity!.id,
           classId: selectedClassId,
           title: title,
+<<<<<<< HEAD
           description: description,
           imagePaths: imagePaths,
           deleteImageIds: _removedRemoteImageIds,
           coverImagePath: coverImagePath,
+=======
+          description: _descriptionCtl.text.trim(),
+          imagePath: _selectedImage?.path ?? '',
+>>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87
         );
       } else {
         await controller.createActivity(
           classId: selectedClassId,
           title: title,
+<<<<<<< HEAD
           description: description,
           imagePaths: imagePaths,
           coverImagePath: coverImagePath,
+=======
+          description: _descriptionCtl.text.trim(),
+          imagePath: _selectedImage?.path ?? '',
+>>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87
         );
       }
       if (!mounted) return;
@@ -531,6 +638,7 @@ class _FieldLabel extends StatelessWidget {
     );
   }
 }
+<<<<<<< HEAD
 
 /// A single 92x92 image thumbnail with a circular remove button, used by
 /// both the kept-remote and newly-picked image grids.
@@ -573,3 +681,5 @@ class _ImageTile extends StatelessWidget {
     );
   }
 }
+=======
+>>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87

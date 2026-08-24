@@ -117,9 +117,12 @@ class LocaleKeys {
   static const leaveToDate = 'leaveToDate';
   static const leaveReason = 'leaveReason';
   static const otherReasonHint = 'otherReasonHint';
+<<<<<<< HEAD
   static const otherReasonLabel = 'otherReasonLabel';
   static const leaveRequestReviewNote = 'leaveRequestReviewNote';
   static const studentIdCopied = 'studentIdCopied';
+=======
+>>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87
   static const sick = 'sick';
   static const busy = 'busy';
   static const all = 'all';
@@ -576,16 +579,22 @@ class LocaleKeys {
       'tapToViewTheFullActivityDetails';
   static const editActivity = 'editActivity';
   static const activityTitleEmpty = 'activityTitleEmpty';
+<<<<<<< HEAD
   static const activityDescriptionEmpty = 'activityDescriptionEmpty';
+=======
+>>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87
   static const activityTitleLabel = 'activityTitleLabel';
   static const descriptionLabel = 'descriptionLabel';
   static const coverImageOptionalHint = 'coverImageOptionalHint';
   static const coverImageReplaceHint = 'coverImageReplaceHint';
   static const chooseImage = 'chooseImage';
   static const changeImage = 'changeImage';
+<<<<<<< HEAD
   static const maxImagesReachedMessage = 'maxImagesReachedMessage';
   static const imageRemovalNotSupportedMessage =
       'imageRemovalNotSupportedMessage';
+=======
+>>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87
   static const activityContent = 'activityContent';
   static const activityContentSubtitle = 'activityContentSubtitle';
   static const activityTitleHint = 'activityTitleHint';
@@ -620,7 +629,10 @@ class Locales {
     'enterYourName': 'Enter your name',
     'unableToConnectToTheInternet': 'Unable to connect to the internet',
     'cancelled': 'Cancelled',
+<<<<<<< HEAD
     'send': 'Send',
+=======
+>>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87
     'yourRequestHasBeenCancelled': 'Your request has been cancelled.',
     'connectionTimeout': 'Connection timeout',
     'yourConnectionIsTimeout': 'Your connection is timeout',
@@ -701,8 +713,13 @@ class Locales {
     'requestLeaveTitle': 'Request Leave',
     'requestLeaveSubTitle': 'You can submit a leave request.',
     'requestLeaveSelectStudent':
+<<<<<<< HEAD
         'Select the student you want to request leave for',
     'requestLeaveFillInfo': 'Fill in your leave request information',
+=======
+        '1. Select the student you want to request leave for',
+    'requestLeaveFillInfo': '2. Fill in your leave request information',
+>>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87
     'student': 'Student',
     'studentId': 'Student ID',
     'studentName': 'Student Name',
@@ -727,11 +744,15 @@ class Locales {
     'leaveFromDate': 'Leave from',
     'leaveToDate': 'To',
     'leaveReason': 'Reason',
+<<<<<<< HEAD
     'otherReasonHint': 'Please provide more details...',
     'otherReasonLabel': 'Other reason (optional)',
     'leaveRequestReviewNote':
         'Your request will be reviewed by the school administrator.',
     'studentIdCopied': 'Student ID copied',
+=======
+    'otherReasonHint': 'Other reason...',
+>>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87
     'sick': 'Sick',
     'busy': 'Busy',
     'all': 'All',
@@ -1175,6 +1196,7 @@ class Locales {
     'tapToViewTheFullActivityDetails': 'Tap to view the full activity details',
     'editActivity': 'Edit Activity',
     'activityTitleEmpty': 'Activity title cannot be empty',
+<<<<<<< HEAD
     'activityDescriptionEmpty': 'Description cannot be empty',
     'activityTitleLabel': 'Activity Title',
     'descriptionLabel': 'Description',
@@ -1187,6 +1209,16 @@ class Locales {
     'maxImagesReachedMessage': 'You can add up to 10 images.',
     'imageRemovalNotSupportedMessage':
         'This image could not be deleted from the server and will reappear after saving.',
+=======
+    'activityTitleLabel': 'Activity Title',
+    'descriptionLabel': 'Description',
+    'coverImageOptionalHint':
+        'Optional. Add one cover image to make the activity card more engaging.',
+    'coverImageReplaceHint':
+        'Optional. Choose a new image only if you want to replace the current one.',
+    'chooseImage': 'Choose Image',
+    'changeImage': 'Change Image',
+>>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87
     'activityContent': 'Activity Content',
     'activityContentSubtitle':
         'Write the title and short description students should read first.',
@@ -1204,9 +1236,15 @@ class Locales {
     'pleaseSelectClass': 'Please select a class',
     'descriptionHint': 'Write a short summary.',
     'imageSelectedReady': 'Image selected and ready to upload.',
+<<<<<<< HEAD
     'coverImage': 'Photos',
     'coverImageSubtitle':
         'Add up to 10 photos to make the activity card more engaging.',
+=======
+    'coverImage': 'Cover Image',
+    'coverImageSubtitle':
+        'Add one visual to make the activity card more engaging.',
+>>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87
     'deleting': 'Deleting...',
     'deleteActivity': 'Delete Activity',
     'confirmDeleteMessage': 'Are you sure you want to delete this activity?',
@@ -1305,8 +1343,13 @@ class Locales {
     'sundayShort': 'អាទិត្យ',
     'requestLeaveTitle': 'ស្នើសុំច្បាប់',
     'requestLeaveSubTitle': 'អ្នកអាចបញ្ជូនសំណើសុំច្បាប់បាន។',
+<<<<<<< HEAD
     'requestLeaveSelectStudent': 'ជ្រើសរើសសិស្សដែលអ្នកចង់ស្នើសុំច្បាប់',
     'requestLeaveFillInfo': 'បំពេញព័ត៌មានសំណើសុំច្បាប់',
+=======
+    'requestLeaveSelectStudent': '១. ជ្រើសរើសសិស្សដែលអ្នកចង់ស្នើសុំច្បាប់',
+    'requestLeaveFillInfo': '២. បំពេញព័ត៌មានសំណើសុំច្បាប់',
+>>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87
     'student': 'សិស្ស',
     'studentId': 'អត្តលេខសិស្ស',
     'studentName': 'ឈ្មោះសិស្ស',
@@ -1331,10 +1374,14 @@ class Locales {
     'leaveFromDate': 'ឈប់ពីថ្ងៃទី',
     'leaveToDate': 'ដល់ថ្ងៃទី',
     'leaveReason': 'មូលហេតុ',
+<<<<<<< HEAD
     'otherReasonHint': 'សូមផ្តល់ព័ត៌មានលម្អិតបន្ថែម...',
     'otherReasonLabel': 'មូលហេតុផ្សេងៗ ',
     'leaveRequestReviewNote': 'សំណើរបស់អ្នកនឹងត្រូវបានពិនិត្យដោយអ្នកគ្រប់គ្រងសាលា។',
     'studentIdCopied': 'បានចម្លងលេខសម្គាល់សិស្ស',
+=======
+    'otherReasonHint': 'មូលហេតុផ្សេងៗ...',
+>>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87
     'sick': 'ឈឺ',
     'busy': 'រវល់',
     'all': 'ទាំងអស់',
@@ -1723,6 +1770,7 @@ class Locales {
     'tapToViewTheFullActivityDetails': 'ចុចដើម្បីមើលព័ត៌មានលម្អិតទាំងអស់',
     'editActivity': 'កែសម្រួលសកម្មភាព',
     'activityTitleEmpty': 'ចំណងជើងសកម្មភាពមិនអាចទទេបានទេ',
+<<<<<<< HEAD
     'activityDescriptionEmpty': 'ការពិពណ៌នាមិនអាចទទេបានទេ',
     'activityTitleLabel': 'ចំណងជើងសកម្មភាព',
     'descriptionLabel': 'ការពិពណ៌នា',
@@ -1739,6 +1787,20 @@ class Locales {
     'activityContentSubtitle':
         'សរសេរចំណងជើង និងការពិពណ៌នាសង្ខេបដែលសិស្សគួរអានមុនគេ។',
     'activityTitleHint': 'ចំណងជើង',
+=======
+    'activityTitleLabel': 'ចំណងជើងសកម្មភាព',
+    'descriptionLabel': 'ការពិពណ៌នា',
+    'coverImageOptionalHint':
+        'ស្រេចចិត្ត។ បន្ថែមរូបភាពមួយដើម្បីធ្វើឲ្យកាតសកម្មភាពទាក់ទាញជាងមុន។',
+    'coverImageReplaceHint':
+        'ស្រេចចិត្ត។ ជ្រើសរើសរូបភាពថ្មីលុះត្រាតែអ្នកចង់ជំនួសរូបភាពបច្ចុប្បន្ន។',
+    'chooseImage': 'ជ្រើសរើសរូបភាព',
+    'changeImage': 'ប្តូររូបភាព',
+    'activityContent': 'មាតិកាសកម្មភាព',
+    'activityContentSubtitle':
+        'សរសេរចំណងជើង និងការពិពណ៌នាសង្ខេបដែលសិស្សគួរអានមុនគេ។',
+    'activityTitleHint': 'ឧទាហរណ៍៖ មន្ទីរពិសោធន៍វិទ្យាសាស្ត្រ, រង្វង់អាន',
+>>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87
     'noClassAvailable': 'មិនមានថ្នាក់ទេ',
     'selectClass': 'ជ្រើសរើសថ្នាក់',
     'classTarget': 'ថ្នាក់គោលដៅ',
@@ -1752,9 +1814,15 @@ class Locales {
     'pleaseSelectClass': 'សូមជ្រើសរើសថ្នាក់',
     'descriptionHint': 'សរសេរសេចក្តីសង្ខេបខ្លីមួយ។',
     'imageSelectedReady': 'បានជ្រើសរើសរូបភាព និងត្រៀមខ្លួនសម្រាប់ផ្ទុកឡើង។',
+<<<<<<< HEAD
     'coverImage': 'រូបភាព',
     'coverImageSubtitle':
         'បន្ថែមរូបភាពរហូតដល់ ១០សន្លឹក ដើម្បីធ្វើឲ្យកាតសកម្មភាពទាក់ទាញជាងមុន។',
+=======
+    'coverImage': 'រូបភាពគម្រប',
+    'coverImageSubtitle':
+        'បន្ថែមរូបភាពមួយដើម្បីធ្វើឲ្យកាតសកម្មភាពទាក់ទាញជាងមុន។',
+>>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87
     'deleting': 'កំពុងលុប...',
     'deleteActivity': 'លុបសកម្មភាព',
     'confirmDeleteMessage': 'តើអ្នកប្រាកដថាចង់លុបសកម្មភាពនេះមែនទេ?',

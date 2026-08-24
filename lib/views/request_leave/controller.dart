@@ -36,8 +36,11 @@ class RequestLeaveController extends GetxController {
   final RxString selectedSection = ''.obs;
   final Map<String, dynamic> _classIdsByName = <String, dynamic>{};
   final Map<String, dynamic> _sectionIdsByName = <String, dynamic>{};
+<<<<<<< HEAD
   final Map<String, _RequestLeaveOption> _sectionByClassName =
       <String, _RequestLeaveOption>{};
+=======
+>>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87
   var leaveType = ''.obs;
   var startDate = ''.obs;
   var endDate = ''.obs;
@@ -64,10 +67,18 @@ class RequestLeaveController extends GetxController {
       return;
     }
 
+<<<<<<< HEAD
     // fetchStudentClasses() triggers the matching section fetch itself
     // (scoped to whichever class it resolves/selects), so it isn't listed
     // alongside a separate unscoped fetchStudentSection() call here.
     await Future.wait(<Future<void>>[fetchStudentClasses(), fetchRequests()]);
+=======
+    await Future.wait(<Future<void>>[
+      fetchStudentClasses(),
+      fetchStudentSection(),
+      fetchRequests(),
+    ]);
+>>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87
   }
 
   Future<void> pickStartDate() async {
@@ -135,10 +146,14 @@ class RequestLeaveController extends GetxController {
 
     if (start == null || end == null) return 0;
 
+<<<<<<< HEAD
     // "To" picked before "Leave from" would otherwise make this negative
     // (e.g. -3) instead of a sensible day count — show the span's
     // magnitude regardless of which date was picked first.
     return (end.difference(start).inDays + 1).abs();
+=======
+    return end.difference(start).inDays + 1;
+>>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87
   }
 
   String get _mappedLeaveType {
@@ -292,6 +307,7 @@ class RequestLeaveController extends GetxController {
     }
   }
 
+<<<<<<< HEAD
   /// Fetches the sections available for the current student, scoped to
   /// CONFIRMED against the real API docs that `/parent/student-section/
   /// {studentId}` ("List all sections") takes just the `studentId` path
@@ -303,6 +319,8 @@ class RequestLeaveController extends GetxController {
   /// setSelectedClasses / _sectionByClassName) — in that case Section
   /// falls back to whatever this list happens to return first, which is
   /// not guaranteed to match the selected class.
+=======
+>>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87
   Future<void> fetchStudentSection() async {
     if (!isParentMode) {
       return;
@@ -333,22 +351,31 @@ class RequestLeaveController extends GetxController {
         );
       final sections = sectionItems.map((item) => item.name).toList();
       sectionOptions.assignAll(sections);
+<<<<<<< HEAD
       // Section is now auto-derived and read-only in the UI — always take
       // the first option for the newly selected class rather than trying
       // to preserve the previous pick, which could strand a section that
       // doesn't belong to the class just chosen.
       selectedSection.value = sections.isNotEmpty ? sections.first : '';
+=======
+      if (sections.isNotEmpty) {
+        selectedSection.value = sections.first;
+      }
+>>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87
     } catch (e) {
       ExceptionHandler.handleException(e, alert: false);
     }
   }
 
+<<<<<<< HEAD
   /// Fallback only — see fetchStudentSection's doc comment. Used when the
   /// selected class has no section bundled on its own row.
   Future<void> _refreshSectionsForSelectedClass() async {
     await fetchStudentSection();
   }
 
+=======
+>>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87
   Future<void> fetchStudentClasses() async {
     if (!isParentMode) {
       return;
@@ -366,10 +393,17 @@ class RequestLeaveController extends GetxController {
 
     try {
       final res = await Get.find<ApiService>().get(
+<<<<<<< HEAD
         EndPoints.parentStudentClassSection(studentId),
         isShowLoading: false,
       );
       final classItems = _extractStudentClassSectionOptions(res.data);
+=======
+        EndPoints.parentStudentClass(studentId),
+        isShowLoading: false,
+      );
+      final classItems = _extractStudentClassOptions(res.data);
+>>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87
       _classIdsByName
         ..clear()
         ..addEntries(
@@ -377,6 +411,7 @@ class RequestLeaveController extends GetxController {
               .where((item) => item.id != null)
               .map((item) => MapEntry(item.name, item.id)),
         );
+<<<<<<< HEAD
       _sectionByClassName
         ..clear()
         ..addEntries(
@@ -390,6 +425,11 @@ class RequestLeaveController extends GetxController {
         // No linked class to scope sections by — fall back to the
         // unscoped fetch so Section still has something to show.
         await _refreshSectionsForSelectedClass();
+=======
+      final classes = classItems.map((item) => item.name).toList();
+      classOptions.assignAll(classes);
+      if (classes.isEmpty) {
+>>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87
         return;
       }
 
@@ -397,7 +437,10 @@ class RequestLeaveController extends GetxController {
       final selected =
           classes.firstWhereOrNull((item) => item.trim() == current) ??
           classes.first;
+<<<<<<< HEAD
       // setSelectedClasses triggers the section refresh for `selected`.
+=======
+>>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87
       setSelectedClasses(<String>[selected]);
     } catch (e) {
       ExceptionHandler.handleException(e, alert: false);
@@ -417,6 +460,7 @@ class RequestLeaveController extends GetxController {
     final text = cleaned.join(', ');
     selectedClass.value = text;
     studentGradeText.value = text;
+<<<<<<< HEAD
 
     // Prefer the section bundled directly on the selected class's own row
     // (authoritative — see _extractStudentClassSectionOptions) over the
@@ -436,6 +480,8 @@ class RequestLeaveController extends GetxController {
     }
 
     unawaited(_refreshSectionsForSelectedClass());
+=======
+>>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87
   }
 
   Future<RequestLeaveModel?> submitRequest() async {
@@ -692,6 +738,7 @@ class RequestLeaveController extends GetxController {
     return id;
   }
 
+<<<<<<< HEAD
   /// Parses `/parent/student-class-section/{studentId}` — confirmed via
   /// API docs to return one row per class, each with its own nested
   /// `class: {id, name}` and `section: {id, name}` objects. This is the
@@ -791,6 +838,33 @@ class RequestLeaveController extends GetxController {
     if (options.isNotEmpty) {
       return _dedupeOptions(options);
     }
+=======
+  List<_RequestLeaveOption> _extractStudentClassOptions(dynamic raw) {
+    final options =
+        _extractOptionRows(raw)
+            .map(
+              (row) => _readOption(
+                row,
+                nameKeys: const <String>[
+                  'class',
+                  'class_name',
+                  'className',
+                  'student_class',
+                  'studentClass',
+                  'grade',
+                  'name',
+                  'title',
+                  'label',
+                ],
+              ),
+            )
+            .where((item) => item.name.isNotEmpty)
+            .toList();
+    if (options.isNotEmpty) {
+      return _dedupeOptions(options);
+    }
+
+>>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87
     return _extractStudentClasses(
       raw,
     ).map((name) => _RequestLeaveOption(name: name)).toList();
@@ -1371,6 +1445,7 @@ class RequestLeaveController extends GetxController {
 }
 
 class _RequestLeaveOption {
+<<<<<<< HEAD
   const _RequestLeaveOption({
     required this.name,
     this.id,
@@ -1386,4 +1461,10 @@ class _RequestLeaveOption {
   /// authoritative source, confirmed via API docs.
   final String? sectionName;
   final dynamic sectionId;
+=======
+  const _RequestLeaveOption({required this.name, this.id});
+
+  final String name;
+  final dynamic id;
+>>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87
 }

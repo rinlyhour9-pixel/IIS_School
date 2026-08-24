@@ -290,6 +290,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
     );
   }
 
+<<<<<<< HEAD
   // void deleteAccountHandleTap() {
   //   Get.back();
   //   DialogManager.showCustom(
@@ -308,6 +309,26 @@ class _DrawerWidgetState extends State<DrawerWidget> {
   //     ),
   //   );
   // }
+=======
+  void deleteAccountHandleTap() {
+    Get.back();
+    DialogManager.showCustom(
+      PrimaryDialog(
+        title: LocaleKeys.deleteAccount.tr,
+        subTitle: LocaleKeys.deleteAccountMessage.tr,
+        btnText: LocaleKeys.yes.tr.toUpperCase(),
+        onPressed: () async {
+          Get.back();
+          try {
+            await UserRepository.shared.deleteAccount();
+          } catch (e) {
+            ExceptionHandler.handleException(e);
+          }
+        },
+      ),
+    );
+  }
+>>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87
 
   @override
   Widget build(BuildContext context) {
@@ -380,7 +401,16 @@ class _DrawerWidgetState extends State<DrawerWidget> {
               label: LocaleKeys.logout.tr,
               onTap: logOutHandleTap,
             ),
+<<<<<<< HEAD
         
+=======
+            _divider(),
+            _parentMenuItem(
+              icon: Icons.delete_forever,
+              label: LocaleKeys.deleteAccount.tr,
+              onTap: deleteAccountHandleTap,
+            ),
+>>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87
             const Spacer(),
             Padding(
               padding: const EdgeInsets.only(bottom: 18),
@@ -531,12 +561,21 @@ class _DrawerWidgetState extends State<DrawerWidget> {
               label: LocaleKeys.logout.tr,
               onTap: logOutHandleTap,
             ),
+<<<<<<< HEAD
             // _divider(),
             // _parentMenuItem(
             //   icon: Icons.delete_forever,
             //   label: LocaleKeys.deleteAccount.tr,
             //   onTap: deleteAccountHandleTap,
             // ),
+=======
+            _divider(),
+            _parentMenuItem(
+              icon: Icons.delete_forever,
+              label: LocaleKeys.deleteAccount.tr,
+              onTap: deleteAccountHandleTap,
+            ),
+>>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87
             const Spacer(),
             Padding(
               padding: const EdgeInsets.only(bottom: 18),

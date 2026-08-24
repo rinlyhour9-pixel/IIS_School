@@ -218,10 +218,17 @@ class StudentInformationController extends GetxController {
               phone: d.phone,
               profile: d.profile,
               className: d.className,
+<<<<<<< HEAD
               section: d.section,
               dob: d.dob,
               pob: d.pod,
               sex: (d.gender ?? '').trim().isEmpty ? 'N/A' : d.gender,
+=======
+              dob: d.dob,
+              pob: d.pod,
+              sex: (d.gender ?? '').trim().isEmpty ? 'N/A' : d.gender,
+              parentName: d.teacher,
+>>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87
             );
             mappedFromParentProfile = true;
           }
@@ -450,6 +457,7 @@ class StudentInformationController extends GetxController {
     return 'N/A';
   }
 
+<<<<<<< HEAD
   String displayClassOnly(parent_model.Student student) {
     final className = (student.className ?? '').trim();
     return className.isEmpty ? 'N/A' : className;
@@ -458,6 +466,15 @@ class StudentInformationController extends GetxController {
   String displaySectionOnly(parent_model.Student student) {
     final section = (student.section ?? '').trim();
     return section.isEmpty ? 'N/A' : section;
+=======
+  String displayClass(parent_model.Student student) {
+    final className = (student.className ?? '').trim();
+    final section = (student.section ?? '').trim();
+    if (className.isEmpty && section.isEmpty) return 'N/A';
+    if (className.isNotEmpty && section.isNotEmpty)
+      return '$className "$section"';
+    return className.isNotEmpty ? className : section;
+>>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87
   }
 
   String displayCode(parent_model.Student student) {
@@ -477,10 +494,13 @@ class StudentInformationController extends GetxController {
     return dob.isEmpty ? 'N/A' : dob;
   }
 
+<<<<<<< HEAD
   bool hasPob(parent_model.Student student) {
     return (student.pob ?? '').trim().isNotEmpty;
   }
 
+=======
+>>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87
   String displayPob(parent_model.Student student) {
     final pob = (student.pob ?? '').trim();
     return pob.isEmpty ? 'N/A' : pob;
@@ -499,6 +519,7 @@ class StudentInformationController extends GetxController {
     return 'N/A';
   }
 
+<<<<<<< HEAD
   
   String displayParent(parent_model.Student student) {
     final parentFromStudent = (student.parentName ?? '').trim();
@@ -520,6 +541,16 @@ class StudentInformationController extends GetxController {
     }
   }
 
+=======
+  String displayParent(parent_model.Student student) {
+    final parentFromStudent = (student.parentName ?? '').trim();
+    final parentFromParent = (parentInfo.value?.name ?? '').trim();
+    if (parentFromStudent.isNotEmpty) return parentFromStudent;
+    if (parentFromParent.isNotEmpty) return parentFromParent;
+    return 'N/A';
+  }
+
+>>>>>>> 74bda71b0166ce92efa14e7395518c52665ecb87
   String displayId(parent_model.Student student) {
     final code = (student.admissionNo ?? '').trim();
     if (code.isNotEmpty) return code;
