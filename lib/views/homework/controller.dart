@@ -456,6 +456,40 @@ class HomeworkController extends GetxController {
     );
   }
 
+  /// Builds the multipart part for a homework attachment.
+  ///
+  /// Always sets an explicit `filename` and `contentType`. Without them Dio
+  /// falls back to `application/octet-stream`, which servers that validate
+  /// on MIME type (`image`, `mimes:...`) will reject or mishandle. The
+  /// picker allows gif and pdf too, so both are mapped here — previously
+  /// only jpg/png/webp were, and everything else silently became
+  /// octet-stream.
+  Future<d.MultipartFile> _multipartForAttachment(String path) async {
+    final extension = path.split('.').last.toLowerCase();
+    final mediaType = switch (extension) {
+      'jpg' || 'jpeg' => MediaType('image', 'jpeg'),
+      'png' => MediaType('image', 'png'),
+      'webp' => MediaType('image', 'webp'),
+      'gif' => MediaType('image', 'gif'),
+      'heic' => MediaType('image', 'heic'),
+      'pdf' => MediaType('application', 'pdf'),
+      _ => MediaType('application', 'octet-stream'),
+    };
+    return d.MultipartFile.fromFile(
+      path,
+      filename: _safeAttachmentName(File(path).uri.pathSegments.last),
+      contentType: mediaType,
+    );
+  }
+
+  /// Strips characters that commonly break `Content-Disposition` parsing on
+  /// the server (spaces, parentheses, unicode). Gallery files routinely
+  /// arrive named like `images (7).jpeg`.
+  String _safeAttachmentName(String rawName) {
+    final cleaned = rawName.trim().replaceAll(RegExp(r'[^A-Za-z0-9._-]+'), '_');
+    return cleaned.isEmpty || cleaned == '.' ? 'attachment' : cleaned;
+  }
+
   // Teacher create homework flow.
   Future<HomeworkAssignment> createAssignment({
     required String title,
@@ -495,7 +529,7 @@ class HomeworkController extends GetxController {
       'due_date': _deadlineForApi(trimmedDeadline),
     };
     if (trimmedAttachmentPath.isNotEmpty) {
-      formMap['file'] = await d.MultipartFile.fromFile(trimmedAttachmentPath);
+      formMap['file'] = await _multipartForAttachment(trimmedAttachmentPath);
     }
     final payload = d.FormData.fromMap(formMap);
 
@@ -512,6 +546,12 @@ class HomeworkController extends GetxController {
         isShowLoading: false,
       );
       print('Teacher homework create debug -> raw response: ${res.data}');
+      // The server can return HTTP 200 with `success: false` (e.g. a
+      // rejected validation) and no `data`. Without this check that fell
+      // through to the "no data" branch below, which silently returned the
+      // locally-built placeholder as if it had been saved — the UI showed
+      // a success toast and navigated away even though nothing was created.
+      _ensureApiCallSucceeded(res.data);
       final data = getPropertyFromJson(res.data, 'data');
       if (data is Map) {
         final map = Map<String, dynamic>.from(data);
@@ -612,7 +652,7 @@ class HomeworkController extends GetxController {
       'due_date': _deadlineForApi(trimmedDeadline),
     };
     if (trimmedAttachmentPath.isNotEmpty) {
-      formMap['file'] = await d.MultipartFile.fromFile(trimmedAttachmentPath);
+      formMap['file'] = await _multipartForAttachment(trimmedAttachmentPath);
     }
     final payload = d.FormData.fromMap(formMap);
 
@@ -629,6 +669,7 @@ class HomeworkController extends GetxController {
         isShowLoading: false,
       );
       print('Teacher homework update debug -> raw response: ${res.data}');
+      _ensureApiCallSucceeded(res.data);
       final data = getPropertyFromJson(res.data, 'data');
       HomeworkAssignment updatedItem = localItem;
       if (data is Map) {
@@ -757,19 +798,7 @@ class HomeworkController extends GetxController {
         'file_path: $trimmedAttachmentPath',
       );
       if (hasAttachment) {
-        final extension =
-            File(trimmedAttachmentPath).path.split('.').last.toLowerCase();
-        final mediaType = switch (extension) {
-          'jpg' || 'jpeg' => MediaType('image', 'jpeg'),
-          'png' => MediaType('image', 'png'),
-          'webp' => MediaType('image', 'webp'),
-          _ => MediaType('application', 'octet-stream'),
-        };
-        formMap['file'] = await d.MultipartFile.fromFile(
-          trimmedAttachmentPath,
-          filename: File(trimmedAttachmentPath).uri.pathSegments.last,
-          contentType: mediaType,
-        );
+        formMap['file'] = await _multipartForAttachment(trimmedAttachmentPath);
       }
 
       final payload = d.FormData.fromMap(formMap);
@@ -782,7 +811,7 @@ class HomeworkController extends GetxController {
         },
         isShowLoading: false,
       );
-      _ensureHomeworkSubmitSucceeded(res.data);
+      _ensureApiCallSucceeded(res.data);
       submittedAssignmentIds.add(trimmedHomeworkId);
       await _saveSubmittedHomeworkIds(
         studentId.toString(),
@@ -837,21 +866,31 @@ class HomeworkController extends GetxController {
 
     try {
       teacherSubmittingStudentIds.add(trimmedStudentId);
-      final payload = <String, dynamic>{
-        'homework_id': int.tryParse(trimmedHomeworkId) ?? trimmedHomeworkId,
-        'answer_text': answerText.trim(),
-        'submitted_by': int.tryParse(teacherId) ?? teacherId,
-        'student_id': <dynamic>[
-          int.tryParse(trimmedStudentId) ?? trimmedStudentId,
-        ],
-      };
-      print('Teacher submit homework debug -> payload: $payload');
+      // Sent as multipart/form-data with `student_id[]` repeated per
+      // student, matching the convention every other write endpoint in
+      // this API uses (see images[] / delete_images[] on class-activity,
+      // and the student-side submit flow above).
+      //
+      // This previously went out as a JSON body with student_id nested as
+      // an array, which made the server fail with a raw PHP
+      // "Object of class stdClass could not be converted to string" —
+      // it never handled a JSON body for this route at all.
+      final form =
+          d.FormData()
+            ..fields.addAll(<MapEntry<String, String>>[
+              MapEntry('homework_id', trimmedHomeworkId),
+              MapEntry('submitted_by', teacherId),
+              MapEntry('answer_text', answerText.trim()),
+              MapEntry('student_id[]', trimmedStudentId),
+            ]);
+      print('Teacher submit homework debug -> fields: ${form.fields}');
       final res = await Get.find<ApiService>().post(
         EndPoints.teacherSubmitHomework,
-        payload,
+        form,
         isShowLoading: false,
       );
       print('Teacher submit homework debug -> raw response: ${res.data}');
+      _ensureApiCallSucceeded(res.data);
     } finally {
       teacherSubmittingStudentIds.remove(trimmedStudentId);
     }
@@ -1233,7 +1272,7 @@ class HomeworkController extends GetxController {
     return 'N/A';
   }
 
-  void _ensureHomeworkSubmitSucceeded(dynamic raw) {
+  void _ensureApiCallSucceeded(dynamic raw) {
     if (raw is String) {
       final text = raw.trim().toLowerCase();
       if (text.startsWith('<!doctype html') ||

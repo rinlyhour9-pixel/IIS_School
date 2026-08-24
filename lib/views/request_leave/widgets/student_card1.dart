@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:schoolapp/core/core.dart';
 import 'package:schoolapp/flavor/app_config.dart';
@@ -11,7 +12,6 @@ class StudentCard1Widget extends StatelessWidget {
   static const _fieldRadius = 12.0;
   static const _cardRadius = 20.0;
   static const _sectionCardColor = Color(0xFFF3F3F4);
-  static const _leaveDaysColor = Color(0xFFFCEAE8);
   static final Color _outlineRed = AppColor.primary.withValues(alpha: 0.4);
 
   @override
@@ -21,30 +21,22 @@ class StudentCard1Widget extends StatelessWidget {
     return SingleChildScrollView(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          /// SECTION 1: STUDENT INFO
-          Padding(
-            padding: const EdgeInsets.only(bottom: 10),
-            child: Text(
-              LocaleKeys.requestLeaveSelectStudent.tr,
-              style: AppTextStyle.mediumPrimaryBoldText.copyWith(
-                color: AppColor.black,
-              ),
-              softWrap: true,
-            ),
-          ),
-
           Container(
+            width: double.infinity,
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: _sectionCardColor,
+              color: Colors.white,
               borderRadius: BorderRadius.circular(_cardRadius),
+              border: Border.all(color: _outlineRed, width: 1),
             ),
-            child: Row(
+            child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Column(
+                /// STUDENT INFO
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
                       width: 90,
@@ -58,110 +50,85 @@ class StudentCard1Widget extends StatelessWidget {
                         () => _studentImage(controller.studentImageUrl.value),
                       ),
                     ),
-                    const SizedBox(height: 8),
-                    Obx(
-                      () => Text(
-                        controller.studentNameText.value.isEmpty
-                            ? LocaleKeys.student.tr
-                            : controller.studentNameText.value,
-                        textAlign: TextAlign.center,
-                        style: AppTextStyle.regularPrimaryBoldblack,
-                      ),
-                    ),
-                    Text(
-                      LocaleKeys.student.tr,
-                      style: const TextStyle(color: Colors.grey, fontSize: 12),
-                    ),
-                  ],
-                ),
-                const SizedBox(width: 16),
-                Flexible(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        LocaleKeys.studentId.tr,
-                        style: AppTextStyle.regularPrimaryBoldblack,
-                      ),
-                      const SizedBox(height: 6),
-                      Obx(
-                        () => _buildInput(
-                          controller.studentIdText.value.isEmpty
-                              ? '-'
-                              : controller.studentIdText.value,
-                          trailingIcon: Icons.person_outline,
-                        ),
-                      ),
-                      const SizedBox(height: 12),
-                      Text(
-                        LocaleKeys.classLabel.tr,
-                        style: AppTextStyle.regularPrimaryBoldblack,
-                      ),
-                      const SizedBox(height: 6),
-                      Obx(() => _buildClassField(controller)),
-                      const SizedBox(height: 12),
-                      Row(
+                    const SizedBox(width: 16),
+                    Flexible(
+                      child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            LocaleKeys.section.tr,
-                            style: AppTextStyle.regularPrimaryBoldblack,
+                          _iconLabel(
+                            Icons.person_outline,
+                            LocaleKeys.studentId.tr,
                           ),
-                          12.width,
-                          Expanded(
-                            child: Obx(
-                              () => Wrap(
-                                spacing: 16,
-                                runSpacing: 8,
-                                alignment: WrapAlignment.spaceBetween,
-                                children:
-                                    controller.sectionOptions
-                                        .map(
-                                          (section) =>
-                                              _buildRadio(controller, section),
-                                        )
-                                        .toList(),
-                              ),
+                          const SizedBox(height: 6),
+                          Obx(
+                            () => _buildInput(
+                              controller.studentIdText.value.isEmpty
+                                  ? '-'
+                                  : controller.studentIdText.value,
+                              trailingIcon: Icons.copy_outlined,
+                              onTrailingTap:
+                                  () => _copyStudentId(
+                                    controller.studentIdText.value,
+                                  ),
                             ),
                           ),
                         ],
                       ),
-                    ],
+                    ),
+                  ],
+                ),
+
+                const SizedBox(height: 16),
+                const Divider(height: 1, color: Color(0xFFE6E6E6)),
+                const SizedBox(height: 16),
+
+                _fieldRow(
+                  icon: Icons.school_outlined,
+                  label: LocaleKeys.classLabel.tr,
+                  field: _buildClassDropdown(controller),
+                ),
+                const SizedBox(height: 12),
+                _fieldRow(
+                  icon: Icons.layers_outlined,
+                  label: LocaleKeys.section.tr,
+                  field: Obx(
+                    () => _readOnlySection(
+                      controller.selectedSection.value.isEmpty
+                          ? '-'
+                          : controller.selectedSection.value,
+                    ),
                   ),
                 ),
-              ],
-            ),
-          ),
 
-          /// SECTION 2: LEAVE DETAILS
-          Padding(
-            padding: const EdgeInsets.only(top: 20, bottom: 10),
-            child: Text(
-              LocaleKeys.requestLeaveFillInfo.tr,
-              style: AppTextStyle.mediumPrimaryBoldText.copyWith(
-                color: AppColor.black,
-              ),
-              softWrap: true,
-            ),
-          ),
+                const SizedBox(height: 20),
+                const Divider(height: 1, color: Color(0xFFE6E6E6)),
+                const SizedBox(height: 20),
 
-          Container(
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(_cardRadius),
-              border: Border.all(color: _outlineRed, width: 1),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
+                /// LEAVE DETAILS
                 Row(
                   children: [
-                    Text(
-                      '${LocaleKeys.leaveFromDate.tr}:',
-                      style: AppTextStyle.smallPrimaryBoldBlack,
+                    Expanded(
+                      child: _iconLabel(
+                        Icons.calendar_today_outlined,
+                        LocaleKeys.leaveFromDate.tr,
+                        style: AppTextStyle.smallPrimaryBoldBlack,
+                        badgeSize: 22,
+                      ),
                     ),
-                    6.width,
+                    10.width,
+                    Expanded(
+                      child: _iconLabel(
+                        Icons.calendar_today_outlined,
+                        LocaleKeys.leaveToDate.tr,
+                        style: AppTextStyle.smallPrimaryBoldBlack,
+                        badgeSize: 22,
+                      ),
+                    ),
+                  ],
+                ),
+                8.height,
+                Row(
+                  children: [
                     Expanded(
                       child: Obx(
                         () => _dateBox(
@@ -170,12 +137,13 @@ class StudentCard1Widget extends StatelessWidget {
                         ),
                       ),
                     ),
-                    10.width,
-                    Text(
-                      '${LocaleKeys.leaveToDate.tr}:',
-                      style: AppTextStyle.smallPrimaryBoldBlack,
+                    8.width,
+                    const Icon(
+                      Icons.arrow_forward,
+                      size: 16,
+                      color: AppColor.primary,
                     ),
-                    6.width,
+                    8.width,
                     Expanded(
                       child: Obx(
                         () => _dateBox(
@@ -190,9 +158,11 @@ class StudentCard1Widget extends StatelessWidget {
                 Obx(
                   () => Row(
                     children: [
-                      Text(
+                      _iconLabel(
+                        Icons.calendar_month_outlined,
                         '${LocaleKeys.totalLeaveDays.tr}:',
                         style: AppTextStyle.smallPrimaryBoldBlack,
+                        badgeSize: 22,
                       ),
                       8.width,
                       Container(
@@ -207,7 +177,7 @@ class StudentCard1Widget extends StatelessWidget {
                         child: Text(
                           controller.totalDays == 0
                               ? '-'
-                              : controller.totalDays.toString(),
+                              : controller.totalDays.toString().padLeft(2, '0'),
                           style: const TextStyle(
                             fontSize: 13,
                             fontWeight: FontWeight.w600,
@@ -222,9 +192,11 @@ class StudentCard1Widget extends StatelessWidget {
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Text(
+                    _iconLabel(
+                      Icons.shield_outlined,
                       '${LocaleKeys.leaveReason.tr}: ',
                       style: AppTextStyle.smallPrimaryBoldBlack,
+                      badgeSize: 22,
                     ),
                     Expanded(
                       child: Wrap(
@@ -255,6 +227,11 @@ class StudentCard1Widget extends StatelessWidget {
                   ],
                 ),
                 14.height,
+                Text(
+                  LocaleKeys.otherReasonLabel.tr,
+                  style: AppTextStyle.smallPrimaryBoldBlack,
+                ),
+                6.height,
                 Obx(
                   () => TextFormField(
                     controller: controller.reasonController,
@@ -296,52 +273,71 @@ class StudentCard1Widget extends StatelessWidget {
                     ),
                   ),
                 ),
+
+                UIConstants.spacing.height,
+
+                /// SUBMIT BUTTON
+                SizedBox(
+                  width: double.infinity,
+                  child: Obx(
+                    () => ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColor.primary,
+                        foregroundColor: Colors.white,
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(14),
+                        ),
+                      ),
+                      onPressed:
+                          controller.isloading.value
+                              ? null
+                              : () async {
+                                final created =
+                                    await controller.submitRequest();
+                                if (created != null) {
+                                  Get.back(result: created);
+                                }
+                              },
+                      child:
+                          controller.isloading.value
+                              ? const SizedBox(
+                                height: 20,
+                                width: 20,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                  color: Colors.white,
+                                ),
+                              )
+                              : Text(
+                                LocaleKeys.send.tr,
+                                style: AppTextStyle.mediumWhiteSemiBold,
+                              ),
+                    ),
+                  ),
+                ),
               ],
             ),
           ),
-
-          UIConstants.spacing.height,
-
-          /// SUBMIT BUTTON
-          SizedBox(
-            width: double.infinity,
-            child: Obx(
-              () => ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColor.primary,
-                  foregroundColor: Colors.white,
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(14),
-                  ),
+          const SizedBox(height: 12),
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Icon(
+              //   Icons.shield_outlined,
+              //   size: 14,
+              //   color: Colors.grey.shade500,
+              // ),
+              6.width,
+              Flexible(
+                child: Text(
+                  LocaleKeys.leaveRequestReviewNote.tr,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 12, color: Colors.grey.shade600),
                 ),
-                onPressed:
-                    controller.isloading.value
-                        ? null
-                        : () async {
-                          final created = await controller.submitRequest();
-                          if (created != null) {
-                            Get.back(result: created);
-                          }
-                        },
-                child:
-                    controller.isloading.value
-                        ? const SizedBox(
-                          height: 20,
-                          width: 20,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2,
-                            color: Colors.white,
-                          ),
-                        )
-                        : Text(
-                          LocaleKeys.send.tr,
-                          style: AppTextStyle.mediumWhiteSemiBold,
-                        ),
               ),
-            ),
+            ],
           ),
-          UIConstants.spacing.height,
         ],
       ),
     );
@@ -359,14 +355,8 @@ class StudentCard1Widget extends StatelessWidget {
             color: Colors.white,
           ),
           child: Row(
-            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Icon(
-                Icons.calendar_today_outlined,
-                color: AppColor.primary,
-                size: 15,
-              ),
-              6.width,
               Flexible(
                 child: Text(
                   text.isEmpty ? LocaleKeys.selectDate.tr : text,
@@ -377,12 +367,22 @@ class StudentCard1Widget extends StatelessWidget {
                   ),
                 ),
               ),
+              6.width,
+              const Icon(
+                Icons.calendar_today_outlined,
+                color: AppColor.primary,
+                size: 15,
+              ),
             ],
           ),
         ),
       );
 
-  Widget _buildInput(String text, {IconData? trailingIcon}) => Container(
+  Widget _buildInput(
+    String text, {
+    IconData? trailingIcon,
+    VoidCallback? onTrailingTap,
+  }) => Container(
     width: double.infinity,
     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
     decoration: BoxDecoration(
@@ -396,84 +396,99 @@ class StudentCard1Widget extends StatelessWidget {
         Flexible(child: Text(text)),
         if (trailingIcon != null) ...[
           8.width,
-          Icon(trailingIcon, color: AppColor.primary, size: 18),
+          GestureDetector(
+            onTap: onTrailingTap,
+            child: Icon(trailingIcon, color: AppColor.primary, size: 18),
+          ),
         ],
       ],
     ),
   );
 
-  Widget _buildClassField(RequestLeaveController controller) {
-    final classText = _selectedClassText(controller);
-    if (controller.classOptions.length <= 1) {
-      return _buildInput(classText, trailingIcon: Icons.keyboard_arrow_down);
-    }
-    return _buildClassDropdown(controller);
+  void _copyStudentId(String value) {
+    if (value.trim().isEmpty) return;
+    Clipboard.setData(ClipboardData(text: value));
+    Get.snackbar(
+      LocaleKeys.studentIdCopied.tr,
+      value,
+      snackPosition: SnackPosition.BOTTOM,
+      duration: const Duration(seconds: 2),
+    );
   }
 
+  Widget _fieldRow({
+    required IconData icon,
+    required String label,
+    required Widget field,
+  }) => Row(
+    crossAxisAlignment: CrossAxisAlignment.center,
+    children: [
+      SizedBox(width: 110, child: _iconLabel(icon, label)),
+      8.width,
+      Expanded(child: field),
+    ],
+  );
+
   Widget _buildClassDropdown(RequestLeaveController controller) => Obx(
-    () => GestureDetector(
-      onTap: () async {
-        final selected = await Get.bottomSheet<List<String>>(
-          _ClassMultiSelectSheet(
-            options: controller.classOptions.toList(growable: false),
-            selected:
-                controller.selectedClasses.isEmpty
-                    ? <String>[_selectedClassText(controller)]
-                    : controller.selectedClasses.toList(growable: false),
-          ),
-        );
-        if (selected != null) {
-          controller.setSelectedClasses(selected);
-        }
+    () => AppIconDropdown<String>(
+      value: controller.selectedClasses.firstOrNull,
+      items: controller.classOptions.toList(growable: false),
+      itemLabel: (c) => c,
+      hintText: LocaleKeys.classLabel.tr,
+      onChanged: (picked) {
+        if (picked == null) return;
+        controller.setSelectedClasses(<String>[picked]);
       },
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-        decoration: BoxDecoration(
-          border: Border.all(color: _outlineRed),
-          borderRadius: BorderRadius.circular(_fieldRadius),
-          color: Colors.white,
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Flexible(child: Text(_selectedClassText(controller))),
-            const Icon(Icons.keyboard_arrow_down, color: AppColor.primary),
-          ],
-        ),
-      ),
     ),
   );
 
-  String _selectedClassText(RequestLeaveController controller) {
-    if (controller.selectedClasses.isNotEmpty) {
-      return controller.selectedClasses.join(', ');
-    }
-    final classText =
-        controller.selectedClass.value.trim().isEmpty
-            ? controller.studentGradeText.value.trim()
-            : controller.selectedClass.value.trim();
-    return classText.isEmpty ? '-' : classText;
-  }
-
-  Widget _buildRadio(RequestLeaveController controller, String title) =>
-      Obx(() {
-        final isSelected = controller.selectedSection.value == title;
-        return GestureDetector(
-          onTap: () => controller.selectedSection.value = title,
-          child: Column(
-            children: [
-              Icon(
-                isSelected
-                    ? Icons.radio_button_checked
-                    : Icons.radio_button_unchecked,
-                color: isSelected ? AppColor.primary : Colors.grey,
-              ),
-              const SizedBox(height: 4),
-              Text(title, style: AppTextStyle.smallPrimaryBoldBlack),
-            ],
+  Widget _readOnlySection(String text) => Container(
+    width: double.infinity,
+    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+    decoration: BoxDecoration(
+      color: _sectionCardColor,
+      borderRadius: BorderRadius.circular(_fieldRadius),
+      border: Border.all(color: const Color(0xFFE0E0E0)),
+    ),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Flexible(
+          child: Text(
+            text,
+            style: AppTextStyle.smallPrimaryBoldBlack.copyWith(
+              color: Colors.grey.shade600,
+            ),
           ),
-        );
-      });
+        ),
+        8.width,
+        // Icon(Icons.lock_outline, size: 16, color: Colors.grey.shade400),
+      ],
+    ),
+  );
+
+  Widget _iconLabel(
+    IconData icon,
+    String label, {
+    TextStyle? style,
+    double badgeSize = 26,
+  }) => Row(
+    mainAxisSize: MainAxisSize.min,
+    children: [
+      SizedBox(
+        width: badgeSize,
+        height: badgeSize,
+        child: Icon(icon, size: badgeSize * 0.72, color: AppColor.primary),
+      ),
+      6.width,
+      Flexible(
+        child: Text(
+          label,
+          style: style ?? AppTextStyle.regularPrimaryBoldblack,
+        ),
+      ),
+    ],
+  );
 
   Widget _buildLeaveType(
     RequestLeaveController controller, {
@@ -627,71 +642,5 @@ class StudentCard1Widget extends StatelessWidget {
       }
     }
     return '/${compact.join('/')}';
-  }
-}
-
-class _ClassMultiSelectSheet extends StatefulWidget {
-  const _ClassMultiSelectSheet({required this.options, required this.selected});
-
-  final List<String> options;
-  final List<String> selected;
-
-  @override
-  State<_ClassMultiSelectSheet> createState() => _ClassMultiSelectSheetState();
-}
-
-class _ClassMultiSelectSheetState extends State<_ClassMultiSelectSheet> {
-  late final Set<String> _selected;
-
-  @override
-  void initState() {
-    super.initState();
-    final options = widget.options.toSet();
-    _selected = widget.selected.where(options.contains).toSet();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return SafeArea(
-      child: Container(
-        color: Colors.white,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Flexible(
-              child: ListView(
-                shrinkWrap: true,
-                children:
-                    widget.options.map((option) {
-                      final isSelected = _selected.contains(option);
-                      return CheckboxListTile(
-                        controlAffinity: ListTileControlAffinity.leading,
-                        value: isSelected,
-                        title: Text(option),
-                        activeColor: AppColor.primary,
-                        onChanged: (_) {
-                          setState(() {
-                            if (isSelected) {
-                              _selected.remove(option);
-                            } else {
-                              _selected.add(option);
-                            }
-                          });
-                        },
-                      );
-                    }).toList(),
-              ),
-            ),
-            Align(
-              alignment: Alignment.centerRight,
-              child: TextButton(
-                onPressed: () => Get.back(result: _selected.toList()),
-                child: Text(LocaleKeys.done.tr),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
   }
 }

@@ -218,10 +218,10 @@ class StudentInformationController extends GetxController {
               phone: d.phone,
               profile: d.profile,
               className: d.className,
+              section: d.section,
               dob: d.dob,
               pob: d.pod,
               sex: (d.gender ?? '').trim().isEmpty ? 'N/A' : d.gender,
-              parentName: d.teacher,
             );
             mappedFromParentProfile = true;
           }
@@ -450,13 +450,14 @@ class StudentInformationController extends GetxController {
     return 'N/A';
   }
 
-  String displayClass(parent_model.Student student) {
+  String displayClassOnly(parent_model.Student student) {
     final className = (student.className ?? '').trim();
+    return className.isEmpty ? 'N/A' : className;
+  }
+
+  String displaySectionOnly(parent_model.Student student) {
     final section = (student.section ?? '').trim();
-    if (className.isEmpty && section.isEmpty) return 'N/A';
-    if (className.isNotEmpty && section.isNotEmpty)
-      return '$className "$section"';
-    return className.isNotEmpty ? className : section;
+    return section.isEmpty ? 'N/A' : section;
   }
 
   String displayCode(parent_model.Student student) {
@@ -474,6 +475,10 @@ class StudentInformationController extends GetxController {
   String displayDob(parent_model.Student student) {
     final dob = (student.dob ?? '').trim();
     return dob.isEmpty ? 'N/A' : dob;
+  }
+
+  bool hasPob(parent_model.Student student) {
+    return (student.pob ?? '').trim().isNotEmpty;
   }
 
   String displayPob(parent_model.Student student) {
@@ -494,12 +499,25 @@ class StudentInformationController extends GetxController {
     return 'N/A';
   }
 
+  
   String displayParent(parent_model.Student student) {
     final parentFromStudent = (student.parentName ?? '').trim();
-    final parentFromParent = (parentInfo.value?.name ?? '').trim();
     if (parentFromStudent.isNotEmpty) return parentFromStudent;
+    final parentFromParent = (parentInfo.value?.name ?? '').trim();
     if (parentFromParent.isNotEmpty) return parentFromParent;
+    final ownName = _loggedInUserName();
+    if (ownName.isNotEmpty) return ownName;
     return 'N/A';
+  }
+
+  /// The logged-in user's own cached name — reliable regardless of which
+  /// profile-fetch path ran, since it's set once at login for every role.
+  String _loggedInUserName() {
+    try {
+      return UserRepository.shared.profile.name.trim();
+    } catch (_) {
+      return '';
+    }
   }
 
   String displayId(parent_model.Student student) {

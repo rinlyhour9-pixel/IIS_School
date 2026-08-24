@@ -20,8 +20,21 @@ class UserRepository {
   final String _phoneNumber = '098 970 960';
   String get phoneNumber => _phoneNumber.replaceAll('@', '');
 
-  late ProfileModel _profile;
-  ProfileModel get profile => _profile;
+  // Nullable (not `late`) specifically so logout() can clear it. Left as
+  // `late` before, this held the PREVIOUS account's profile in memory
+  // across an entire logout→login cycle (nothing ever reset it) — if the
+  // next account's own `/your-profile` call then failed or threw for any
+  // reason, `_safeCachedProfile()`-style fallbacks silently returned the
+  // stale profile object instead of an error, showing one account's name/
+  // photo/phone under another account's session with no visible cause.
+  ProfileModel? _profile;
+  ProfileModel get profile {
+    final profile = _profile;
+    if (profile == null) {
+      throw StateError('No profile has been set for the current session.');
+    }
+    return profile;
+  }
 
   /// Permanently deletes the signed in account, then clears the session.
   Future<void> deleteAccount() async {
@@ -62,6 +75,7 @@ class UserRepository {
 
     AppConfig.shared.token = '';
     _isParent = false;
+    _profile = null;
 
     Get.offAllNamed(Routes.login);
   }

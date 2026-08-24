@@ -117,6 +117,9 @@ class LocaleKeys {
   static const leaveToDate = 'leaveToDate';
   static const leaveReason = 'leaveReason';
   static const otherReasonHint = 'otherReasonHint';
+  static const otherReasonLabel = 'otherReasonLabel';
+  static const leaveRequestReviewNote = 'leaveRequestReviewNote';
+  static const studentIdCopied = 'studentIdCopied';
   static const sick = 'sick';
   static const busy = 'busy';
   static const all = 'all';
@@ -617,6 +620,7 @@ class Locales {
     'enterYourName': 'Enter your name',
     'unableToConnectToTheInternet': 'Unable to connect to the internet',
     'cancelled': 'Cancelled',
+    'send': 'Send',
     'yourRequestHasBeenCancelled': 'Your request has been cancelled.',
     'connectionTimeout': 'Connection timeout',
     'yourConnectionIsTimeout': 'Your connection is timeout',
@@ -697,8 +701,8 @@ class Locales {
     'requestLeaveTitle': 'Request Leave',
     'requestLeaveSubTitle': 'You can submit a leave request.',
     'requestLeaveSelectStudent':
-        '1. Select the student you want to request leave for',
-    'requestLeaveFillInfo': '2. Fill in your leave request information',
+        'Select the student you want to request leave for',
+    'requestLeaveFillInfo': 'Fill in your leave request information',
     'student': 'Student',
     'studentId': 'Student ID',
     'studentName': 'Student Name',
@@ -723,7 +727,11 @@ class Locales {
     'leaveFromDate': 'Leave from',
     'leaveToDate': 'To',
     'leaveReason': 'Reason',
-    'otherReasonHint': 'Other reason...',
+    'otherReasonHint': 'Please provide more details...',
+    'otherReasonLabel': 'Other reason (optional)',
+    'leaveRequestReviewNote':
+        'Your request will be reviewed by the school administrator.',
+    'studentIdCopied': 'Student ID copied',
     'sick': 'Sick',
     'busy': 'Busy',
     'all': 'All',
@@ -1297,8 +1305,8 @@ class Locales {
     'sundayShort': 'អាទិត្យ',
     'requestLeaveTitle': 'ស្នើសុំច្បាប់',
     'requestLeaveSubTitle': 'អ្នកអាចបញ្ជូនសំណើសុំច្បាប់បាន។',
-    'requestLeaveSelectStudent': '១. ជ្រើសរើសសិស្សដែលអ្នកចង់ស្នើសុំច្បាប់',
-    'requestLeaveFillInfo': '២. បំពេញព័ត៌មានសំណើសុំច្បាប់',
+    'requestLeaveSelectStudent': 'ជ្រើសរើសសិស្សដែលអ្នកចង់ស្នើសុំច្បាប់',
+    'requestLeaveFillInfo': 'បំពេញព័ត៌មានសំណើសុំច្បាប់',
     'student': 'សិស្ស',
     'studentId': 'អត្តលេខសិស្ស',
     'studentName': 'ឈ្មោះសិស្ស',
@@ -1323,7 +1331,10 @@ class Locales {
     'leaveFromDate': 'ឈប់ពីថ្ងៃទី',
     'leaveToDate': 'ដល់ថ្ងៃទី',
     'leaveReason': 'មូលហេតុ',
-    'otherReasonHint': 'មូលហេតុផ្សេងៗ...',
+    'otherReasonHint': 'សូមផ្តល់ព័ត៌មានលម្អិតបន្ថែម...',
+    'otherReasonLabel': 'មូលហេតុផ្សេងៗ ',
+    'leaveRequestReviewNote': 'សំណើរបស់អ្នកនឹងត្រូវបានពិនិត្យដោយអ្នកគ្រប់គ្រងសាលា។',
+    'studentIdCopied': 'បានចម្លងលេខសម្គាល់សិស្ស',
     'sick': 'ឈឺ',
     'busy': 'រវល់',
     'all': 'ទាំងអស់',

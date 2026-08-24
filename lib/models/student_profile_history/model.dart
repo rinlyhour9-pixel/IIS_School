@@ -43,6 +43,7 @@ class StudentProfileData {
   String? pod;
   String? address;
   String? className;
+  String? section;
   String? teacher;
 
   StudentProfileData({
@@ -58,6 +59,7 @@ class StudentProfileData {
     this.pod,
     this.address,
     this.className,
+    this.section,
     this.teacher,
   });
 
@@ -74,6 +76,7 @@ class StudentProfileData {
     pod = _first(json, const ['pod', 'pob', 'place_of_birth']);
     address = _first(json, const ['address']);
     className = _readClassName(json);
+    section = _first(json, const ['section', 'section_name']);
     teacher = _first(json, const ['teacher', 'teacher_name']);
   }
 
@@ -91,6 +94,7 @@ class StudentProfileData {
     map['pod'] = pod;
     map['address'] = address;
     map['class'] = className;
+    map['section'] = section;
     map['teacher'] = teacher;
     return map;
   }

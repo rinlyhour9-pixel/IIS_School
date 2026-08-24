@@ -77,6 +77,7 @@ class ApiService extends GetxService {
               statusCode: error.response?.statusCode,
               error: error.message,
             );
+            _logErrorBody(error);
           }
           handler.next(error);
         },
@@ -202,6 +203,20 @@ class ApiService extends GetxService {
       return data.clone();
     }
     return data;
+  }
+
+  /// Prints the server's error body on a failed request. A Laravel 500 with
+  /// debug enabled carries `exception`, `file` and `line`, which pinpoint a
+  /// server-side crash far better than the surfaced `message` alone.
+  void _logErrorBody(d.DioException error) {
+    final data = error.response?.data;
+    if (data == null) return;
+    final text = data.toString();
+    debugPrint(
+      '[API-ERROR] ${error.requestOptions.method} '
+      '${error.requestOptions.uri}\n'
+      '${text.length > 2000 ? '${text.substring(0, 2000)}…(truncated)' : text}',
+    );
   }
 
   void _logTiming(d.RequestOptions options, {int? statusCode, String? error}) {

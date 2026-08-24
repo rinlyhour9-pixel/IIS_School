@@ -290,24 +290,24 @@ class _DrawerWidgetState extends State<DrawerWidget> {
     );
   }
 
-  void deleteAccountHandleTap() {
-    Get.back();
-    DialogManager.showCustom(
-      PrimaryDialog(
-        title: LocaleKeys.deleteAccount.tr,
-        subTitle: LocaleKeys.deleteAccountMessage.tr,
-        btnText: LocaleKeys.yes.tr.toUpperCase(),
-        onPressed: () async {
-          Get.back();
-          try {
-            await UserRepository.shared.deleteAccount();
-          } catch (e) {
-            ExceptionHandler.handleException(e);
-          }
-        },
-      ),
-    );
-  }
+  // void deleteAccountHandleTap() {
+  //   Get.back();
+  //   DialogManager.showCustom(
+  //     PrimaryDialog(
+  //       title: LocaleKeys.deleteAccount.tr,
+  //       subTitle: LocaleKeys.deleteAccountMessage.tr,
+  //       btnText: LocaleKeys.yes.tr.toUpperCase(),
+  //       onPressed: () async {
+  //         Get.back();
+  //         try {
+  //           await UserRepository.shared.deleteAccount();
+  //         } catch (e) {
+  //           ExceptionHandler.handleException(e);
+  //         }
+  //       },
+  //     ),
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -380,12 +380,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
               label: LocaleKeys.logout.tr,
               onTap: logOutHandleTap,
             ),
-            _divider(),
-            _parentMenuItem(
-              icon: Icons.delete_forever,
-              label: LocaleKeys.deleteAccount.tr,
-              onTap: deleteAccountHandleTap,
-            ),
+        
             const Spacer(),
             Padding(
               padding: const EdgeInsets.only(bottom: 18),
@@ -536,12 +531,12 @@ class _DrawerWidgetState extends State<DrawerWidget> {
               label: LocaleKeys.logout.tr,
               onTap: logOutHandleTap,
             ),
-            _divider(),
-            _parentMenuItem(
-              icon: Icons.delete_forever,
-              label: LocaleKeys.deleteAccount.tr,
-              onTap: deleteAccountHandleTap,
-            ),
+            // _divider(),
+            // _parentMenuItem(
+            //   icon: Icons.delete_forever,
+            //   label: LocaleKeys.deleteAccount.tr,
+            //   onTap: deleteAccountHandleTap,
+            // ),
             const Spacer(),
             Padding(
               padding: const EdgeInsets.only(bottom: 18),
