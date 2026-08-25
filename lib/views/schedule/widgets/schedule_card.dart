@@ -148,8 +148,13 @@ class _ScheduleCardWidgetState extends State<ScheduleCardWidget> {
     }
   }
 
+  bool get _isZoomedIn => _currentScale > _minScale + 0.001;
+
   void _handleTabSwipeEnd(ScheduleController controller) {
-    if (controller.timetables.length <= 1) return;
+    if (controller.timetables.length <= 1 || _isZoomedIn) {
+      _tabSwipeDistance = 0;
+      return;
+    }
 
     final current = controller.selectedIndex.value;
     final lastIndex = controller.timetables.length - 1;
@@ -700,10 +705,20 @@ class _ScheduleCardWidgetState extends State<ScheduleCardWidget> {
           Expanded(
             child: GestureDetector(
               behavior: HitTestBehavior.translucent,
-              onHorizontalDragStart: (_) => _tabSwipeDistance = 0,
+              // Swiping between class tabs only applies at the fit-to-screen
+              // zoom level. Leaving these handlers attached while zoomed in
+              // would keep them in the gesture arena fighting
+              // InteractiveViewer's own pan recognizer for every horizontal
+              // drag, so they're removed outright (not just ignored) once
+              // the user has zoomed in.
+              onHorizontalDragStart:
+                  _isZoomedIn ? null : (_) => _tabSwipeDistance = 0,
               onHorizontalDragUpdate:
-                  (details) => _tabSwipeDistance += details.delta.dx,
-              onHorizontalDragEnd: (_) => _handleTabSwipeEnd(controller),
+                  _isZoomedIn
+                      ? null
+                      : (details) => _tabSwipeDistance += details.delta.dx,
+              onHorizontalDragEnd:
+                  _isZoomedIn ? null : (_) => _handleTabSwipeEnd(controller),
               child: LayoutBuilder(
                 builder: (context, viewportConstraints) {
                   final fitScale =

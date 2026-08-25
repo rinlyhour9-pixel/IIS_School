@@ -38,16 +38,37 @@ class StudentCard1Widget extends StatelessWidget {
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Container(
+                    SizedBox(
                       width: 90,
-                      height: 100,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(16),
-                        color: Colors.white,
-                      ),
-                      clipBehavior: Clip.antiAlias,
-                      child: Obx(
-                        () => _studentImage(controller.studentImageUrl.value),
+                      child: Column(
+                        children: [
+                          Container(
+                            width: 90,
+                            height: 100,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(16),
+                              color: Colors.white,
+                            ),
+                            clipBehavior: Clip.antiAlias,
+                            child: Obx(
+                              () => _studentImage(
+                                controller.studentImageUrl.value,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 6),
+                          Obx(
+                            () => Text(
+                              controller.studentNameText.value.isEmpty
+                                  ? '-'
+                                  : controller.studentNameText.value,
+                              textAlign: TextAlign.center,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              style: AppTextStyle.smallPrimaryBoldBlack,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                     const SizedBox(width: 16),
@@ -189,46 +210,8 @@ class StudentCard1Widget extends StatelessWidget {
                   ),
                 ),
                 14.height,
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    _iconLabel(
-                      Icons.shield_outlined,
-                      '${LocaleKeys.leaveReason.tr}: ',
-                      style: AppTextStyle.smallPrimaryBoldBlack,
-                      badgeSize: 22,
-                    ),
-                    Expanded(
-                      child: Wrap(
-                        spacing: 10,
-                        runSpacing: 8,
-                        children: [
-                          _buildLeaveType(
-                            controller,
-                            label: LocaleKeys.sick.tr,
-                            value: 'sick',
-                            icon: Icons.sick_outlined,
-                          ),
-                          _buildLeaveType(
-                            controller,
-                            label: LocaleKeys.busy.tr,
-                            value: 'busy',
-                            icon: Icons.work_outline,
-                          ),
-                          _buildLeaveType(
-                            controller,
-                            label: LocaleKeys.other.tr,
-                            value: 'other',
-                            icon: Icons.more_horiz,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-                14.height,
                 Text(
-                  LocaleKeys.otherReasonLabel.tr,
+                  '${LocaleKeys.leaveReason.tr}:',
                   style: AppTextStyle.smallPrimaryBoldBlack,
                 ),
                 6.height,
@@ -489,45 +472,6 @@ class StudentCard1Widget extends StatelessWidget {
       ),
     ],
   );
-
-  Widget _buildLeaveType(
-    RequestLeaveController controller, {
-    required String label,
-    required String value,
-    required IconData icon,
-  }) => Obx(() {
-    final isSelected = controller.leaveType.value == value;
-    return GestureDetector(
-      onTap: () => controller.leaveType.value = value,
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-        decoration: BoxDecoration(
-          color: isSelected ? AppColor.primary : Colors.white,
-          borderRadius: BorderRadius.circular(999),
-          border: Border.all(
-            color: isSelected ? AppColor.primary : _outlineRed,
-          ),
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(
-              icon,
-              size: 15,
-              color: isSelected ? Colors.white : AppColor.primary,
-            ),
-            5.width,
-            Text(
-              label,
-              style: AppTextStyle.smallPrimaryBoldBlack.copyWith(
-                color: isSelected ? Colors.white : AppColor.black,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  });
 
   Widget _studentImage(String rawUrl) {
     final candidates = _resolveImageUrlCandidates(rawUrl);

@@ -169,7 +169,7 @@ class LoginController extends GetxController {
       await SharedPreferencesManager.setValue('staff_code', staffCode);
       await SharedPreferencesManager.setValue('branch_id', branchId);
 
-      Get.updateLocale(AppConfig.shared.languageLocale);
+      await Get.updateLocale(AppConfig.shared.languageLocale);
 
       Get.delete<StartController>(force: true);
       Get.delete<DashboardController>(force: true);

@@ -63,7 +63,7 @@ class _TeacherRow extends StatelessWidget {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text('Teacher', style: AppTextStyle.smallGreyRegular),
+            Text(LocaleKeys.teacher.tr, style: AppTextStyle.smallGreyRegular),
             const SizedBox(height: 2),
             Obx(() {
               final name = Get.find<StartController>().userName.value.trim();
@@ -106,7 +106,7 @@ class _FiltersCard extends StatelessWidget {
                     items: classItems,
                     itemLabel: (c) => c.className,
                     onChanged: controller.selectClass,
-                    hintText: 'Class',
+                    hintText: LocaleKeys.classLabel.tr,
                   );
                 }),
               ),
@@ -119,7 +119,7 @@ class _FiltersCard extends StatelessWidget {
                     items: sectionItems,
                     itemLabel: (s) => s.section,
                     onChanged: controller.selectSection,
-                    hintText: 'Section',
+                    hintText: LocaleKeys.section.tr,
                   );
                 }),
               ),
@@ -136,7 +136,7 @@ class _FiltersCard extends StatelessWidget {
                     items: subjectItems,
                     itemLabel: (s) => s.name,
                     onChanged: controller.selectSubject,
-                    hintText: 'Subject',
+                    hintText: LocaleKeys.subject.tr,
                   );
                 }),
               ),
@@ -216,7 +216,7 @@ class _SearchAndSelectAllRow extends StatelessWidget {
         TextField(
           controller: controller.searchCtl,
           decoration: InputDecoration(
-            hintText: 'Search Student...',
+            hintText: LocaleKeys.recordAttendanceSearchHint.tr,
             suffixIcon: const Icon(Icons.search),
             filled: true,
             fillColor: AppColor.white,
@@ -249,7 +249,7 @@ class _SearchAndSelectAllRow extends StatelessWidget {
               ),
             ),
             icon: const Icon(Icons.check_circle_outline, size: 18),
-            label: const Text('Select All Present'),
+            label: Text(LocaleKeys.recordAttendanceSelectAllPresent.tr),
           ),
         ),
       ],
@@ -267,9 +267,11 @@ class _StudentTable extends StatelessWidget {
     return Obx(() {
       final rows = controller.studentList;
       if (rows.isEmpty) {
-        return const Padding(
-          padding: EdgeInsets.symmetric(vertical: 40),
-          child: Center(child: Text('No students found')),
+        return Padding(
+          padding: const EdgeInsets.symmetric(vertical: 40),
+          child: Center(
+            child: Text(LocaleKeys.recordAttendanceNoStudentsFound.tr),
+          ),
         );
       }
       return Column(
@@ -300,29 +302,38 @@ class _TableHeader extends StatelessWidget {
         children: [
           SizedBox(
             width: 32,
-            child: Text('No.', style: AppTextStyle.normalPrimarySemiBold),
+            child: Text(
+              LocaleKeys.recordAttendanceNoColumn.tr,
+              style: AppTextStyle.normalPrimarySemiBold,
+            ),
           ),
           Expanded(
             flex: 3,
             child: Text(
-              'Student Name',
+              LocaleKeys.studentName.tr,
               style: AppTextStyle.normalPrimarySemiBold,
             ),
           ),
           Expanded(
             flex: 2,
-            child: Text('Gender', style: AppTextStyle.normalPrimarySemiBold),
+            child: Text(
+              LocaleKeys.recordAttendanceGender.tr,
+              style: AppTextStyle.normalPrimarySemiBold,
+            ),
           ),
           Expanded(
             flex: 3,
             child: Text(
-              'Attendance',
+              LocaleKeys.attendance.tr,
               style: AppTextStyle.normalPrimarySemiBold,
             ),
           ),
           Expanded(
             flex: 2,
-            child: Text('Note', style: AppTextStyle.normalPrimarySemiBold),
+            child: Text(
+              LocaleKeys.recordAttendanceNote.tr,
+              style: AppTextStyle.normalPrimarySemiBold,
+            ),
           ),
         ],
       ),
@@ -419,23 +430,25 @@ class _StudentRowWidget extends StatelessWidget {
       context: context,
       builder:
           (context) => AlertDialog(
-            title: const Text('Note'),
+            title: Text(LocaleKeys.recordAttendanceNote.tr),
             content: TextField(
               controller: noteCtl,
               maxLines: 3,
-              decoration: const InputDecoration(hintText: 'Enter note'),
+              decoration: InputDecoration(
+                hintText: LocaleKeys.recordAttendanceEnterNoteHint.tr,
+              ),
             ),
             actions: [
               TextButton(
                 onPressed: () => Navigator.of(context).pop(),
-                child: const Text('Cancel'),
+                child: Text(LocaleKeys.cancel.tr),
               ),
               TextButton(
                 onPressed: () {
                   controller.updateNote(row, noteCtl.text.trim());
                   Navigator.of(context).pop();
                 },
-                child: const Text('Save'),
+                child: Text(LocaleKeys.recordAttendanceSave.tr),
               ),
             ],
           ),
@@ -552,7 +565,7 @@ class _SubmitButton extends StatelessWidget {
                     ),
                   )
                   : Text(
-                    'Submit Attendance',
+                    LocaleKeys.recordAttendanceSubmit.tr,
                     style: AppTextStyle.normalWhiteRegular,
                   ),
         ),

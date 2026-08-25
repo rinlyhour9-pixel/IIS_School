@@ -49,7 +49,7 @@ class _FiltersRow extends StatelessWidget {
               items: classItems,
               itemLabel: (c) => c.className,
               onChanged: controller.selectClass,
-              hintText: 'Class',
+              hintText: LocaleKeys.classLabel.tr,
             );
           }),
         ),
@@ -62,7 +62,7 @@ class _FiltersRow extends StatelessWidget {
               items: sectionItems,
               itemLabel: (s) => s.section,
               onChanged: controller.selectSection,
-              hintText: 'Section',
+              hintText: LocaleKeys.section.tr,
             );
           }),
         ),
@@ -75,7 +75,7 @@ class _FiltersRow extends StatelessWidget {
               items: subjectItems,
               itemLabel: (s) => s.name,
               onChanged: controller.selectSubject,
-              hintText: 'Subject',
+              hintText: LocaleKeys.subject.tr,
             );
           }),
         ),
@@ -94,9 +94,11 @@ class _HistoryList extends StatelessWidget {
     return Obx(() {
       final items = controller.historyList;
       if (items.isEmpty) {
-        return const Padding(
-          padding: EdgeInsets.symmetric(vertical: 40),
-          child: Center(child: Text('No attendance records found')),
+        return Padding(
+          padding: const EdgeInsets.symmetric(vertical: 40),
+          child: Center(
+            child: Text(LocaleKeys.studentAttendanceNoRecordsFound.tr),
+          ),
         );
       }
       return Column(
@@ -123,19 +125,19 @@ class _HistoryCard extends StatelessWidget {
   String get _formattedDate {
     final parsed = DateTime.tryParse(item.attendanceDate);
     if (parsed == null) return item.attendanceDate;
-    const months = [
-      'Jan',
-      'Feb',
-      'Mar',
-      'Apr',
-      'May',
-      'Jun',
-      'Jul',
-      'Aug',
-      'Sep',
-      'Oct',
-      'Nov',
-      'Dec',
+    final months = [
+      LocaleKeys.monthJanuary.tr,
+      LocaleKeys.monthFebruary.tr,
+      LocaleKeys.monthMarch.tr,
+      LocaleKeys.monthApril.tr,
+      LocaleKeys.monthMay.tr,
+      LocaleKeys.monthJune.tr,
+      LocaleKeys.monthJuly.tr,
+      LocaleKeys.monthAugust.tr,
+      LocaleKeys.monthSeptember.tr,
+      LocaleKeys.monthOctober.tr,
+      LocaleKeys.monthNovember.tr,
+      LocaleKeys.monthDecember.tr,
     ];
     return '${months[parsed.month - 1]} ${parsed.day} ${parsed.year}';
   }

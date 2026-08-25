@@ -20,12 +20,28 @@ class ScheduleResponse {
     }
 
     if (rawData is Map) {
-      // Teacher endpoint (/api/v1/time-sheet/teacher) returns a single
-      // { program, schedule } object instead of a list of timetables.
+      final rawDataMap = Map<String, dynamic>.from(rawData);
+
+      // Teacher endpoint (/api/v1/time-sheet/teacher) returns
+      // { mode, teacher_name, classes: [ { class, section, days, periods }, ... ] }
+      // — one timetable per class the teacher teaches.
+      final rawClasses = rawDataMap['classes'];
+      if (rawClasses is List) {
+        return ScheduleResponse(
+          timetables:
+              rawClasses
+                  .whereType<Map>()
+                  .map(
+                    (e) => ScheduleTimetable.fromJson(
+                      Map<String, dynamic>.from(e),
+                    ),
+                  )
+                  .toList(),
+        );
+      }
+
       return ScheduleResponse(
-        timetables: [
-          ScheduleTimetable.fromJson(Map<String, dynamic>.from(rawData)),
-        ],
+        timetables: [ScheduleTimetable.fromJson(rawDataMap)],
       );
     }
 
@@ -48,15 +64,20 @@ class ScheduleTimetable {
 
   factory ScheduleTimetable.fromJson(Map<String, dynamic> json) {
     final rawSchedule = json['schedule'];
-    final info = ScheduleInfo.fromJson(
-      rawSchedule is Map ? Map<String, dynamic>.from(rawSchedule) : {},
-    );
+    // Parent payload nests days/periods under "schedule"; the teacher
+    // endpoint's per-class entries (data.classes[]) carry them directly on
+    // the entry itself, with no "schedule" wrapper.
+    final scheduleSource =
+        rawSchedule is Map ? Map<String, dynamic>.from(rawSchedule) : json;
+    final info = ScheduleInfo.fromJson(scheduleSource);
     return ScheduleTimetable(
       // Parent payload uses "program_name"; teacher payload uses "program".
       programName: (json['program_name'] ?? json['program'] ?? '').toString(),
-      // Parent payload has "class_name" at this level; teacher payload
-      // doesn't, so fall back to the class name inside "schedule".
-      className: (json['class_name'] ?? info.className).toString(),
+      // Parent payload has "class_name" at this level; teacher payload uses
+      // "class" on the entry itself, falling back to the class name inside
+      // "schedule".
+      className:
+          (json['class_name'] ?? json['class'] ?? info.className).toString(),
       isKge: json['is_kge'] == true,
       info: info,
     );

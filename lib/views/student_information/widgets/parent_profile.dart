@@ -20,6 +20,9 @@ class ParentProfileWidget extends GetView<StudentInformationController> {
         if (parent == null) {
           return Center(child: Text(LocaleKeys.noParentInformationFound.tr));
         }
+        final student = controller.selectedStudent.value;
+        final studentId =
+            student == null ? 'N/A' : controller.displayId(student);
 
         return ListView(
           padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
@@ -54,7 +57,7 @@ class ParentProfileWidget extends GetView<StudentInformationController> {
               clipBehavior: Clip.antiAlias,
               child: Column(
                 children: [
-                  _infoRow(LocaleKeys.studentId.tr, _safe(parent.id?.toString())),
+                  _infoRow(LocaleKeys.studentId.tr, studentId),
                   _infoRow(LocaleKeys.parent.tr, _safe(parent.name)),
                   _infoRow(LocaleKeys.profession.tr, _safe(parent.occupation)),
                   _infoRow(LocaleKeys.phoneNumber.tr, _safe(parent.phone)),

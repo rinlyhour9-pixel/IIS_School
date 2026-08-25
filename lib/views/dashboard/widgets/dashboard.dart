@@ -26,6 +26,7 @@ class _DashboardWidgetState extends State<DashboardWidget> {
     LocaleKeys.dashboardMenuOnlineCourse.tr,
     LocaleKeys.dashboardMenuLeaves.tr,
     LocaleKeys.dashboardMenuStudentAttendance.tr,
+    LocaleKeys.dashboardMenuScoreEntry.tr,
   ];
 
   final List<String> catIconPaths = [
@@ -40,6 +41,7 @@ class _DashboardWidgetState extends State<DashboardWidget> {
     'assets/images/icon/online_course.png',
     'assets/images/icon/leaves.png',
     'assets/images/icon/student_attendance.png',
+    'assets/images/icon/score.png',
   ];
 
   final Color _panelColor = const Color(0xFFFFFFFF);
@@ -63,7 +65,7 @@ class _DashboardWidgetState extends State<DashboardWidget> {
     if (isParent) {
       return const [0, 1, 2, 3, 4, 5, 6, 7, 8];
     }
-    return const [3, 7, 8, 9, 10];
+    return const [3, 7, 8, 9, 10, 11];
   }
 
   void click(int index) {
@@ -109,6 +111,9 @@ class _DashboardWidgetState extends State<DashboardWidget> {
         break;
       case 10:
         Get.toNamed(Routes.studentAttendance);
+        break;
+      case 11:
+        Get.toNamed(Routes.scoreEntry);
         break;
     }
   }

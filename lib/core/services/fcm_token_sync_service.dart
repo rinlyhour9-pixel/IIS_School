@@ -18,7 +18,7 @@ class FcmTokenSyncService {
   static final FcmTokenSyncService instance = FcmTokenSyncService._();
 
   static const String _lastSyncedTokenKey = 'last_synced_fcm_token';
-  static const bool _backendTokenSyncEndpointEnabled = false;
+  static const bool _backendTokenSyncEndpointEnabled = true;
   static const int _apnsTokenRetries = 6;
   static const Duration _apnsTokenRetryDelay = Duration(seconds: 2);
 

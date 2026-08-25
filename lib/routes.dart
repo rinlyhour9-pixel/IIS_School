@@ -48,6 +48,8 @@ import 'package:schoolapp/views/record_attendance/binding.dart';
 import 'package:schoolapp/views/record_attendance/view.dart';
 import 'package:schoolapp/views/detailed_attendance/binding.dart';
 import 'package:schoolapp/views/detailed_attendance/view.dart';
+import 'package:schoolapp/views/score_entry/binding.dart';
+import 'package:schoolapp/views/score_entry/view.dart';
 import 'package:get/get.dart';
 
 class Routes {
@@ -84,6 +86,7 @@ class Routes {
   static const String studentAttendance = '/s';
   static const String recordAttendance = '/record';
   static const String detailedAttendance = '/detailed';
+  static const String scoreEntry = '/score-entry';
 
   static List<GetPage> pages = [
     GetPage(
@@ -213,6 +216,11 @@ class Routes {
       name: detailedAttendance,
       page: () => const DetailedAttendanceView(),
       binding: DetailedAttendanceBinding(),
+    ),
+    GetPage(
+      name: scoreEntry,
+      page: () => const ScoreEntryView(),
+      binding: ScoreEntryBinding(),
     ),
   ];
 }

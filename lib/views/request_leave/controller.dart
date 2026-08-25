@@ -292,17 +292,7 @@ class RequestLeaveController extends GetxController {
     }
   }
 
-  /// Fetches the sections available for the current student, scoped to
-  /// CONFIRMED against the real API docs that `/parent/student-section/
-  /// {studentId}` ("List all sections") takes just the `studentId` path
-  /// param and nothing else. It returns a flat, generic reference list
-  /// (id/section pairs, e.g. 110→"Morning", 111→"Afternoon") that is the
-  /// same for every student and every class — there is no server-side way
-  /// to filter it by class. This is only ever called as a last-resort
-  /// fallback now, when a class row has no bundled section of its own (see
-  /// setSelectedClasses / _sectionByClassName) — in that case Section
-  /// falls back to whatever this list happens to return first, which is
-  /// not guaranteed to match the selected class.
+
   Future<void> fetchStudentSection() async {
     if (!isParentMode) {
       return;
@@ -462,9 +452,7 @@ class RequestLeaveController extends GetxController {
     }
     reasonError.value = '';
 
-    if (startDate.value.isEmpty ||
-        endDate.value.isEmpty ||
-        leaveType.value.isEmpty) {
+    if (startDate.value.isEmpty || endDate.value.isEmpty) {
       Get.snackbar(
         'Error',
         'Please complete all required fields.',

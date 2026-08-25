@@ -55,7 +55,7 @@ class TeacherProfileWidget extends GetView<StudentInformationController> {
               child: Column(
                 children: [
                   _infoRow(
-                    LocaleKeys.studentId.tr,
+                    LocaleKeys.teacherId.tr,
                     controller.displayId(teacher),
                   ),
                   _infoRow(

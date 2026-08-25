@@ -37,7 +37,13 @@ class AppConfig {
   // update later
   Future<void> updateLanguage(String value) async {
     _language = value;
-    Get.updateLocale(AppConfig.shared.languageLocale);
+    // Get.updateLocale awaits a full app reassemble so every already-mounted
+    // screen actually re-renders with the new locale, not just newly built
+    // ones. Without this await, callers moved on before that reassemble
+    // finished, so a screen that was already in memory (e.g. reached via
+    // bottom-nav/drawer, not freshly pushed) could still show the old
+    // language on the very next visit and only self-correct afterward.
+    await Get.updateLocale(AppConfig.shared.languageLocale);
     Get.changeTheme(
       AppStyle.themeData(fontFamily: AppFontFamily.forLanguage(_language)),
     );

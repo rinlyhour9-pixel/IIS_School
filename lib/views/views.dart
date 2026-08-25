@@ -23,3 +23,4 @@ export 'online_courses/onlinecourses.dart';
 export 'event_gallery/EventGallery.dart';
 export 'leaves/leaves.dart';
 export 'student_attendance/student_attendance.dart';
+export 'score_entry/score_entry.dart';

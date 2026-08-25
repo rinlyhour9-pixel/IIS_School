@@ -94,6 +94,7 @@ class LocaleKeys {
   static const requestLeaveFillInfo = 'requestLeaveFillInfo';
   static const student = 'student';
   static const studentId = 'studentId';
+  static const teacherId = 'teacherId';
   static const studentName = 'studentName';
   static const teacherName = 'teacherName';
   static const role = 'role';
@@ -138,6 +139,34 @@ class LocaleKeys {
   static const dashboardMenuLeaves = 'dashboardMenuLeaves';
   static const dashboardMenuStudentAttendance =
       'dashboardMenuStudentAttendance';
+  static const dashboardMenuScoreEntry = 'dashboardMenuScoreEntry';
+  static const scoreEntryTitle = 'scoreEntryTitle';
+  static const scoreEntrySubTitle = 'scoreEntrySubTitle';
+  static const scoreEntryTeacherSubTitle = 'scoreEntryTeacherSubTitle';
+  static const scoreEntryLevel = 'scoreEntryLevel';
+  static const scoreEntryResultType = 'scoreEntryResultType';
+  static const scoreEntryMonth = 'scoreEntryMonth';
+  static const scoreEntryQuarter = 'scoreEntryQuarter';
+  static const scoreEntrySelectResultTypeFirst =
+      'scoreEntrySelectResultTypeFirst';
+  static const scoreEntrySelectFiltersHint = 'scoreEntrySelectFiltersHint';
+  static const scoreEntryNoStudentsFound = 'scoreEntryNoStudentsFound';
+  static const scoreEntryNoSubjects = 'scoreEntryNoSubjects';
+  static const scoreEntrySave = 'scoreEntrySave';
+  static const recordAttendanceSearchHint = 'recordAttendanceSearchHint';
+  static const recordAttendanceSelectAllPresent =
+      'recordAttendanceSelectAllPresent';
+  static const recordAttendanceNoStudentsFound =
+      'recordAttendanceNoStudentsFound';
+  static const recordAttendanceNoColumn = 'recordAttendanceNoColumn';
+  static const recordAttendanceGender = 'recordAttendanceGender';
+  static const recordAttendanceNote = 'recordAttendanceNote';
+  static const recordAttendanceEnterNoteHint =
+      'recordAttendanceEnterNoteHint';
+  static const recordAttendanceSave = 'recordAttendanceSave';
+  static const recordAttendanceSubmit = 'recordAttendanceSubmit';
+  static const studentAttendanceNoRecordsFound =
+      'studentAttendanceNoRecordsFound';
   static const welcomeParentPrefix = 'welcomeParentPrefix';
   static const welcomeTeacherPrefix = 'welcomeTeacherPrefix';
   static const welcomeParentSubtitle = 'welcomeParentSubtitle';
@@ -705,6 +734,7 @@ class Locales {
     'requestLeaveFillInfo': 'Fill in your leave request information',
     'student': 'Student',
     'studentId': 'Student ID',
+    'teacherId': 'Teacher ID',
     'studentName': 'Student Name',
     'teacherName': 'Teacher Name',
     'role': 'Role',
@@ -748,6 +778,29 @@ class Locales {
     'dashboardMenuOnlineCourse': 'Homework',
     'dashboardMenuLeaves': 'Leaves',
     'dashboardMenuStudentAttendance': 'Student Attendance',
+    'dashboardMenuScoreEntry': 'Score Entry',
+    'scoreEntryTitle': 'Score Entry',
+    'scoreEntrySubTitle': 'View student scores for the selected class.',
+    'scoreEntryTeacherSubTitle': 'Enter and save student scores for your class.',
+    'scoreEntryLevel': 'Level',
+    'scoreEntryResultType': 'Result Type',
+    'scoreEntryMonth': 'Month',
+    'scoreEntryQuarter': 'Quarter',
+    'scoreEntrySelectResultTypeFirst': 'Select a result type first',
+    'scoreEntrySelectFiltersHint': 'Select filters and tap Filter',
+    'scoreEntryNoStudentsFound': 'No students found',
+    'scoreEntryNoSubjects': 'No subjects available to score',
+    'scoreEntrySave': 'Save',
+    'recordAttendanceSearchHint': 'Search Student...',
+    'recordAttendanceSelectAllPresent': 'Select All Present',
+    'recordAttendanceNoStudentsFound': 'No students found',
+    'recordAttendanceNoColumn': 'No.',
+    'recordAttendanceGender': 'Gender',
+    'recordAttendanceNote': 'Note',
+    'recordAttendanceEnterNoteHint': 'Enter note',
+    'recordAttendanceSave': 'Save',
+    'recordAttendanceSubmit': 'Submit Attendance',
+    'studentAttendanceNoRecordsFound': 'No attendance records found',
     'welcomeParentPrefix': 'Welcome Parent, ',
     'welcomeTeacherPrefix': 'Welcome Teacher, ',
     'welcomeParentSubtitle': 'here is your parent dashboard.',
@@ -1309,6 +1362,7 @@ class Locales {
     'requestLeaveFillInfo': 'បំពេញព័ត៌មានសំណើសុំច្បាប់',
     'student': 'សិស្ស',
     'studentId': 'អត្តលេខសិស្ស',
+    'teacherId': 'អត្តលេខគ្រូបង្រៀន',
     'studentName': 'ឈ្មោះសិស្ស',
     'teacherName': 'ឈ្មោះគ្រូ',
     'role': 'តួនាទី',
@@ -1352,6 +1406,29 @@ class Locales {
     'dashboardMenuOnlineCourse': 'កិច្ចការផ្ទះ',
     'dashboardMenuLeaves': 'ច្បាប់ឈប់សម្រាក',
     'dashboardMenuStudentAttendance': 'វត្តមានសិស្ស',
+    'dashboardMenuScoreEntry': 'ការបញ្ចូលពិន្ទុ',
+    'scoreEntryTitle': 'ការបញ្ចូលពិន្ទុ',
+    'scoreEntrySubTitle': 'មើលពិន្ទុសិស្សសម្រាប់ថ្នាក់ដែលបានជ្រើសរើស។',
+    'scoreEntryTeacherSubTitle': 'បញ្ចូល និងរក្សាទុកពិន្ទុសិស្សសម្រាប់ថ្នាក់របស់អ្នក។',
+    'scoreEntryLevel': 'កម្រិត',
+    'scoreEntryResultType': 'ប្រភេទលទ្ធផល',
+    'scoreEntryMonth': 'ខែ',
+    'scoreEntryQuarter': 'ត្រីមាស',
+    'scoreEntrySelectResultTypeFirst': 'សូមជ្រើសរើសប្រភេទលទ្ធផលជាមុនសិន',
+    'scoreEntrySelectFiltersHint': 'ជ្រើសរើស រួចចុច Filter',
+    'scoreEntryNoStudentsFound': 'រកមិនឃើញសិស្សទេ',
+    'scoreEntryNoSubjects': 'មិនមានមុខវិជ្ជាសម្រាប់ដាក់ពិន្ទុទេ',
+    'scoreEntrySave': 'រក្សាទុក',
+    'recordAttendanceSearchHint': 'ស្វែងរកសិស្ស...',
+    'recordAttendanceSelectAllPresent': 'ជ្រើសរើសវត្តមានទាំងអស់',
+    'recordAttendanceNoStudentsFound': 'រកមិនឃើញសិស្សទេ',
+    'recordAttendanceNoColumn': 'ល.រ',
+    'recordAttendanceGender': 'ភេទ',
+    'recordAttendanceNote': 'កំណត់ចំណាំ',
+    'recordAttendanceEnterNoteHint': 'បញ្ចូលកំណត់ចំណាំ',
+    'recordAttendanceSave': 'រក្សាទុក',
+    'recordAttendanceSubmit': 'ដាក់ស្នើវត្តមាន',
+    'studentAttendanceNoRecordsFound': 'រកមិនឃើញកំណត់ត្រាវត្តមានទេ',
     'welcomeParentPrefix': 'សូមស្វាគមន៍ អាណាព្យាបាល, ',
     'welcomeTeacherPrefix': 'សូមស្វាគមន៍ លោកគ្រូ/អ្នកគ្រូ, ',
     'welcomeParentSubtitle': 'នេះគឺជាផ្ទាំងគ្រប់គ្រងសម្រាប់អាណាព្យាបាល',
