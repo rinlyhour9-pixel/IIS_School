@@ -117,6 +117,7 @@ class LoginController extends GetxController {
           ((data['branches'] is Map) ? (data['branches']['id'] ?? '') : '')
               .toString()
               .trim();
+      final String phone = (data['phone'] ?? '').toString().trim();
 
       final String scannerOwnerId = _resolveScannerOwnerId(
         data: data,
@@ -161,6 +162,7 @@ class LoginController extends GetxController {
       await SharedPreferencesManager.setValue('profile', profile);
       await SharedPreferencesManager.setValue('user_id', userId);
       await SharedPreferencesManager.setValue('staff_code', staffCode);
+      await SharedPreferencesManager.setValue('phone', phone);
       await SharedPreferencesManager.setValue('user_role', role);
       await SharedPreferencesManager.setValue(
         'scanner_owner_id',

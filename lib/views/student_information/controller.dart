@@ -96,6 +96,10 @@ class StudentInformationController extends GetxController {
             (await SharedPreferencesManager.get('profile') ?? '')
                 .toString()
                 .trim();
+        final loginPhone =
+            (await SharedPreferencesManager.get('phone') ?? '')
+                .toString()
+                .trim();
 
         if (loginStaffCode.isNotEmpty ||
             loginName.isNotEmpty ||
@@ -107,6 +111,7 @@ class StudentInformationController extends GetxController {
             nameKh: loginName,
             profile: loginProfile,
             profession: 'Teacher',
+            phone: loginPhone,
           );
         }
 
@@ -128,6 +133,7 @@ class StudentInformationController extends GetxController {
               staffCode: loginStaffCode,
               name: loginName,
               profile: loginProfile,
+              phone: loginPhone,
             );
           }
           return;
@@ -141,7 +147,10 @@ class StudentInformationController extends GetxController {
                   : profile.id.toString(),
           name: profile.name,
           nameKh: profile.name,
-          phone: profile.phone,
+          // /your-profile doesn't always return phone for staff accounts;
+          // fall back to the value captured at login (see LoginController)
+          // rather than showing N/A when we actually have it.
+          phone: _validText(profile.phone) ? profile.phone : loginPhone,
           profile: profile.profilePath,
           profession:
               profile.profession.trim().isEmpty ? 'N/A' : profile.profession,
@@ -427,6 +436,7 @@ class StudentInformationController extends GetxController {
     required String staffCode,
     required String name,
     required String profile,
+    String phone = '',
   }) {
     return parent_model.Student(
       id: int.tryParse(staffCode),
@@ -435,6 +445,7 @@ class StudentInformationController extends GetxController {
       nameKh: name.isEmpty ? 'N/A' : name,
       profile: profile,
       profession: 'Teacher',
+      phone: phone,
     );
   }
 
