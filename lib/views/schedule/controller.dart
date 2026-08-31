@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:schoolapp/core/core.dart';
@@ -58,7 +60,12 @@ class ScheduleController extends GetxController {
         isShowLoading: false,
       );
 
-      if (res.data is! Map) {
+      final rawData = _decodeIfString(res.data);
+      if (rawData is! Map) {
+        debugPrint(
+          'Schedule debug -> unexpected response type: '
+          '${rawData.runtimeType}, value: $rawData',
+        );
         timetables.clear();
         timetable.value = null;
         selectedIndex.value = 0;
@@ -67,7 +74,7 @@ class ScheduleController extends GetxController {
       }
 
       final parsed = ScheduleResponse.fromJson(
-        Map<String, dynamic>.from(res.data as Map),
+        Map<String, dynamic>.from(rawData),
       );
       timetables.assignAll(parsed.timetables);
       final nextIndex =
@@ -75,6 +82,9 @@ class ScheduleController extends GetxController {
       selectedIndex.value = nextIndex;
       timetable.value = timetables.isNotEmpty ? timetables[nextIndex] : null;
       if (timetable.value == null) {
+        debugPrint(
+          'Schedule debug -> parsed zero timetables from: ${res.data}',
+        );
         error.value = LocaleKeys.invalidResponseData.tr;
       }
     } catch (e) {
@@ -87,5 +97,19 @@ class ScheduleController extends GetxController {
     } finally {
       isLoading.value = false;
     }
+  }
+
+  /// Some responses arrive as a JSON-encoded string rather than an
+  /// auto-decoded Map (seen elsewhere in this app, e.g. homework's
+  /// `_extractHomeworkRows`). Decode it here instead of failing immediately.
+  dynamic _decodeIfString(dynamic raw) {
+    if (raw is String) {
+      try {
+        return jsonDecode(raw);
+      } catch (_) {
+        return raw;
+      }
+    }
+    return raw;
   }
 }

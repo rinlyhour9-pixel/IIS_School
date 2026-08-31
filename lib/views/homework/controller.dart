@@ -32,6 +32,14 @@ class HomeworkController extends GetxController {
   final RxInt teacherHomeworkPerPage = 10.obs;
   final RxInt teacherHomeworkTotal = 0.obs;
 
+  /// Every class the selected student is enrolled in. A student can be in
+  /// more than one; the homework endpoint is scoped to a single class, so
+  /// switching between them re-fetches rather than filtering locally.
+  final RxList<StudentClassOption> studentClassOptions =
+      <StudentClassOption>[].obs;
+  final RxnInt selectedStudentClassId = RxnInt();
+  String _studentClassOptionsStudentId = '';
+
   bool get isParentRole => UserRepository.shared.isParent;
   bool get hasMoreTeacherHomeworkPages =>
       teacherHomeworkCurrentPage.value < teacherHomeworkLastPage.value;
@@ -53,12 +61,41 @@ class HomeworkController extends GetxController {
   void onInit() {
     super.onInit();
     if (isParentRole) {
+      loadStudentClassOptions();
       fetchStudentHomeworks();
     } else {
       fetchTeacherClassOptions();
       fetchTeacherDashboardStats();
       fetchTeacherHomeworks();
     }
+  }
+
+  /// Loads the classes the selected student belongs to, and picks the one to
+  /// show. Defaults to whatever class was already being shown so the screen
+  /// lands exactly as it did before; falls back to the first class.
+  Future<void> loadStudentClassOptions() async {
+    if (!isParentRole) return;
+
+    final studentId = await _resolveSelectedStudentId();
+    final options = await StudentClassOptionsResolver.fetch(studentId);
+    _studentClassOptionsStudentId = studentId;
+    studentClassOptions.assignAll(options);
+
+    if (options.isEmpty) {
+      selectedStudentClassId.value = null;
+      return;
+    }
+
+    final current =
+        selectedStudentClassId.value ?? await _resolveStudentClassId();
+    final matched = options.any((option) => option.id == current);
+    selectedStudentClassId.value = matched ? current : options.first.id;
+  }
+
+  Future<void> selectStudentClass(int classId) async {
+    if (!isParentRole || selectedStudentClassId.value == classId) return;
+    selectedStudentClassId.value = classId;
+    await fetchStudentHomeworks(resetBeforeLoad: true);
   }
 
   // Parent/student homework flow.
@@ -69,11 +106,22 @@ class HomeworkController extends GetxController {
       assignedHomeworkItems.clear();
     }
 
+    final selectedStudentId = await _resolveSelectedStudentId();
+    // A different child has different classes, so drop the previous pick
+    // before reloading — otherwise a stale class id leaks across children.
+    if (selectedStudentId != _studentClassOptionsStudentId) {
+      selectedStudentClassId.value = null;
+      studentClassOptions.clear();
+      await loadStudentClassOptions();
+    }
+
     final fallbackClassName = await _resolveStudentClassName();
+    // An explicitly picked class wins: the student may be in more than one
+    // and the resolvers below only ever return a single cached class.
     final classId =
+        selectedStudentClassId.value ??
         await _resolveStudentClassId() ??
         await _resolveClassIdFromClassName(fallbackClassName);
-    final selectedStudentId = await _resolveSelectedStudentId();
     print(
       'Student homework debug -> studentId: $selectedStudentId, '
       'classId: $classId, fallbackClassName: $fallbackClassName',

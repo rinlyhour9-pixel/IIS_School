@@ -23,6 +23,13 @@ class ActivityView extends GetView<ActivityController> {
           final isDetailLoading = controller.isDetailLoading.value;
           final hasMorePages = controller.hasMorePages;
           final topImage = activities.isNotEmpty ? activities.first.image : '';
+          final isTeacher = controller.isTeacherRole;
+          // Students switch classes (the endpoint is per-class, so this
+          // re-fetches). Teachers keep the read-only badges derived from
+          // whatever activities happen to be loaded.
+          final studentClassOptions =
+              controller.studentClassOptions.toList(growable: false);
+          final selectedStudentClassId = controller.selectedStudentClassId.value;
           final classNames =
               activities
                   .map((item) => item.className.trim())
@@ -30,6 +37,9 @@ class ActivityView extends GetView<ActivityController> {
                   .toSet()
                   .toList()
                 ..sort();
+          final showStudentClassChips =
+              !isTeacher && studentClassOptions.length > 1;
+          final showTeacherClassChips = isTeacher && classNames.isNotEmpty;
 
           return Stack(
             children: [
@@ -118,16 +128,33 @@ class ActivityView extends GetView<ActivityController> {
                         ),
                       ),
                       const SizedBox(height: 16),
-                      if (classNames.isNotEmpty)
+                      if (showStudentClassChips)
+                        Wrap(
+                          spacing: 8,
+                          runSpacing: 8,
+                          children: [
+                            for (final option in studentClassOptions)
+                              ClassChip(
+                                label: option.name,
+                                selected: option.id == selectedStudentClassId,
+                                onTap:
+                                    () => controller.selectStudentClass(
+                                      option.id,
+                                    ),
+                              ),
+                          ],
+                        )
+                      else if (showTeacherClassChips)
                         Wrap(
                           spacing: 8,
                           runSpacing: 8,
                           children: [
                             for (final className in classNames)
-                              _ClassChip(label: className),
+                              ClassChip(label: className),
                           ],
                         ),
-                      if (classNames.isNotEmpty) const SizedBox(height: 16),
+                      if (showStudentClassChips || showTeacherClassChips)
+                        const SizedBox(height: 16),
                       if (isLoading && activities.isEmpty)
                         const Center(
                           child: Padding(
@@ -270,39 +297,6 @@ class ActivityView extends GetView<ActivityController> {
     Get.to(() => const TeacherCreateActivityView());
   }
 
-}
-
-class _ClassChip extends StatelessWidget {
-  const _ClassChip({required this.label});
-
-  final String label;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(999),
-        border: Border.all(color: const Color(0xFFD6E4E0)),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          const Icon(Icons.groups_rounded, size: 14, color: AppColor.primary),
-          const SizedBox(width: 6),
-          Text(
-            label,
-            style: const TextStyle(
-              fontSize: 12,
-              fontWeight: FontWeight.w700,
-              color: Color(0xFF1F2937),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
 }
 
 class _EmptyActivityState extends StatelessWidget {

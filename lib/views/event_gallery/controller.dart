@@ -19,6 +19,14 @@ class ActivityController extends GetxController {
   final RxInt perPage = 10.obs;
   final RxInt total = 0.obs;
   String _lastStudentScopeKey = '';
+  String _studentClassOptionsStudentId = '';
+
+  /// Every class the selected student is enrolled in. A student can be in
+  /// more than one; the activities endpoint is scoped to a single class, so
+  /// switching between them re-fetches rather than filtering locally.
+  final RxList<StudentClassOption> studentClassOptions =
+      <StudentClassOption>[].obs;
+  final RxnInt selectedStudentClassId = RxnInt();
 
   bool get isTeacherRole => !UserRepository.shared.isParent;
   bool get hasMorePages => currentPage.value < lastPage.value;
@@ -29,7 +37,36 @@ class ActivityController extends GetxController {
     fetchClassActivities();
     if (isTeacherRole) {
       fetchTeacherClassOptions();
+    } else {
+      loadStudentClassOptions();
     }
+  }
+
+  /// Loads the classes the selected student belongs to, and picks the one to
+  /// show. Defaults to whatever class was already being shown so the screen
+  /// lands exactly as it did before; falls back to the first class.
+  Future<void> loadStudentClassOptions() async {
+    if (isTeacherRole) return;
+
+    final studentId = await _resolveSelectedStudentId();
+    final options = await StudentClassOptionsResolver.fetch(studentId);
+    _studentClassOptionsStudentId = studentId;
+    studentClassOptions.assignAll(options);
+
+    if (options.isEmpty) {
+      selectedStudentClassId.value = null;
+      return;
+    }
+
+    final current = selectedStudentClassId.value ?? await _resolveStudentClassId();
+    final matched = options.any((option) => option.id == current);
+    selectedStudentClassId.value = matched ? current : options.first.id;
+  }
+
+  Future<void> selectStudentClass(int classId) async {
+    if (isTeacherRole || selectedStudentClassId.value == classId) return;
+    selectedStudentClassId.value = classId;
+    await fetchClassActivities();
   }
 
   Future<void> fetchClassActivities({bool reset = true}) async {
@@ -53,10 +90,13 @@ class ActivityController extends GetxController {
           isTeacherRole ? '' : await _resolveSelectedStudentId();
       final studentClassName =
           isTeacherRole ? '' : await _resolveStudentClassName();
+      // An explicitly picked class wins: the student may be in more than one
+      // and the resolvers below only ever return a single cached class.
       final studentClassId =
           isTeacherRole
               ? null
-              : await _resolveStudentClassId() ??
+              : selectedStudentClassId.value ??
+                  await _resolveStudentClassId() ??
                   await _resolveClassIdFromClassName(studentClassName);
       if (!isTeacherRole && studentClassId == null) {
         if (reset) {
@@ -172,6 +212,16 @@ class ActivityController extends GetxController {
 
   Future<void> refreshForSelectedStudent() async {
     if (isTeacherRole) return;
+
+    // A different child has different classes, so drop the previous pick
+    // before reloading — otherwise a stale class id leaks across children.
+    final studentId = await _resolveSelectedStudentId();
+    if (studentId != _studentClassOptionsStudentId) {
+      selectedStudentClassId.value = null;
+      studentClassOptions.clear();
+      await loadStudentClassOptions();
+    }
+
     final nextScopeKey = await _resolveStudentScopeKey();
     if (nextScopeKey == _lastStudentScopeKey) {
       return;
@@ -667,7 +717,11 @@ class ActivityController extends GetxController {
             .toString()
             .trim()
             .toLowerCase();
-    return '$selectedChildId|$selectedClassId|$selectedClassName';
+    // The picked class is part of the scope: without it, switching class
+    // leaves the key unchanged and refreshForSelectedStudent() would skip
+    // the refetch.
+    return '$selectedChildId|$selectedClassId|$selectedClassName'
+        '|${selectedStudentClassId.value ?? ''}';
   }
 
   Future<int?> _findClassIdForSelectedStudent(

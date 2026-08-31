@@ -18,7 +18,13 @@ class _ParentHomeworkDashboard extends GetView<HomeworkController> {
       if (assignedItems.isEmpty) {
         return ListView(
           padding: const EdgeInsets.fromLTRB(16, 10, 16, 24),
-          children: const [_HomeworkDashboardTitle()],
+          children: const [
+            _HomeworkDashboardTitle(),
+            // Rendered here too: without it, a student whose selected class
+            // has no homework would have no way to switch back to the one
+            // that does.
+            _StudentClassChips(),
+          ],
         );
       }
 
@@ -39,6 +45,7 @@ class _ParentHomeworkDashboard extends GetView<HomeworkController> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const _HomeworkDashboardTitle(),
+                  const _StudentClassChips(),
                   const SizedBox(height: 12),
                   Row(
                     children: [
@@ -145,6 +152,38 @@ class _HomeworkDashboardTitle extends StatelessWidget {
         fontWeight: FontWeight.w800,
       ),
     );
+  }
+}
+
+/// Lets a student switch between the classes they're enrolled in. Renders
+/// nothing when there's only one class (or none), so single-class students
+/// see the screen exactly as before.
+class _StudentClassChips extends GetView<HomeworkController> {
+  const _StudentClassChips();
+
+  @override
+  Widget build(BuildContext context) {
+    return Obx(() {
+      final options = controller.studentClassOptions.toList(growable: false);
+      if (options.length < 2) return const SizedBox.shrink();
+
+      final selectedId = controller.selectedStudentClassId.value;
+      return Padding(
+        padding: const EdgeInsets.only(top: 12),
+        child: Wrap(
+          spacing: 8,
+          runSpacing: 8,
+          children: [
+            for (final option in options)
+              ClassChip(
+                label: option.name,
+                selected: option.id == selectedId,
+                onTap: () => controller.selectStudentClass(option.id),
+              ),
+          ],
+        ),
+      );
+    });
   }
 }
 

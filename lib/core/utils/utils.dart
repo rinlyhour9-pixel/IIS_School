@@ -5,5 +5,6 @@ export 'form_validator.dart';
 export 'date_picker.dart';
 export 'bottom_sheet.dart';
 export 'student_id_resolver.dart';
+export 'student_class_options.dart';
 export 'status_style.dart';
 export 'app_font_family.dart';

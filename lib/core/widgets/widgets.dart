@@ -13,3 +13,4 @@ export 'dot.dart';
 export 'no_data.dart';
 export 'decoration.dart';
 export 'month_filter_dropdown.dart';
+export 'class_chip.dart';
