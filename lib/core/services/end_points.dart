@@ -92,5 +92,24 @@ class EndPoints {
       '/api/v1/parent/$id/attendance-details';
   static String get termsAndConditions =>
       '/api/v1/setting/pages/terms-and-conditions';
+  static String get assessmentManagementFilters =>
+      '/api/v1/teacher/assessment-management/filters';
+  static String get assessmentManagementAssignments =>
+      '/api/v1/teacher/assessment-management/assignments';
+  static String get assessmentManagementStudents =>
+      '/api/v1/teacher/assessment-management/students';
+  static String get assessmentManagementSave =>
+      '/api/v1/teacher/assessment-management/save';
+  static String get assessmentManagementSaveQuarterly =>
+      '/api/v1/teacher/assessment-management/save-quarterly';
+  static String get assessmentManagementSaveSemester =>
+      '/api/v1/teacher/assessment-management/save-semester';
+  static String get scoreEntryFilters =>
+      '/api/v1/teacher/score-entry/filters';
+  static String get scoreEntryAssignments =>
+      '/api/v1/teacher/score-entry/assignments';
+  static String get scoreEntryStudents =>
+      '/api/v1/teacher/score-entry/students';
+  static String get scoreEntrySave => '/api/v1/teacher/score-entry/save';
   static const String iisBaseUrl = 'https://iis.school.softcreative.live';
 }

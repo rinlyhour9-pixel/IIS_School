@@ -24,3 +24,8 @@ export 'event_gallery/EventGallery.dart';
 export 'leaves/leaves.dart';
 export 'student_attendance/student_attendance.dart';
 export 'score_entry/score_entry.dart';
+export 'assessment_management/assessment_management.dart';
+export 'examination_program/examination_program.dart';
+export 'score_verification/score_verification.dart';
+export 'weighted_result/weighted_result.dart';
+export 'view_score/view_score.dart';

@@ -35,12 +35,12 @@ class ScoreEntryCardWidget extends GetView<ScoreEntryController> {
             if (controller.students.isEmpty) {
               return _TableHint(LocaleKeys.scoreEntryNoStudentsFound.tr);
             }
-            if (controller.subjects.isEmpty) {
+            if (controller.subjectsForResolvedAssignments.isEmpty) {
               return _TableHint(LocaleKeys.scoreEntryNoSubjects.tr);
             }
             return _ScoreTable(
               students: controller.students.toList(),
-              subjects: controller.subjects.toList(),
+              subjects: controller.subjectsForResolvedAssignments,
             );
           }),
           const SizedBox(height: 20),
@@ -133,20 +133,23 @@ class _FiltersCard extends StatelessWidget {
                     items: controller.classes.toList(),
                     itemLabel: (item) => item.className,
                     onChanged: controller.selectClass,
-                    isLoading: controller.isLoadingOptions.value,
+                    isLoading: controller.isLoadingAssignments.value,
                     hintText: LocaleKeys.scoreEntryLevel.tr,
                   ),
                 ),
               ),
               const SizedBox(width: 12),
+              // Section — really the specific session/time-slot a class's
+              // assignments happen in (see ScoreEntryAssignment's doc
+              // comment); only has real options once Level is picked.
               Expanded(
                 child: Obx(
-                  () => AppIconDropdown<SectionModel>(
+                  () => AppIconDropdown<String>(
                     value: controller.selectedSection.value,
-                    items: controller.sections.toList(),
-                    itemLabel: (item) => item.section,
+                    items: controller.sectionsForSelectedClass,
+                    itemLabel: (item) => item,
                     onChanged: controller.selectSection,
-                    isLoading: controller.isLoadingOptions.value,
+                    isLoading: controller.isLoadingAssignments.value,
                     hintText: LocaleKeys.section.tr,
                   ),
                 ),
@@ -175,10 +178,11 @@ class _FiltersCard extends StatelessWidget {
                     items: controller.periodItems,
                     itemLabel: (item) => item,
                     onChanged: controller.selectPeriod,
+                    isLoading: controller.isLoadingFilters.value,
                     hintText:
                         controller.selectedResultType.value ==
-                                ResultType.quarterly
-                            ? LocaleKeys.scoreEntryQuarter.tr
+                                ResultType.semester
+                            ? LocaleKeys.assessmentManagementSemester.tr
                             : LocaleKeys.scoreEntryMonth.tr,
                     emptyText: LocaleKeys.scoreEntrySelectResultTypeFirst.tr,
                   ),
@@ -209,8 +213,7 @@ class _FilterButton extends StatelessWidget {
       width: double.infinity,
       child: Obx(
         () => ElevatedButton.icon(
-          onPressed:
-              controller.isLoading.value ? null : () => _onPressed(context),
+          onPressed: controller.isLoading.value ? null : _onPressed,
           style: ElevatedButton.styleFrom(
             backgroundColor: AppColor.primary,
             foregroundColor: AppColor.white,
@@ -226,38 +229,44 @@ class _FilterButton extends StatelessWidget {
     );
   }
 
-  Future<void> _onPressed(BuildContext context) async {
+  Future<void> _onPressed() async {
     // Re-filtering rebuilds every column, which discards anything typed but
     // not yet saved — so confirm first when there is something to lose.
+    //
+    // Uses Get.dialog()/Get.back() rather than Flutter's raw showDialog()/
+    // Navigator.of(context) — every other dialog in this app already goes
+    // through GetX's own navigator key this way, which doesn't depend on any
+    // particular widget's BuildContext still being valid/mounted at all,
+    // sidestepping "Navigator operation requested with a context that does
+    // not include a Navigator" outright rather than needing to reason about
+    // exactly why a given context might not have one.
     if (controller.hasUnsavedScores) {
-      final discard = await showDialog<bool>(
-        context: context,
-        builder:
-            (dialogContext) => AlertDialog(
-              backgroundColor: AppColor.white,
-              surfaceTintColor: AppColor.white,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16),
-              ),
-              title: const Text('Discard unsaved scores?'),
-              content: const Text(
-                'You have scores that have not been saved. Filtering again '
-                'will clear them.',
-              ),
-              actions: [
-                TextButton(
-                  onPressed: () => Navigator.of(dialogContext).pop(false),
-                  child: Text(LocaleKeys.cancel.tr),
-                ),
-                TextButton(
-                  onPressed: () => Navigator.of(dialogContext).pop(true),
-                  style: TextButton.styleFrom(
-                    foregroundColor: const Color(0xFFD32F2F),
-                  ),
-                  child: const Text('Discard'),
-                ),
-              ],
+      final discard = await Get.dialog<bool>(
+        AlertDialog(
+          backgroundColor: AppColor.white,
+          surfaceTintColor: AppColor.white,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          title: const Text('Discard unsaved scores?'),
+          content: const Text(
+            'You have scores that have not been saved. Filtering again '
+            'will clear them.',
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Get.back(result: false),
+              child: Text(LocaleKeys.cancel.tr),
             ),
+            TextButton(
+              onPressed: () => Get.back(result: true),
+              style: TextButton.styleFrom(
+                foregroundColor: const Color(0xFFD32F2F),
+              ),
+              child: const Text('Discard'),
+            ),
+          ],
+        ),
       );
       if (discard != true) return;
     }
@@ -404,6 +413,13 @@ class _StudentColumns extends StatelessWidget {
         SizedBox(
           height: kHeaderHeight,
           child: Row(
+            // Row defaults to centering children on the cross axis, which
+            // would let each cell's own (shorter) intrinsic height float in
+            // the middle of this fixed-height slot — its border then only
+            // wraps its own content instead of reaching the true row
+            // boundary, visibly misaligning against the frozen column's
+            // dividers (which use an explicit height, not centering).
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children:
                 students
                     .map((student) => _StudentHeaderCell(student: student))
@@ -414,6 +430,7 @@ class _StudentColumns extends StatelessWidget {
           (subject) => SizedBox(
             height: kRowHeight,
             child: Row(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children:
                   students
                       .map(
@@ -500,6 +517,10 @@ class _ScoreCell extends StatelessWidget {
     return Container(
       width: kStudentColWidth,
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+      // Now that the row's Row stretches this cell to the full row height,
+      // a Container with no alignment leaves its child pinned to the top
+      // instead of centering in the extra space.
+      alignment: Alignment.center,
       decoration: const BoxDecoration(
         border: Border(
           right: BorderSide(color: AppColor.divider),

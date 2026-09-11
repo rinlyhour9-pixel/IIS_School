@@ -1,13 +1,15 @@
-/// Static placeholder data for Score Entry.
+/// Static placeholder data still used by `weighted_result` and `view_score`,
+/// neither of which is wired to a real endpoint yet.
 ///
-/// The score-entry backend does not exist yet, so the whole screen runs on
-/// the fixtures below — no network calls at all. When the API lands, delete
-/// this file and replace the `TODO(api)` seams in `ScoreEntryController`.
+/// Score Entry itself no longer imports this file — it's fully wired to the
+/// real `/api/v1/teacher/score-entry/*` endpoints (see `ScoreEntryController`
+/// and `score_entry/models.dart`). Kept here only because the two other
+/// screens still import `kMockClasses`/`kMockSections`/`kMockSubjects` from
+/// it; delete once they're wired too.
 library;
 
 import 'package:schoolapp/models/models.dart';
 
-/// Level / class options.
 const List<ClassModel> kMockClasses = <ClassModel>[
   ClassModel(id: 1, teacherId: 0, className: 'BP-PreK'),
   ClassModel(id: 2, teacherId: 0, className: 'BP-K1'),
@@ -21,51 +23,9 @@ const List<SectionModel> kMockSections = <SectionModel>[
   SectionModel(id: 2, section: 'Afternoon (1:30PM - 4:30PM)'),
 ];
 
-/// The row axis of the sheet — one row per subject.
 const List<SubjectModel> kMockSubjects = <SubjectModel>[
   SubjectModel(id: 1, name: 'Math', code: 'MATH'),
   SubjectModel(id: 2, name: 'English', code: 'ENG'),
   SubjectModel(id: 3, name: 'Biology', code: 'BIO'),
   SubjectModel(id: 4, name: 'Khmer', code: 'KHM'),
-];
-
-/// Two students matches the mockup; the table scrolls horizontally once there
-/// are more than roughly two columns on a phone.
-const List<Map<String, dynamic>> kMockScoreStudents = <Map<String, dynamic>>[
-  {
-    'id': 1,
-    'admission_no': 'iiS9-00001',
-    'student_name': 'SOK NA',
-    'gender': 'Male',
-  },
-  {
-    'id': 2,
-    'admission_no': 'iiS9-00002',
-    'student_name': 'CHAN DARA',
-    'gender': 'Female',
-  },
-  {
-    'id': 3,
-    'admission_no': 'iiS9-00003',
-    'student_name': 'SREY MOM',
-    'gender': 'Female',
-  },
-  {
-    'id': 4,
-    'admission_no': 'iiS9-00004',
-    'student_name': 'VUTHY SOPHANNARITH',
-    'gender': 'Male',
-  },
-  {
-    'id': 5,
-    'admission_no': 'iiS9-00005',
-    'student_name': 'KIM LEANG',
-    'gender': 'Female',
-  },
-  {
-    'id': 6,
-    'admission_no': 'iiS9-00006',
-    'student_name': 'PISETH CHANTHAVY',
-    'gender': 'Male',
-  },
 ];

@@ -139,7 +139,7 @@ class LocaleKeys {
   static const dashboardMenuLeaves = 'dashboardMenuLeaves';
   static const dashboardMenuStudentAttendance =
       'dashboardMenuStudentAttendance';
-  static const dashboardMenuScoreEntry = 'dashboardMenuScoreEntry';
+  static const dashboardMenuExamination = 'dashboardMenuExamination';
   static const scoreEntryTitle = 'scoreEntryTitle';
   static const scoreEntrySubTitle = 'scoreEntrySubTitle';
   static const scoreEntryTeacherSubTitle = 'scoreEntryTeacherSubTitle';
@@ -153,6 +153,91 @@ class LocaleKeys {
   static const scoreEntryNoStudentsFound = 'scoreEntryNoStudentsFound';
   static const scoreEntryNoSubjects = 'scoreEntryNoSubjects';
   static const scoreEntrySave = 'scoreEntrySave';
+  static const assessmentManagementTitle = 'assessmentManagementTitle';
+  static const assessmentManagementSubTitle = 'assessmentManagementSubTitle';
+  static const assessmentManagementSemester = 'assessmentManagementSemester';
+  static const assessmentManagementTeacherComment =
+      'assessmentManagementTeacherComment';
+  static const examinationProgramTitle = 'examinationProgramTitle';
+  static const examinationProgramChineseEnglish =
+      'examinationProgramChineseEnglish';
+  static const examinationProgramChineseEnglishSubtitle =
+      'examinationProgramChineseEnglishSubtitle';
+  static const examinationProgramKhmer = 'examinationProgramKhmer';
+  static const examinationProgramKhmerSubtitle =
+      'examinationProgramKhmerSubtitle';
+  static const examinationProgramScoreVerification =
+      'examinationProgramScoreVerification';
+  static const examinationProgramScoreVerificationSubtitle =
+      'examinationProgramScoreVerificationSubtitle';
+  static const scoreVerificationTitle = 'scoreVerificationTitle';
+  static const scoreVerificationSubTitle = 'scoreVerificationSubTitle';
+  static const scoreVerificationPendingExam = 'scoreVerificationPendingExam';
+  static const scoreVerificationPendingExamDesc =
+      'scoreVerificationPendingExamDesc';
+  static const scoreVerificationPendingQuarter =
+      'scoreVerificationPendingQuarter';
+  static const scoreVerificationPendingQuarterDesc =
+      'scoreVerificationPendingQuarterDesc';
+  static const scoreVerificationPendingAssessment =
+      'scoreVerificationPendingAssessment';
+  static const scoreVerificationPendingAssessmentDesc =
+      'scoreVerificationPendingAssessmentDesc';
+  static const scoreVerificationNothingPending =
+      'scoreVerificationNothingPending';
+  static const scoreVerificationExam = 'scoreVerificationExam';
+  static const scoreVerificationSession = 'scoreVerificationSession';
+  static const scoreVerificationStudents = 'scoreVerificationStudents';
+  static const scoreVerificationSubmitted = 'scoreVerificationSubmitted';
+  static const scoreVerificationView = 'scoreVerificationView';
+  static const scoreVerificationVerify = 'scoreVerificationVerify';
+  static const scoreVerificationVerifyAll = 'scoreVerificationVerifyAll';
+  static const examinationProgramWeightedResult =
+      'examinationProgramWeightedResult';
+  static const examinationProgramWeightedResultSubtitle =
+      'examinationProgramWeightedResultSubtitle';
+  static const weightedResultTitle = 'weightedResultTitle';
+  static const weightedResultSubTitle = 'weightedResultSubTitle';
+  static const weightedResultWeightsLabel = 'weightedResultWeightsLabel';
+  static const weightedResultAdmissionNo = 'weightedResultAdmissionNo';
+  static const weightedResultStudent = 'weightedResultStudent';
+  static const weightedResultWeightedPercent =
+      'weightedResultWeightedPercent';
+  static const weightedResultGrade = 'weightedResultGrade';
+  static const weightedResultGpa = 'weightedResultGpa';
+  static const weightedResultResult = 'weightedResultResult';
+  static const weightedResultNoStudentsFound =
+      'weightedResultNoStudentsFound';
+  static const weightedResultSelectFiltersHint =
+      'weightedResultSelectFiltersHint';
+  static const weightedResultCriterionHomework =
+      'weightedResultCriterionHomework';
+  static const weightedResultCriterionCommunication =
+      'weightedResultCriterionCommunication';
+  static const weightedResultCriterionClasswork =
+      'weightedResultCriterionClasswork';
+  static const weightedResultCriterionReflection =
+      'weightedResultCriterionReflection';
+  static const weightedResultCriterionBeRespectful =
+      'weightedResultCriterionBeRespectful';
+  static const weightedResultCriterionStudentsAttention =
+      'weightedResultCriterionStudentsAttention';
+  static const weightedResultCriterionTaskResponsibility =
+      'weightedResultCriterionTaskResponsibility';
+  static const weightedResultCriterionWorkIndependently =
+      'weightedResultCriterionWorkIndependently';
+  static const weightedResultCriterionStudentsPunctually =
+      'weightedResultCriterionStudentsPunctually';
+  static const weightedResultCriterionMorality =
+      'weightedResultCriterionMorality';
+  static const examinationProgramViewScore = 'examinationProgramViewScore';
+  static const examinationProgramViewScoreSubtitle =
+      'examinationProgramViewScoreSubtitle';
+  static const viewScoreTitle = 'viewScoreTitle';
+  static const viewScoreSubTitle = 'viewScoreSubTitle';
+  static const viewScoreGender = 'viewScoreGender';
+  static const viewScoreNoStudentsFound = 'viewScoreNoStudentsFound';
+  static const viewScoreSelectFiltersHint = 'viewScoreSelectFiltersHint';
   static const recordAttendanceSearchHint = 'recordAttendanceSearchHint';
   static const recordAttendanceSelectAllPresent =
       'recordAttendanceSelectAllPresent';
@@ -778,7 +863,7 @@ class Locales {
     'dashboardMenuOnlineCourse': 'Homework',
     'dashboardMenuLeaves': 'Leaves',
     'dashboardMenuStudentAttendance': 'Student Attendance',
-    'dashboardMenuScoreEntry': 'Score Entry',
+    'dashboardMenuExamination': 'Examination',
     'scoreEntryTitle': 'Score Entry',
     'scoreEntrySubTitle': 'View student scores for the selected class.',
     'scoreEntryTeacherSubTitle': 'Enter and save student scores for your class.',
@@ -791,6 +876,76 @@ class Locales {
     'scoreEntryNoStudentsFound': 'No students found',
     'scoreEntryNoSubjects': 'No subjects available to score',
     'scoreEntrySave': 'Save',
+    'assessmentManagementTitle': 'Assessment Management',
+    'assessmentManagementSubTitle':
+        'Record continuous assessment scores for your class.',
+    'assessmentManagementSemester': 'Semester',
+    'assessmentManagementTeacherComment': 'Teacher Comment',
+    'examinationProgramTitle': 'Program',
+    'examinationProgramChineseEnglish': 'Chinese English',
+    'examinationProgramChineseEnglishSubtitle':
+        'Chinese & English language Program',
+    'examinationProgramKhmer': 'Khmer',
+    'examinationProgramKhmerSubtitle': 'Khmer language Program',
+    'examinationProgramScoreVerification': 'Score Verification',
+    'examinationProgramScoreVerificationSubtitle':
+        'Review and verify submitted scores',
+    'scoreVerificationTitle': 'Score Verification',
+    'scoreVerificationSubTitle':
+        "Review scores submitted by teachers before they're locked.",
+    'scoreVerificationPendingExam': 'Pending Examination Scores',
+    'scoreVerificationPendingExamDesc':
+        'Scores submitted for an exam subject, waiting to be verified and locked.',
+    'scoreVerificationPendingQuarter': 'Pending Quarter Scores',
+    'scoreVerificationPendingQuarterDesc':
+        'Scores submitted through Score Entry, waiting to be verified and locked.',
+    'scoreVerificationPendingAssessment': 'Pending Assessment Scores',
+    'scoreVerificationPendingAssessmentDesc':
+        'Scores submitted through Assessment Management, waiting to be verified and locked.',
+    'scoreVerificationNothingPending': 'Nothing pending verification.',
+    'scoreVerificationExam': 'Exam',
+    'scoreVerificationSession': 'Session',
+    'scoreVerificationStudents': 'Students',
+    'scoreVerificationSubmitted': 'Submitted',
+    'scoreVerificationView': 'View',
+    'scoreVerificationVerify': 'Verify',
+    'scoreVerificationVerifyAll': 'Verify All',
+    'examinationProgramWeightedResult': 'Weighted Result',
+    'examinationProgramWeightedResultSubtitle':
+        'View combined exam and assessment results',
+    'weightedResultTitle': 'Weighted Result',
+    'weightedResultSubTitle':
+        'Combines Assessment Management scores and exam scores using the '
+        'Evaluation Criteria weights from Academic Setup.',
+    'weightedResultWeightsLabel': 'Weights:',
+    'weightedResultAdmissionNo': 'Admission No',
+    'weightedResultStudent': 'Student',
+    'weightedResultWeightedPercent': 'Weighted %',
+    'weightedResultGrade': 'Grade',
+    'weightedResultGpa': 'GPA',
+    'weightedResultResult': 'Result',
+    'weightedResultNoStudentsFound': 'No students found.',
+    'weightedResultSelectFiltersHint': 'Select filters and tap Filter',
+    'weightedResultCriterionHomework': 'Homework',
+    'weightedResultCriterionCommunication': 'Communication',
+    'weightedResultCriterionClasswork': 'Classwork',
+    'weightedResultCriterionReflection': 'Reflection',
+    'weightedResultCriterionBeRespectful': 'Be respectful in the class',
+    'weightedResultCriterionStudentsAttention': 'Students attention',
+    'weightedResultCriterionTaskResponsibility': 'Task Responsibility',
+    'weightedResultCriterionWorkIndependently': 'Work independently',
+    'weightedResultCriterionStudentsPunctually': 'Students punctually',
+    'weightedResultCriterionMorality': 'Morality',
+    'examinationProgramViewScore': 'View Score',
+    'examinationProgramViewScoreSubtitle':
+        'View raw assessment scores for a class',
+    'viewScoreTitle': 'View Score',
+    'viewScoreSubTitle':
+        'Select a teacher, then one of their assigned classes, to view '
+        'scores for every subject that teacher teaches in that class.',
+    'viewScoreGender': 'Gender',
+    'viewScoreNoStudentsFound': 'No students found.',
+    'viewScoreSelectFiltersHint': 'Select filters and tap Filter',
     'recordAttendanceSearchHint': 'Search Student...',
     'recordAttendanceSelectAllPresent': 'Select All Present',
     'recordAttendanceNoStudentsFound': 'No students found',
@@ -1406,7 +1561,7 @@ class Locales {
     'dashboardMenuOnlineCourse': 'កិច្ចការផ្ទះ',
     'dashboardMenuLeaves': 'ច្បាប់ឈប់សម្រាក',
     'dashboardMenuStudentAttendance': 'វត្តមានសិស្ស',
-    'dashboardMenuScoreEntry': 'ការបញ្ចូលពិន្ទុ',
+    'dashboardMenuExamination': 'ការប្រឡង',
     'scoreEntryTitle': 'ការបញ្ចូលពិន្ទុ',
     'scoreEntrySubTitle': 'មើលពិន្ទុសិស្សសម្រាប់ថ្នាក់ដែលបានជ្រើសរើស។',
     'scoreEntryTeacherSubTitle': 'បញ្ចូល និងរក្សាទុកពិន្ទុសិស្សសម្រាប់ថ្នាក់របស់អ្នក។',
@@ -1419,6 +1574,76 @@ class Locales {
     'scoreEntryNoStudentsFound': 'រកមិនឃើញសិស្សទេ',
     'scoreEntryNoSubjects': 'មិនមានមុខវិជ្ជាសម្រាប់ដាក់ពិន្ទុទេ',
     'scoreEntrySave': 'រក្សាទុក',
+    'assessmentManagementTitle': 'ការគ្រប់គ្រងការវាយតម្លៃ',
+    'assessmentManagementSubTitle':
+        'កត់ត្រាពិន្ទុវាយតម្លៃជាប្រចាំសម្រាប់ថ្នាក់របស់អ្នក។',
+    'assessmentManagementSemester': 'ឆមាស',
+    'assessmentManagementTeacherComment': 'មតិយោបល់គ្រូ',
+    'examinationProgramTitle': 'កម្មវិធី',
+    'examinationProgramChineseEnglish': 'ចិន និងអង់គ្លេស',
+    'examinationProgramChineseEnglishSubtitle':
+        'កម្មវិធីភាសាចិន និងអង់គ្លេស',
+    'examinationProgramKhmer': 'ខ្មែរ',
+    'examinationProgramKhmerSubtitle': 'កម្មវិធីភាសាខ្មែរ',
+    'examinationProgramScoreVerification': 'ការផ្ទៀងផ្ទាត់ពិន្ទុ',
+    'examinationProgramScoreVerificationSubtitle':
+        'ពិនិត្យ និងផ្ទៀងផ្ទាត់ពិន្ទុដែលបានដាក់ស្នើ',
+    'scoreVerificationTitle': 'ការផ្ទៀងផ្ទាត់ពិន្ទុ',
+    'scoreVerificationSubTitle':
+        'ពិនិត្យពិន្ទុដែលបានដាក់ស្នើដោយគ្រូបង្រៀន មុននឹងចាក់សោ។',
+    'scoreVerificationPendingExam': 'ពិន្ទុប្រឡងកំពុងរង់ចាំផ្ទៀងផ្ទាត់',
+    'scoreVerificationPendingExamDesc':
+        'ពិន្ទុដែលបានដាក់ស្នើសម្រាប់មុខវិជ្ជាប្រឡង កំពុងរង់ចាំផ្ទៀងផ្ទាត់ និងចាក់សោ។',
+    'scoreVerificationPendingQuarter': 'ពិន្ទុត្រីមាសកំពុងរង់ចាំផ្ទៀងផ្ទាត់',
+    'scoreVerificationPendingQuarterDesc':
+        'ពិន្ទុដែលបានដាក់ស្នើតាមរយៈការបញ្ចូលពិន្ទុ កំពុងរង់ចាំផ្ទៀងផ្ទាត់ និងចាក់សោ។',
+    'scoreVerificationPendingAssessment':
+        'ពិន្ទុវាយតម្លៃកំពុងរង់ចាំផ្ទៀងផ្ទាត់',
+    'scoreVerificationPendingAssessmentDesc':
+        'ពិន្ទុដែលបានដាក់ស្នើតាមរយៈការគ្រប់គ្រងការវាយតម្លៃ កំពុងរង់ចាំផ្ទៀងផ្ទាត់ និងចាក់សោ។',
+    'scoreVerificationNothingPending': 'មិនមានអ្វីរង់ចាំផ្ទៀងផ្ទាត់ទេ។',
+    'scoreVerificationExam': 'ប្រឡង',
+    'scoreVerificationSession': 'សម័យ',
+    'scoreVerificationStudents': 'សិស្ស',
+    'scoreVerificationSubmitted': 'បានដាក់ស្នើ',
+    'scoreVerificationView': 'មើល',
+    'scoreVerificationVerify': 'ផ្ទៀងផ្ទាត់',
+    'scoreVerificationVerifyAll': 'ផ្ទៀងផ្ទាត់ទាំងអស់',
+    'examinationProgramWeightedResult': 'លទ្ធផល',
+    'examinationProgramWeightedResultSubtitle':
+        'មើលលទ្ធផលរួមនៃការប្រឡង និងការវាយតម្លៃ',
+    'weightedResultTitle': 'លទ្ធផល',
+    'weightedResultSubTitle':
+        'រួមបញ្ចូលពិន្ទុគ្រប់គ្រងការវាយតម្លៃ និងពិន្ទុប្រឡង '
+        'ដោយប្រើភាគរយលក្ខណៈវិនិច្ឆ័យវាយតម្លៃពីការកំណត់សិក្សា។',
+    'weightedResultWeightsLabel': 'ភាគរយ៖',
+    'weightedResultAdmissionNo': 'លេខចូលរៀន',
+    'weightedResultStudent': 'សិស្ស',
+    'weightedResultWeightedPercent': 'ភាគរយ',
+    'weightedResultGrade': 'និទ្ទេស',
+    'weightedResultGpa': 'ពិន្ទុមធ្យម',
+    'weightedResultResult': 'លទ្ធផល',
+    'weightedResultNoStudentsFound': 'រកមិនឃើញសិស្សទេ។',
+    'weightedResultSelectFiltersHint': 'ជ្រើសរើសតម្រង រួចចុច Filter',
+    'weightedResultCriterionHomework': 'កិច្ចការផ្ទះ',
+    'weightedResultCriterionCommunication': 'ការទំនាក់ទំនង',
+    'weightedResultCriterionClasswork': 'កិច្ចការក្នុងថ្នាក់',
+    'weightedResultCriterionReflection': 'ការឆ្លុះបញ្ចាំង',
+    'weightedResultCriterionBeRespectful': 'គោរពក្នុងថ្នាក់រៀន',
+    'weightedResultCriterionStudentsAttention': 'ការយកចិត្តទុកដាក់របស់សិស្ស',
+    'weightedResultCriterionTaskResponsibility': 'ទំនួលខុសត្រូវការងារ',
+    'weightedResultCriterionWorkIndependently': 'ធ្វើការដោយឯករាជ្យ',
+    'weightedResultCriterionStudentsPunctually': 'ការមកទាន់ពេលរបស់សិស្ស',
+    'weightedResultCriterionMorality': 'សីលធម៌',
+    'examinationProgramViewScore': 'មើលពិន្ទុ',
+    'examinationProgramViewScoreSubtitle': 'មើលពិន្ទុវាយតម្លៃដើមសម្រាប់ថ្នាក់មួយ',
+    'viewScoreTitle': 'មើលពិន្ទុ',
+    'viewScoreSubTitle':
+        'ជ្រើសរើសគ្រូបង្រៀនម្នាក់ រួចជ្រើសរើសថ្នាក់មួយក្នុងចំណោមថ្នាក់ដែលបានចាត់តាំង '
+        'ដើម្បីមើលពិន្ទុគ្រប់មុខវិជ្ជាដែលគ្រូនោះបង្រៀនក្នុងថ្នាក់នោះ។',
+    'viewScoreGender': 'ភេទ',
+    'viewScoreNoStudentsFound': 'រកមិនឃើញសិស្សទេ។',
+    'viewScoreSelectFiltersHint': 'ជ្រើសរើសតម្រង រួចចុច Filter',
     'recordAttendanceSearchHint': 'ស្វែងរកសិស្ស...',
     'recordAttendanceSelectAllPresent': 'ជ្រើសរើសវត្តមានទាំងអស់',
     'recordAttendanceNoStudentsFound': 'រកមិនឃើញសិស្សទេ',

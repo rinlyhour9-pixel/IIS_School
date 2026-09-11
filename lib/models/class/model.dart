@@ -22,6 +22,19 @@ class ClassModel {
         .map((e) => ClassModel.fromJson(Map<String, dynamic>.from(e)))
         .toList();
   }
+
+  // Value equality by id — several screens rebuild dropdown `items` lists
+  // from a fresh getter on every reactive rebuild (e.g. deriving Level from
+  // live assignment data), which would otherwise create a new object each
+  // time. AppIconDropdown matches its `value` against `items` via `==`
+  // (identity by default), so without this a just-picked selection with the
+  // same id but a different object instance would stop matching on the very
+  // next rebuild and silently revert to the placeholder.
+  @override
+  bool operator ==(Object other) => other is ClassModel && other.id == id;
+
+  @override
+  int get hashCode => id.hashCode;
 }
 
 class SectionModel {
@@ -42,6 +55,13 @@ class SectionModel {
         .map((e) => SectionModel.fromJson(Map<String, dynamic>.from(e)))
         .toList();
   }
+
+  // See ClassModel's equality override for why this exists.
+  @override
+  bool operator ==(Object other) => other is SectionModel && other.id == id;
+
+  @override
+  int get hashCode => id.hashCode;
 }
 
 class SubjectModel {
@@ -68,4 +88,14 @@ class SubjectModel {
         .map((e) => SubjectModel.fromJson(Map<String, dynamic>.from(e)))
         .toList();
   }
+
+  // See ClassModel's equality override for why this exists — this is the
+  // one that was actually observed broken: Assessment Management's Subject
+  // dropdown rebuilds its `items` from a getter over live assignment data,
+  // and picking a subject stopped showing as selected until this was added.
+  @override
+  bool operator ==(Object other) => other is SubjectModel && other.id == id;
+
+  @override
+  int get hashCode => id.hashCode;
 }
