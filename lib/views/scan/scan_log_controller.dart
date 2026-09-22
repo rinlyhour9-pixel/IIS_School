@@ -549,7 +549,7 @@ class CardScanController extends GetxController {
       duration: const Duration(milliseconds: 1500),
       boxShadows: [
         BoxShadow(
-          color: Colors.black.withOpacity(0.12),
+          color: Colors.black.withValues(alpha: 0.12),
           blurRadius: 18,
           offset: const Offset(0, 8),
         ),
@@ -559,7 +559,7 @@ class CardScanController extends GetxController {
         height: 38,
         margin: const EdgeInsets.only(left: 12),
         decoration: BoxDecoration(
-          color: color.withOpacity(0.12),
+          color: color.withValues(alpha: 0.12),
           shape: BoxShape.circle,
         ),
         child: Icon(icon, color: color),

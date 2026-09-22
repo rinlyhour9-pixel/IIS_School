@@ -26,7 +26,7 @@ class PaymentCardWidget extends StatelessWidget {
           children: [
             // Top Section
             const SizedBox(height: 8),
-            Text(
+            const Text(
               "១. ព័ត៌មាននៃការបង់ថ្លៃសិក្សាបន្ទាប់",
               style: AppTextStyle.mediumPrimaryBoldText,
             ),
@@ -43,7 +43,7 @@ class PaymentCardWidget extends StatelessWidget {
             Card.outlined(
               shape: RoundedRectangleBorder(
                 side: BorderSide(
-                  color: Colors.grey.withOpacity(0.3),
+                  color: Colors.grey.withValues(alpha: 0.3),
                   width: 1.0,
                 ),
                 borderRadius: BorderRadius.circular(10.0),
@@ -60,7 +60,7 @@ class PaymentCardWidget extends StatelessWidget {
                     itemCount: data.length,
                     itemBuilder: (context, index) {
                       final isEven = index % 2 == 0;
-                      final tealBackgroundColor = const Color.fromARGB(
+                      const tealBackgroundColor = Color.fromARGB(
                         255,
                         0,
                         121,
@@ -77,7 +77,7 @@ class PaymentCardWidget extends StatelessWidget {
                                 0,
                                 121,
                                 107,
-                              ).withOpacity(1)
+                              ).withValues(alpha: 1)
                               : Colors.white;
                       return Container(
                         color: rowColor,
@@ -134,7 +134,7 @@ class PaymentCardWidget extends StatelessWidget {
               ),
               color: AppColor.primaryColor,
               child: const Padding(
-                padding: const EdgeInsets.symmetric(vertical: 14),
+                padding: EdgeInsets.symmetric(vertical: 14),
                 child: Center(
                   child: Text(
                     'សរុបប្រាក់ដែលត្រូវបង់ : 450.00\$',
@@ -236,7 +236,7 @@ class PaymentCardWidget extends StatelessWidget {
     required String price,
     required String date,
   }) {
-    final bool isSelected = false;
+    const bool isSelected = false;
 
     return Padding(
       padding: const EdgeInsets.only(bottom: 10),

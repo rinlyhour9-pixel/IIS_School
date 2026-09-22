@@ -7,7 +7,7 @@ Decoration customDecoration({Color color = AppColor.white}) {
     color: color,
     boxShadow: [
       BoxShadow(
-        color: AppColor.grey.withOpacity(0.5),
+        color: AppColor.grey.withValues(alpha: 0.5),
         spreadRadius: 0,
         blurRadius: 1,
         offset: const Offset(0, 0),

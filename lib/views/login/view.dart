@@ -310,7 +310,7 @@ class LoginView extends GetView<LoginController> {
                                     style: ElevatedButton.styleFrom(
                                       backgroundColor: AppColor.primary,
                                       disabledBackgroundColor: AppColor.primary
-                                          .withOpacity(0.8),
+                                          .withValues(alpha: 0.8),
                                       elevation: 0,
                                       shape: RoundedRectangleBorder(
                                         borderRadius:

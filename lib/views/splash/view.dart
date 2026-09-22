@@ -64,14 +64,14 @@ class SplashView extends GetView<SplashController> {
                                 shape: BoxShape.circle,
                                 boxShadow: [
                                   BoxShadow(
-                                    color: AppColor.primary.withOpacity(0.14),
+                                    color: AppColor.primary.withValues(alpha: 0.14),
                                     blurRadius: 34,
                                     offset: const Offset(0, 18),
                                   ),
                                   BoxShadow(
                                     color: const Color(
                                       0xFFD50B1E,
-                                    ).withOpacity(0.08),
+                                    ).withValues(alpha: 0.08),
                                     blurRadius: 26,
                                     offset: const Offset(0, 8),
                                   ),
@@ -109,7 +109,7 @@ class SplashView extends GetView<SplashController> {
                             style: TextStyle(
                               fontSize: subtitleSize,
                               fontWeight: FontWeight.w500,
-                              color: AppColor.primaryText.withOpacity(0.72),
+                              color: AppColor.primaryText.withValues(alpha: 0.72),
                               height: 1.35,
                             ),
                           ),

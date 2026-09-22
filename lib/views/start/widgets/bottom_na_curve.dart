@@ -29,7 +29,7 @@ class BottomNavCurvePainter extends CustomPainter {
     path.lineTo(0, size.height);
     path.close();
 
-    canvas.drawShadow(path, Colors.black.withOpacity(0.2), 10, true);
+    canvas.drawShadow(path, Colors.black.withValues(alpha: 0.2), 10, true);
     canvas.drawPath(path, paint);
   }
 

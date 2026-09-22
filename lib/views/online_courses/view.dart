@@ -27,7 +27,7 @@ class OnlineCoursesView extends GetView<OnlineCoursesController> {
               teacherSubTitle: LocaleKeys.onlineCoursesTeacherSubTitle.tr,
             ),
           ),
-          CustomIndicator(progress: 1 / 4),
+          const CustomIndicator(progress: 1 / 4),
           Expanded(
             child: Container(
               decoration: const BoxDecoration(),

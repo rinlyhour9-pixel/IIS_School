@@ -76,7 +76,7 @@ class ActivityView extends GetView<ActivityController> {
                                     end: Alignment.bottomCenter,
                                     colors: [
                                       Colors.transparent,
-                                      const Color(0xFF153D6F).withOpacity(0.84),
+                                      const Color(0xFF153D6F).withValues(alpha: 0.84),
                                     ],
                                   ),
                                 ),
@@ -319,7 +319,7 @@ class _EmptyActivityState extends StatelessWidget {
             size: 40,
             color: Color(0xFF9CA3AF),
           ),
-          SizedBox(height: 12),
+          const SizedBox(height: 12),
           Text(
             LocaleKeys.noClassActivitiesFound.tr,
             style: const TextStyle(

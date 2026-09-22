@@ -117,7 +117,7 @@ class _TeacherCreateActivityViewState extends State<TeacherCreateActivityView> {
                       : null;
 
               return DropdownButtonFormField<String>(
-                value: selectedValue,
+                initialValue: selectedValue,
                 decoration: _fieldDecoration(
                   hintText: LocaleKeys.selectClass.tr,
                   prefixIcon: Icons.groups_rounded,
@@ -148,7 +148,7 @@ class _TeacherCreateActivityViewState extends State<TeacherCreateActivityView> {
               );
             }),
             const SizedBox(height: 24),
-            _SectionTitle(
+            const _SectionTitle(
               titleKey: LocaleKeys.activityContent,
               subtitleKey: LocaleKeys.activityContentSubtitle,
             ),
@@ -181,7 +181,7 @@ class _TeacherCreateActivityViewState extends State<TeacherCreateActivityView> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                Expanded(
+                const Expanded(
                   child: _SectionTitle(
                     titleKey: LocaleKeys.coverImage,
                     subtitleKey: LocaleKeys.coverImageSubtitle,
@@ -295,7 +295,7 @@ class _TeacherCreateActivityViewState extends State<TeacherCreateActivityView> {
                   style: ElevatedButton.styleFrom(
                     elevation: 0,
                     backgroundColor: AppColor.primary,
-                    disabledBackgroundColor: AppColor.primary.withOpacity(0.5),
+                    disabledBackgroundColor: AppColor.primary.withValues(alpha: 0.5),
                     foregroundColor: Colors.white,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),

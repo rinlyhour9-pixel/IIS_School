@@ -155,7 +155,7 @@ class _HistoryCard extends StatelessWidget {
         border: Border.all(color: AppColor.lightGrey),
         boxShadow: [
           BoxShadow(
-            color: AppColor.black.withOpacity(0.04),
+            color: AppColor.black.withValues(alpha: 0.04),
             blurRadius: 8,
             offset: const Offset(0, 3),
           ),
@@ -273,7 +273,7 @@ class _CountChip extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.07),
+        color: color.withValues(alpha: 0.07),
         borderRadius: BorderRadius.circular(6),
       ),
       child: Text(

@@ -261,7 +261,7 @@ class ContactUsView extends GetView<ContactUsController> {
         backgroundColor: _softGreen,
         foregroundColor: _accentGreen,
         disabledForegroundColor: AppColor.greyTextColor,
-        side: BorderSide(color: _accentGreen.withOpacity(0.45)),
+        side: BorderSide(color: _accentGreen.withValues(alpha: 0.45)),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(UIConstants.radius.toDouble()),
         ),

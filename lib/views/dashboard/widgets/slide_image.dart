@@ -133,7 +133,7 @@ class _PremiumSliderState extends State<PremiumSlider> {
                           color:
                               isActive
                                   ? Colors.red
-                                  : Colors.red.withOpacity(0.28),
+                                  : Colors.red.withValues(alpha: 0.28),
                           borderRadius: BorderRadius.circular(999),
                         ),
                       );

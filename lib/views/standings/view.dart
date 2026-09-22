@@ -32,7 +32,7 @@ class StandingsView extends GetView<StandingsController> {
           UIConstants.spacingSmall.height,
           Expanded(
             child: SingleChildScrollView(
-              child: Container(child: StandingsCardWidget()),
+              child: Container(child: const StandingsCardWidget()),
             ),
           ),
         ],

@@ -106,7 +106,7 @@ class _CardScanViewState extends State<CardScanView> {
                 cutOutWidth: 250,
                 cutOutHeight: 250,
                 cutOutBottomOffset: 0,
-                overlayColor: Colors.black.withOpacity(0.85),
+                overlayColor: Colors.black.withValues(alpha: 0.85),
               ),
             ),
           ),

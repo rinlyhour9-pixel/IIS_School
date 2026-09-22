@@ -51,7 +51,7 @@ class InvoiceDetailView extends GetView<PaymentHistoryController> {
               8.height,
               Card.outlined(
                 shape: RoundedRectangleBorder(
-                  side: BorderSide(color: Colors.grey.withOpacity(0.3)),
+                  side: BorderSide(color: Colors.grey.withValues(alpha: 0.3)),
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Column(

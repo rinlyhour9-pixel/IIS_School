@@ -67,7 +67,7 @@ class ProfileView extends GetView<ProfileController> {
                     20.height,
                     const ChangePasswordWidget(),
                     20.height,
-                    ProfileItemWidget(
+                    const ProfileItemWidget(
                       icon: Icons.location_on,
                       text: 'Phnom Penh',
                     ),
@@ -102,7 +102,7 @@ class ProfileView extends GetView<ProfileController> {
                         trailing: Switch(
                           value: controller.notificationsEnabled.value,
                           onChanged: controller.toggleNotifications,
-                          activeColor: AppColor.red,
+                          activeThumbColor: AppColor.red,
                         ),
                       ),
                     ),

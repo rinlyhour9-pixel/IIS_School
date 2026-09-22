@@ -61,7 +61,7 @@ class ProfileWidget extends StatelessWidget {
                         bottom: 0,
                         child: Container(
                           decoration: BoxDecoration(
-                            color: AppColor.black.withOpacity(0.30),
+                            color: AppColor.black.withValues(alpha: 0.30),
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: const Padding(

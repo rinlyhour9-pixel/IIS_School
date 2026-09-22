@@ -103,7 +103,7 @@ class StartView extends GetView<StartController> {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20),
               boxShadow: [
-                BoxShadow(color: Colors.black.withOpacity(0.1), blurRadius: 15),
+                BoxShadow(color: Colors.black.withValues(alpha: 0.1), blurRadius: 15),
               ],
             ),
             child: StyleProvider(

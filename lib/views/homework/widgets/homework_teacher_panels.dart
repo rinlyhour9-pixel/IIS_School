@@ -838,9 +838,9 @@ class _ClassInfoStat extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.08),
+        color: color.withValues(alpha: 0.08),
         borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: color.withOpacity(0.16)),
+        border: Border.all(color: color.withValues(alpha: 0.16)),
       ),
       child: Row(
         children: [
@@ -848,7 +848,7 @@ class _ClassInfoStat extends StatelessWidget {
             width: 38,
             height: 38,
             decoration: BoxDecoration(
-              color: color.withOpacity(0.14),
+              color: color.withValues(alpha: 0.14),
               borderRadius: BorderRadius.circular(11),
             ),
             child: Icon(icon, color: color, size: 22),
@@ -1715,7 +1715,7 @@ class _StaticInput extends StatelessWidget {
         decoration: InputDecoration(
           hintText: label,
           hintStyle: AppTextStyle.smallGreyRegular.copyWith(
-            color: _homeworkMutedText.withOpacity(0.78),
+            color: _homeworkMutedText.withValues(alpha: 0.78),
           ),
           prefixIcon: Container(
             width: 52,

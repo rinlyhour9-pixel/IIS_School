@@ -98,10 +98,9 @@ class _ReadOnlyField extends StatelessWidget {
   final String hintText;
 
   const _ReadOnlyField({
-    this.icon,
     required this.label,
     required this.hintText,
-  });
+  }) : icon = null;
 
   @override
   Widget build(BuildContext context) {
@@ -120,7 +119,7 @@ class _ReadOnlyField extends StatelessWidget {
             Container(
               width: 52,
               height: 48,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: AppColor.white,
                 border: Border(right: BorderSide(color: AppColor.divider)),
               ),
@@ -257,8 +256,8 @@ class _TableHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
+    return const Padding(
+      padding: EdgeInsets.symmetric(vertical: 10, horizontal: 8),
       child: Row(
         children: [
           SizedBox(

@@ -111,7 +111,7 @@ class RequestLeaveController extends GetxController {
   Widget _themedDatePicker(BuildContext context, Widget? child) {
     final theme = Theme.of(context);
     return MediaQuery(
-      data: MediaQuery.of(context).copyWith(textScaler: TextScaler.linear(1.0)),
+      data: MediaQuery.of(context).copyWith(textScaler: const TextScaler.linear(1.0)),
       child: Theme(
         data: theme.copyWith(
           colorScheme: theme.colorScheme.copyWith(

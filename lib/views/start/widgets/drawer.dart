@@ -204,7 +204,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
         duration: const Duration(milliseconds: 500),
         boxShadows: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.06),
+            color: Colors.black.withValues(alpha: 0.06),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
@@ -365,7 +365,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
               trailing: Switch(
                 value: _notificationsEnabled,
                 onChanged: _toggleNotifications,
-                activeColor: AppColor.primary,
+                activeThumbColor: AppColor.primary,
               ),
             ),
             _divider(),
@@ -516,7 +516,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
               trailing: Switch(
                 value: _notificationsEnabled,
                 onChanged: _toggleNotifications,
-                activeColor: AppColor.primary,
+                activeThumbColor: AppColor.primary,
               ),
             ),
             _divider(),

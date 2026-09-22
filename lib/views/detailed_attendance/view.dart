@@ -13,7 +13,7 @@ class DetailedAttendanceView extends GetView<DetailedAttendanceController> {
     return Scaffold(
       body: Column(
         children: [
-          SafeArea(
+          const SafeArea(
             bottom: false,
             child: CustomizeAppBar(
               title: 'Attendance Detail',

@@ -177,11 +177,11 @@ class _DateField extends StatelessWidget {
             Container(
               width: 52,
               height: 48,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: AppColor.white,
                 border: Border(right: BorderSide(color: AppColor.divider)),
               ),
-              child: Icon(
+              child: const Icon(
                 Icons.calendar_today_outlined,
                 color: AppColor.darkGrey,
                 size: 20,

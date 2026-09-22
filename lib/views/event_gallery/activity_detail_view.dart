@@ -271,7 +271,7 @@ class _ActivityDetailViewState extends State<ActivityDetailView> {
                   height: 6,
                   decoration: BoxDecoration(
                     color:
-                        isActive ? Colors.white : Colors.white.withOpacity(0.45),
+                        isActive ? Colors.white : Colors.white.withValues(alpha: 0.45),
                     borderRadius: BorderRadius.circular(999),
                   ),
                 );

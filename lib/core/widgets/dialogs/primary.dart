@@ -38,7 +38,7 @@ class PrimaryDialog extends StatelessWidget {
           borderRadius: BorderRadius.circular(24),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.14),
+              color: Colors.black.withValues(alpha: 0.14),
               blurRadius: 26,
               offset: const Offset(0, 12),
             ),
@@ -51,7 +51,7 @@ class PrimaryDialog extends StatelessWidget {
               width: 58,
               height: 58,
               decoration: BoxDecoration(
-                color: confirmColor.withOpacity(0.1),
+                color: confirmColor.withValues(alpha: 0.1),
                 shape: BoxShape.circle,
               ),
               child: Icon(
@@ -81,7 +81,7 @@ class PrimaryDialog extends StatelessWidget {
               style: TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w500,
-                color: AppColor.primaryText.withOpacity(0.7),
+                color: AppColor.primaryText.withValues(alpha: 0.7),
                 height: 1.35,
               ),
             ),

@@ -346,7 +346,6 @@ class _HomeworkAccentCardFrame extends StatelessWidget {
     required this.accentColor,
     required this.child,
     this.stripWidth = 25,
-    this.cardOffset = 8,
     this.cardRadius = 18,
     this.shadow = const [
       BoxShadow(
@@ -355,7 +354,7 @@ class _HomeworkAccentCardFrame extends StatelessWidget {
         offset: Offset(0, 8),
       ),
     ],
-  });
+  }) : cardOffset = 8;
 
   final Color accentColor;
   final Widget child;

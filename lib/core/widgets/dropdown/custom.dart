@@ -28,7 +28,7 @@ class CustomDropdown extends StatelessWidget {
     return SizedBox(
       width: double.infinity, // Fills available horizontal space
       child: DropdownButtonFormField<String>(
-        value: initValue,
+        initialValue: initValue,
         onChanged: (value) => onChanged(value!),
         validator: validator,
         dropdownColor: AppColor.white,

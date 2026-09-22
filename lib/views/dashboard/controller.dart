@@ -30,7 +30,7 @@ class DashboardController extends GetxController {
     isFirst = !isFirst;
     pageController.animateToPage(
       isFirst ? 0 : 1, // Index of the second page
-      duration: Duration(milliseconds: 200),
+      duration: const Duration(milliseconds: 200),
       curve: Curves.bounceIn,
     );
     update();

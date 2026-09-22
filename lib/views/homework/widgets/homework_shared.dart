@@ -26,7 +26,7 @@ class _HeroPanel extends StatelessWidget {
             width: 70,
             height: 70,
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.8),
+              color: Colors.white.withValues(alpha: 0.8),
               borderRadius: BorderRadius.circular(18),
             ),
             child: Icon(icon, color: _onlineClassAccent, size: 38),
@@ -85,7 +85,7 @@ class _MetricBox extends StatelessWidget {
         border: Border.all(color: _onlineClassBorder),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.04),
+            color: Colors.black.withValues(alpha: 0.04),
             blurRadius: 14,
             offset: const Offset(0, 6),
           ),
@@ -98,7 +98,7 @@ class _MetricBox extends StatelessWidget {
               height: 44,
               width: 44,
               decoration: BoxDecoration(
-                color: accentColor.withOpacity(0.12),
+                color: accentColor.withValues(alpha: 0.12),
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Icon(icon, color: accentColor, size: 25),
@@ -140,10 +140,8 @@ class _MetricBox extends StatelessWidget {
 class _ActionTile extends StatelessWidget {
   const _ActionTile({
     required this.action,
-    this.isPrimary = false,
-    this.isSelected = false,
     this.onTap,
-  });
+  }) : isPrimary = false : isSelected = false;
 
   final _DashboardAction action;
   final bool isPrimary;
@@ -185,7 +183,7 @@ class _ActionTile extends StatelessWidget {
           icon: action.icon,
           backgroundColor:
               isFilled
-                  ? Colors.white.withOpacity(0.14)
+                  ? Colors.white.withValues(alpha: 0.14)
                   : _onlineClassAccentSoft,
           iconColor: isFilled ? Colors.white : _onlineClassAccent,
         ),
@@ -236,7 +234,7 @@ class _ActionTile extends StatelessWidget {
           width: 34,
           height: 34,
           decoration: BoxDecoration(
-            color: isSelected ? _onlineClassAccent : action.iconColor.withOpacity(0.12),
+            color: isSelected ? _onlineClassAccent : action.iconColor.withValues(alpha: 0.12),
             borderRadius: BorderRadius.circular(10),
           ),
           child: Icon(
@@ -339,7 +337,7 @@ class _Panel extends StatelessWidget {
         border: Border.all(color: _onlineClassBorder),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.04),
+            color: Colors.black.withValues(alpha: 0.04),
             blurRadius: 18,
             offset: const Offset(0, 8),
           ),
@@ -433,9 +431,7 @@ class _DashboardAction {
   const _DashboardAction(
     this.icon,
     this.titleKey,
-    this.subtitleKey, {
-    this.iconColor = _onlineClassAccent,
-  });
+    this.subtitleKey) : iconColor = _onlineClassAccent;
 
   final IconData icon;
   final String titleKey;

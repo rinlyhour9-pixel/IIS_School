@@ -93,7 +93,7 @@ class ActivityCardWidget extends StatelessWidget {
                               size: 14,
                               color: Color(0xFFD80F23),
                             ),
-                            SizedBox(width: 4),
+                            const SizedBox(width: 4),
                             Text(
                               LocaleKeys.viewDetails.tr,
                               style: const TextStyle(

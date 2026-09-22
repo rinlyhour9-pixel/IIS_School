@@ -15,7 +15,7 @@ class ChangePasswordWidget extends StatelessWidget {
       children: [
         CircleAvatar(
           radius: 22,
-          backgroundColor: AppColor.grey.withOpacity(0.5),
+          backgroundColor: AppColor.grey.withValues(alpha: 0.5),
           child: const Icon(Icons.lock, color: AppColor.black),
         ),
         16.width,

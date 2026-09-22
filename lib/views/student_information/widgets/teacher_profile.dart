@@ -161,8 +161,9 @@ class TeacherProfileWidget extends GetView<StudentInformationController> {
   }
 
   String _resolve(String value) {
-    if (value.startsWith('http://') || value.startsWith('https://'))
+    if (value.startsWith('http://') || value.startsWith('https://')) {
       return value;
+    }
     final base = AppConfig.shared.baseUrl.trim();
     if (base.isEmpty) return value;
     final baseUri = Uri.parse(base.endsWith('/') ? base : '$base/');

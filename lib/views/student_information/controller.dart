@@ -538,8 +538,4 @@ class StudentInformationController extends GetxController {
     return id.isEmpty ? 'N/A' : id;
   }
 
-  @override
-  void onClose() {
-    super.onClose();
-  }
 }

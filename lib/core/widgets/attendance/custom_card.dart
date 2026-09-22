@@ -29,7 +29,7 @@ class CustomCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withValues(alpha: 0.05),
             blurRadius: 8,
             offset: const Offset(0, 2),
           ),
@@ -77,8 +77,8 @@ class CustomCard extends StatelessWidget {
             width: 85, // Slightly wider to avoid text clipping
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
             decoration: BoxDecoration(
-              color: statusColor.withOpacity(
-                0.2,
+              color: statusColor.withValues(
+                alpha: 0.2,
               ), // Light background for better look
               borderRadius: BorderRadius.circular(8),
               border: Border.all(color: statusColor), // Border makes it pop
